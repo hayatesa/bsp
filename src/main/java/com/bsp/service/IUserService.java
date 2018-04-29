@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.bsp.entity.User;
 import com.bsp.entity.UserInfor;
-import com.bsp.utils.exceptions.UserDefinedException;
+import com.bsp.exceptions.UserDefinedException;
 
 public interface IUserService {
 

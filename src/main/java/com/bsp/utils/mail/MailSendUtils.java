@@ -6,7 +6,7 @@ import java.util.Properties;
 import javax.mail.MessagingException;
 import javax.mail.Session;
 
-import com.bsp.utils.exceptions.UserDefinedException;
+import com.bsp.exceptions.UserDefinedException;
 
 import cn.itcast.mail.Mail;
 import cn.itcast.mail.MailUtils;

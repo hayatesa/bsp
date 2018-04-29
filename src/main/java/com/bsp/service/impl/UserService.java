@@ -9,8 +9,8 @@ import com.bsp.dao.IUserDAO;
 import com.bsp.entity.CreditScore;
 import com.bsp.entity.User;
 import com.bsp.entity.UserInfor;
+import com.bsp.exceptions.UserDefinedException;
 import com.bsp.service.IUserService;
-import com.bsp.utils.exceptions.UserDefinedException;
 import com.bsp.utils.md5.MD5Utils;
 
 @Service

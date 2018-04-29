@@ -1,4 +1,4 @@
-package com.bsp.utils.exceptions;
+package com.bsp.exceptions;
 /**
  * 用户异常信息
  * @author wjb

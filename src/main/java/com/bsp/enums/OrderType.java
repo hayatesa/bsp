@@ -1,4 +1,4 @@
-package com.bsp.utils.enums;
+package com.bsp.enums;
 
 /**
  * 排序方式

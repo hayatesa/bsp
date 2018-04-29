@@ -16,8 +16,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.bsp.entity.User;
+import com.bsp.exceptions.UserDefinedException;
 import com.bsp.service.impl.UserService;
-import com.bsp.utils.exceptions.UserDefinedException;
 
 /**
  * shiro认证权限处理

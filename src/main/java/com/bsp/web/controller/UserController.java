@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.bsp.dto.ResultMsgDTO;
 import com.bsp.entity.User;
 import com.bsp.entity.UserInfor;
+import com.bsp.exceptions.UserDefinedException;
 import com.bsp.service.IUserService;
-import com.bsp.utils.exceptions.UserDefinedException;
 import com.bsp.utils.mail.MailSendUtils;
 
 import cn.itcast.commons.CommonUtils;
