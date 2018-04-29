@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2018-2-25 0:56:38 by Hibernate Tools 3.5.0.Final -->
+<hibernate-mapping>
+    <class name="com.bsp.entity.UserInfor" table="user_infor">
+        <id name="UUID" type="string">
+            <column name="UUID" length="33"/>
+            <generator class="assigned"></generator>
+        </id>
+        <property name="uNickname" type="string" access="field">
+            <column name="uNickname" length="12" not-null="true"/>
+        </property>
+        <property name="uSex" type="string" access="field">
+            <column name="uSex" length="2" not-null="true"/>
+        </property>
+        <property name="uPhone" type="string" access="field">
+            <column name="uPhone" length="12" not-null="true"/>
+        </property>
+        <property name="uQQ" type="string" access="field">
+            <column name="uQQ" length="30" />
+        </property>
+        <property name="uWeChat" type="string" access="field">
+            <column name="uWeChat" length="100" />
+        </property>
+        <property name="uSignature" type="string" access="field">
+            <column name="uSignature" length="255" />
+        </property>
+        <property name="uAddress" type="string" access="field">
+            <column name="uAddress" length="255" />
+        </property>
+        
+    </class>
+</hibernate-mapping>

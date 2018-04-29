@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2018-2-25 0:56:38 by Hibernate Tools 3.5.0.Final -->
+<hibernate-mapping>
+    <class name="com.bsp.entity.User" table="u_user">
+        <id name="UUID" type="java.lang.String">
+            <column name="UUID" length="33"/>
+            <generator class="uuid" />
+        </id>
+        <property name="mail" type="java.lang.String">
+            <column name="mail" not-null="true" length="255"/>
+        </property>
+        <property name="password" type="java.lang.String">
+            <column name="password" not-null="true" length="33"/>
+        </property>
+        
+        <set name="newsSet" table="news" inverse="true" lazy="true">
+            <key>
+                <column name="UUID" />
+            </key>
+            <one-to-many class="com.bsp.entity.News" />
+        </set>
+        
+        <set name="borrowBooksSet" table="borrow_books" inverse="true" lazy="true">
+            <key>
+                <column name="UUID" />
+            </key>
+            <one-to-many class="com.bsp.entity.BorrowBooks" />
+        </set>
+        
+        <set name="lendingRecordsSet" table="lending_record" inverse="true" lazy="true">
+            <key>
+                <column name="UUID" />
+            </key>
+            <one-to-many class="com.bsp.entity.LendingRecord" />
+        </set>
+        
+        <set name="returnBookRecordsSet" table="return_book_record" inverse="true" lazy="true">
+            <key>
+                <column name="UUID" />
+            </key>
+            <one-to-many class="com.bsp.entity.ReturnBookRecord" />
+        </set>
+        
+        <set name="demandBooksSet" table="demand_books" inverse="true" lazy="true">
+            <key>
+                <column name="UUID" />
+            </key>
+            <one-to-many class="com.bsp.entity.DemandBooks" />
+        </set>
+        
+        <set name="dReturnRecordsSet" table="demand_return_record" inverse="true" lazy="true" access="field">
+            <key>
+                <column name="UUID" />
+            </key>
+            <one-to-many class="com.bsp.entity.DemandReturnRecord" />
+        </set>
+        
+        <set name="responseRecordsSet" table="response_record" inverse="true" lazy="true">
+            <key>
+                <column name="UUID" />
+            </key>
+            <one-to-many class="com.bsp.entity.ResponseRecord" />
+        </set>
+    </class>
+</hibernate-mapping>

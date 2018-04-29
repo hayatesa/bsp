@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2018-2-25 0:56:38 by Hibernate Tools 3.5.0.Final -->
+<hibernate-mapping>
+    <class name="com.bsp.entity.ResponseRecord" table="response_record">
+        <id name="rrId" type="int">
+            <column name="rrId" />
+            <generator class="native" />
+        </id>
+        <property name="lendingTime" type="java.util.Date">
+            <column name="lendingTime" not-null="true"/>
+        </property>
+        <property name="expectedRT" type="java.util.Date">
+            <column name="expectedRT" not-null="true"/>
+        </property>
+        
+        <many-to-one name="user" class="com.bsp.entity.User" fetch="join">
+            <column name="UUID" length="33" not-null="true"/>
+        </many-to-one>
+       <many-to-one name="demandBooks" class="com.bsp.entity.DemandBooks">
+       		<column name="dbId" not-null="true"></column>
+       </many-to-one>
+    </class>
+</hibernate-mapping>

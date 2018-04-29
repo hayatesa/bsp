@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2018-2-25 0:56:38 by Hibernate Tools 3.5.0.Final -->
+<hibernate-mapping>
+    <class name="com.bsp.entity.CreditScore" table="credit_score">
+        <id name="UUID" type="java.lang.String" access="field">
+            <column name="UUID" length="33"/>
+            <generator class="assigned"></generator>
+        </id>
+        <property name="credit" type="int">
+            <column name="credit" not-null="true" default="640"/>
+        </property>
+        <property name="highOpinionC" type="int">
+            <column name="highOpinionC" not-null="true" default="0"/>
+        </property>
+        <property name="negativeCommentC" type="int">
+            <column name="negativeCommentC" not-null="true" default="0"/>
+        </property>
+        <property name="addBookC" type="int">
+            <column name="addBookC" not-null="true" default="0"/>
+        </property>
+        <property name="deleteBookC" type="int">
+            <column name="deleteBookC" not-null="true" default="0"/>
+        </property>
+        <property name="commentC" type="int">
+            <column name="commentC" not-null="true" default="0"/>
+        </property>
+        <property name="responseC" type="int">
+            <column name="responseC" not-null="true" default="0"/>
+        </property>
+        
+        <!-- <one-to-one name="user" class="com.bsp.user.entity.User" ></one-to-one> -->
+    </class>
+</hibernate-mapping>

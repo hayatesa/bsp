@@ -1,0 +1,4 @@
+db.username=bsp
+db.password=bsp123456
+db.driver=com.mysql.jdbc.Driver
+db.url=jdbc:mysql:///book_sharing_platform?useSSL=true&FcharacterEncoding=utf8

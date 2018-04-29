@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2018-2-25 0:56:38 by Hibernate Tools 3.5.0.Final -->
+<hibernate-mapping>
+    <class name="com.bsp.entity.DemandBooks" table="demand_books">
+        <id name="dbId" type="int">
+            <column name="dbId" />
+            <generator class="native" />
+        </id>
+        <property name="dbName" type="java.lang.String">
+            <column name="dbName" length="255" not-null="true"/>
+        </property>
+        <property name="dbAuthor" type="java.lang.String">
+            <column name="dbAuthor" length="200" not-null="true"/>
+        </property>
+        <property name="dbPublishing" type="java.lang.String">
+            <column name="dbPublishing" length="100" not-null="true"/>
+        </property>
+        <property name="dbDuration" type="int">
+            <column name="dbDuration" not-null="true"/>
+        </property>
+        <property name="dbImage1" type="java.lang.String">
+            <column name="dbImage1" length="255"/>
+        </property>
+        <property name="dbImage2" type="java.lang.String">
+            <column name="dbImage2" length="255"/>
+        </property>
+        <property name="dbImage3" type="java.lang.String">
+            <column name="dbImage3" length="255"/>
+        </property>
+        <property name="dbComment" type="text" access="field">
+            <column name="dbComment"/>
+        </property>
+        <property name="dbStatus" type="byte">
+            <column name="dbStatus" not-null="true"/>
+        </property>
+        <property name="dbDelete" type="byte">
+            <column name="dbDelete" not-null="true"/>
+        </property>
+        
+        <many-to-one name="sClassification" class="com.bsp.entity.SecondaryClassification" access="field" fetch="join">
+            <column name="scId" not-null="true"/>
+        </many-to-one>
+        
+        <many-to-one name="user" class="com.bsp.entity.User" fetch="join">
+            <column name="UUID" length="33" not-null="true"/>
+        </many-to-one>
+        
+        <set name="dReturnRecordsSet" table="demand_return_record" inverse="true" lazy="true" access="field">
+            <key>
+                <column name="dbId" />
+            </key>
+            <one-to-many class="com.bsp.entity.DemandReturnRecord" />
+        </set>
+    </class>
+</hibernate-mapping>
