@@ -21,7 +21,7 @@ var header_app = new Vue({
 					url: server + "/data/logout.json?id="+id,
 					success: function(data){
 						if(data.code === 0){
-							window.location.href=data.url;
+							window.location.href=server+data.url;
 						}
 						else{
 							alert('系统异常，请联系管理员');
@@ -52,14 +52,14 @@ var header_app = new Vue({
 			if(msg.length<=12){
 				return msg;
 			}				
-			return msg.substr(0,11)+"...";
+			return msg.substr(0,11)+"···";
 		},
 		numberFormat: function(num){
 			// 消息数量角标，大于99显示99+
 			if(num<=99){
 				return num;
 			}
-			return "99+";
+			return '&middot;&middot;';
 		},
 		settings:function(){
 			sidebar_app.go('/templates/admin/settings.html','系统设置');

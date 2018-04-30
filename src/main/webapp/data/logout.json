@@ -1,5 +1,5 @@
 {
 	"code": 0,
 	"msg": "成功退出登录",
-	"url": "/bsp/templates/admin/index.html?u=hayate"
+	"url": "/templates/admin/index.html?u=hayate"
 }

@@ -6,19 +6,21 @@
 
     <!--<link rel="stylesheet" href="layui/css/layui.css" />-->
     <!-- Bootstrap core CSS -->
-    <link href="/bsp/assets/css/bootstrap.css" rel="stylesheet">
+    <link href="../../assets/css/bootstrap.css" rel="stylesheet">
     <!--external css-->
-    <link href="/bsp/assets/font-awesome/css/font-awesome.css" rel="stylesheet" />
-    <link rel="stylesheet" type="text/css" href="/bsp/assets/js/gritter/css/jquery.gritter.css" />
-    <link rel="stylesheet" type="text/css" href="/bsp/assets/lineicons/style.css">    
+    <link href="../../assets/font-awesome/css/font-awesome.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="../../assets/js/gritter/css/jquery.gritter.css" />
+    <link rel="stylesheet" type="text/css" href="../../assets/lineicons/style.css">    
     <!-- Custom styles for this template -->
-    <link href="/bsp/assets/css/style.css" rel="stylesheet">
-    <link href="/bsp/assets/css/style-responsive.css" rel="stylesheet">
+    <link href="../../assets/css/style.css" rel="stylesheet">
+    <link href="../../assets/css/style-responsive.css" rel="stylesheet">
 
-	    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+     <link rel="stylesheet" href="../../css/common.css">
+
+      <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+      <script src="../../assets/js/html5shiv.js"></script>
+      <script src="../../assets/js/respond.min.js"></script>
     <![endif]-->
   </head>
 
@@ -40,10 +42,10 @@
                 <!--  notification start -->
                 <ul class="nav top-menu" id="header-app" >
                     <!-- inbox dropdown start-->
-                    <li id="header_inbox_bar" title="消息"  class="dropdown" >
+                    <li id="header_inbox_bar" :title="newMessages.num+'条消息'"  class="dropdown" >
                         <a data-toggle="dropdown" class="dropdown-toggle" href="javascript:;">
                             <i class="fa fa-envelope-o"></i>
-                            <span class="badge bg-theme">{{numberFormat(newMessages.num)}}</span>
+                            <span class="badge bg-theme" v-html="numberFormat(newMessages.num)"></span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-right extended inbox">
                             <div class="notify-arrow notify-arrow-green"></div>
@@ -101,8 +103,8 @@
           <div id="sidebar" class="nav-collapse" >
               <!-- sidebar menu start-->
               <ul class="sidebar-menu" id="nav-accordion">
-              		<div  id="sidebar-app">
-              	  <p class="centered"><a href="profile.html"><img src="/bsp/assets/img/ui-sam.jpg" class="img-circle" width="60"></a></p>
+              <div  id="sidebar-app">
+              	  <p class="centered"><a href="profile.html"><img src="../../assets/img/ui-sam.jpg" class="img-circle" width="60"></a></p>
               	  <h5 class="centered" title="账户信息"><a @click="profileEdit" href="javascript:;"><span>{{user.username}}</span></a></h5>
                   <li class="mt">
                       <a class="active" @click="go('/templates/admin/userPage.html','主页')" href="javascript:;">
@@ -158,7 +160,7 @@
                           <li><a @click="go('/templates/admin/userPage.html','账号管理-管理员')" href="javascript:;">管理员</a></li>
                       </ul>
                   </li>
-								</div>	
+              </div>
               </ul>
               <!-- sidebar menu end-->
           </div>
@@ -193,24 +195,24 @@
       <!--footer end-->
   </section>
 	
-    <script src="/bsp/js/jquery-3.3.1.js"></script>
-    <script src="/bsp/js/plugins/bootstrap/js/bootstrap.js"></script>
+    <script src="../../js/jquery-3.3.1.js"></script>
+    <script src="../../js/plugins/bootstrap/js/bootstrap.js"></script>
     
     <!-- 模板js -->
-    <!--<script src="/bsp/assets/js/jquery.js"></script>-->
-    <!--<script src="/bsp/assets/js/jquery-1.8.3.min.js"></script>-->
-    <!--<script src="/bsp/assets/js/bootstrap.min.js"></script>-->
+    <!--<script src="../../assets/js/jquery.js"></script>-->
+    <!--<script src="../../assets/js/jquery-1.8.3.min.js"></script>-->
+    <!--<script src="../../assets/js/bootstrap.min.js"></script>-->
     <!-- 手风琴菜单 -->
-    <script src="/bsp/assets/js/jquery.dcjqaccordion.2.7.js"></script>
-    <script src="/bsp/assets/js/jquery.scrollTo.min.js"></script>
-    <script src="/bsp/assets/js/jquery.nicescroll.js"></script>
+    <script src="../../assets/js/jquery.dcjqaccordion.2.7.js"></script>
+    <script src="../../assets/js/jquery.scrollTo.min.js"></script>
+    <script src="../../assets/js/jquery.nicescroll.js"></script>
     <!--模板js-->
-    <script src="/bsp/assets/js/common-scripts.js"></script>
+    <script src="../../assets/js/common-scripts.js"></script>
     <!-- 提醒插件 -->
-    <script src="/bsp/assets/js/gritter/js/jquery.gritter.js"></script>
-    <script src="/bsp/assets/js/gritter-conf.js"></script>
+    <script src="../../assets/js/gritter/js/jquery.gritter.js"></script>
+    <script src="../../assets/js/gritter-conf.js"></script>
     <!-- layer -->
-    <script src="/bsp/js/plugins/layer/layer.js"></script>
+    <script src="../../js/plugins/layer/layer.js"></script>
     	
     <!-- 欢迎提醒 -->
 		<script type="text/javascript">
@@ -233,8 +235,8 @@
 	        return false;
 	    });
 		</script>
-    <script src="/bsp/js/commons/common.js"></script>
-  	<script src="/bsp/js/vue.js"></script>
-  	<script src="/bsp/js/admin/index.js"></script>
+    <script src="../../js/commons/common.js"></script>
+  	<script src="../../js/vue.js"></script>
+  	<script src="../../js/admin/index.js"></script>
   </body>
 </html>

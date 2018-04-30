@@ -26,7 +26,7 @@ a, a:hover, a:focus {
     color: #fff;
 }
 ::-moz-selection {
-    background: #686868;
+    background: #70788d;
     color: #fff;
 }
 
@@ -43,7 +43,7 @@ a, a:hover, a:focus {
 }
 /* Bootstrap Modifications */
 .modal-header {
-	background: #686868;
+	background: #70788d;
 }
 
 .modal-title {
@@ -73,7 +73,7 @@ a, a:hover, a:focus {
 /*Theme Backgrounds*/
 
 .bg-theme {
-	background-color: #686868;
+	background-color: #70788d;
 }
 
 .bg-theme02 {
@@ -91,7 +91,7 @@ a, a:hover, a:focus {
 
 .btn-theme {
   color: #fff;
-  background-color: #686868;
+  background-color: #70788d;
   border-color: #48bcb4;
 }
 .btn-theme:hover,
@@ -205,11 +205,11 @@ hr {
 /*Exclusive Theme Colors Configuration*/
 
 .label-theme {
-	background-color: #686868;
+	background-color: #70788d;
 }
 
 .bg-theme {
-	background-color: #f06868 !important;
+	background-color: #f25056 !important;
 }
 
 ul.top-menu > li > .logout {
@@ -231,7 +231,7 @@ ul.top-menu > li > .logout {
     width: 210px;
     height: 100%;
     position: fixed;
-    background: #fff;
+    background: #323641;
 }
 
 #sidebar h5 {
@@ -294,7 +294,7 @@ ul.sidebar-menu {
 }
 
 ul.sidebar-menu li ul.sub li{
-    background: #fff;
+    background: #323641;
     margin-bottom: 0;
     margin-left: 0;
     margin-right: 0;
@@ -315,20 +315,20 @@ ul.sidebar-menu li ul.sub li a {
     -o-transition: all 0.3s ease;
     -ms-transition: all 0.3s ease;
     transition: all 0.3s ease;
-    color: #000;
-    background: #fff;
+    color: #848b96;
+    background: #323641;
 }
 ul.sidebar-menu li ul.sub li a.active {
-    color: #F06868;
+    color: #337ab7;
 }
 
 ul.sidebar-menu li ul.sub li a:hover {
-	color: #f06868;
+	color: #337ab7;
 	background: transparent;
 }
 
 ul.sidebar-menu li ul.sub li.active a {
-    color: #686868;
+    color: #337ab7;
     -webkit-transition: all 0.3s ease;
     -moz-transition: all 0.3s ease;
     -o-transition: all 0.3s ease;
@@ -353,7 +353,7 @@ ul.sidebar-menu li a span{
 }
 
 ul.sidebar-menu li a{
-    color: #000;
+    color: #848b96;
     text-decoration: none;
     display: block;
     padding: 15px 0 15px 10px;
@@ -367,7 +367,7 @@ ul.sidebar-menu li a{
 }
 
 ul.sidebar-menu li a.active, ul.sidebar-menu li a:hover, ul.sidebar-menu li a:focus {
-    background: #686868;
+    background: #337ab7;
     color: #fff;
     display: block;
 
@@ -416,8 +416,8 @@ ul.sidebar-menu li a.active i {
 }
 
 .black-bg {
-    background: #ffffffd6;
-    border-bottom: 1px solid #d7d7d7;
+    background: #e7e8eb;
+    border-bottom: 1px solid #d5d6db;
 }
 
 .wrapper {
@@ -432,7 +432,7 @@ ul.sidebar-menu li a.active i {
 
 a.logo {
     font-size: 20px;
-    color: #686868;
+    color: #70788d;
     float: left;
     margin-top: 15px;
     text-transform: uppercase;
@@ -448,7 +448,7 @@ a.logo:hover, a.logo:focus {
 }
 
 a.logo span {
-    color: #686868;
+    color: #70788d;
 }
 
 
@@ -471,11 +471,11 @@ a.logo span {
 }
 
 ul.top-menu > li > a {
-    color: #666666;
+    color: #737c90;
     font-size: 16px;
     border-radius: 4px;
     -webkit-border-radius: 4px;
-    border:1px solid #666666 !important;
+    border:1px solid #737c90 !important;
     padding: 2px 6px;
     margin-right: 15px;
 }
@@ -513,8 +513,8 @@ ul.top-menu > li > a:hover, ul.top-menu > li > a:focus {
     /* Safari and Chrome */
     .dropdown-menu.extended  {
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.176) !important;
-    };
     }
+}
 
 .dropdown-menu.extended li p {
     background-color: #F1F2F7;
@@ -698,7 +698,7 @@ ul.top-menu > li > a:hover, ul.top-menu > li > a:focus {
 }
 
 .log-arrow-up {
-    background: url("../img/arrow-up.png") no-repeat;
+    /*background: url("../img/arrow-up.png") no-repeat;*/
     width: 20px;
     height: 11px;
     position: absolute;
@@ -829,7 +829,7 @@ ul.top-menu > li > a:hover, ul.top-menu > li > a:focus {
 }
 
 .ds a {
-	color: #686868;
+	color: #70788d;
 }
 
 /* LINE ICONS CONFIGURATION */
@@ -925,7 +925,7 @@ ul.top-menu > li > a:hover, ul.top-menu > li > a:focus {
     position: absolute;
     bottom: 0;
     background: #ff865c;
-    color: #686868;
+    color: #70788d;
     width: 100%;
     -webkit-border-radius: 5px 5px 0 0;
     -moz-border-radius: 5px 5px 0 0;
@@ -1059,7 +1059,7 @@ PANELS CONFIGURATIONS
 /*Green Panel*/
 .green-panel {
 	text-align: center;
-	background: #686868;
+	background: #70788d;
 }
 .green-panel .green-header {
 	background: #43b1a9;
@@ -1103,7 +1103,7 @@ PANELS CONFIGURATIONS
 }
 
 .white-panel i {
-	color: #686868;
+	color: #70788d;
 	padding-right: 4px;
 	font-size: 14px;
 }
@@ -1518,7 +1518,7 @@ PANELS CONFIGURATIONS
 	font-weight: 900;
 }
 .profile-01 {
-	background: #686868;
+	background: #70788d;
 	height: 50px;
 }
 .profile-01:hover {
@@ -1566,7 +1566,7 @@ PANELS CONFIGURATIONS
 	color: #cdcdcd;
 }
 .pr2-social a:hover {
-	color: #686868;
+	color: #70788d;
 }
 .pr2-social i {
 	margin-top: 15px;
@@ -1622,7 +1622,7 @@ PANELS CONFIGURATIONS
     font-size: 12px;
 }
 .panel.terques-chart .chart-tittle .value a:hover, .panel.terques-chart .chart-tittle .value a.active {
-    color: #686868;
+    color: #70788d;
     font-size: 12px;
 }
 .panel.terques-chart .chart-tittle {
@@ -1677,7 +1677,7 @@ PANELS CONFIGURATIONS
   display: block;
   position: relative;
   overflow: hidden;
-  background-color: #686868;
+  background-color: #70788d;
   -webkit-transition: background-color 0.4s;
   -moz-transition: background-color 0.4s;
   -o-transition: background-color 0.4s;
@@ -1697,7 +1697,7 @@ PANELS CONFIGURATIONS
 }
 
 .project:hover .photo-wrapper {
-  background-color: #686868;
+  background-color: #70788d;
 	background-image:url(../img/zoom.png);
 	background-repeat:no-repeat;
 	background-position:center;
@@ -1940,7 +1940,7 @@ label {
 	margin: 0;
 	padding: 25px 20px;
 	text-align: center;
-	background: #686868;
+	background: #70788d;
 	border-radius: 5px 5px 0 0;
 	-webkit-border-radius: 5px 5px 0 0;
 	color: #fff;
@@ -2105,8 +2105,8 @@ label {
     /* Safari and Chrome */
     .panel-footer.revenue-foot {
         margin-bottom: -4px;
-    };
     }
+}
 
 
 .panel-footer.revenue-foot ul  {
@@ -2220,7 +2220,7 @@ label {
 
 /*footer*/
 .site-footer {
-    background: #686868;
+    background: #70788d;
     color: #fff;
     padding: 10px 0;
 }
