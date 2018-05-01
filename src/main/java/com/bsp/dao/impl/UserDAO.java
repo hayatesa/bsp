@@ -3,16 +3,8 @@ package com.bsp.dao.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.jws.soap.SOAPBinding.Use;
-
 import org.hibernate.FlushMode;
-import org.hibernate.HibernateException;
-import org.hibernate.Session;
-import org.springframework.orm.hibernate5.HibernateCallback;
-import org.springframework.orm.hibernate5.HibernateTemplate;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.bsp.dao.IUserDAO;
 import com.bsp.entity.User;
