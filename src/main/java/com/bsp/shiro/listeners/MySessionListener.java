@@ -1,4 +1,4 @@
-package com.bsp.realm;
+package com.bsp.shiro.listeners;
 
 import java.util.Date;
 
@@ -7,9 +7,9 @@ import org.apache.shiro.session.Session;
 import org.apache.shiro.session.SessionListener;
 
 
-public class MysessionListenr implements SessionListener{
+public class MySessionListener implements SessionListener{
 
-	private static final Logger logger=Logger.getLogger(MysessionListenr.class);
+	private static final Logger logger=Logger.getLogger(MySessionListener.class);
 
 	@Override
 	public void onStart(Session session) {

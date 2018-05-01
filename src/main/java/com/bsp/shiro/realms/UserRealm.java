@@ -1,4 +1,4 @@
-package com.bsp.realm;
+package com.bsp.shiro.realms;
 
 import org.apache.log4j.Logger;
 import org.apache.shiro.authc.AuthenticationException;
@@ -26,9 +26,9 @@ import com.bsp.service.impl.UserService;
  */
 @Service
 @Transactional
-public class ShiroRealm  extends AuthorizingRealm {
+public class UserRealm  extends AuthorizingRealm {
 	
-	private static final Logger logger=Logger.getLogger(ShiroRealm.class);
+	private static final Logger logger=Logger.getLogger(UserRealm.class);
 	
 	/**
 	 * 获得角色和权限处理
