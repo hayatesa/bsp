@@ -16,67 +16,56 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 /**   
- * @ClassName:  LendingRecord   
- * @Description: 借出图书记录类
+ * @ClassName:  RespondHistory   
+ * @Description:  响应完成或者中断历史
  * @version: 1.0  
  * @author: WJB
- * @date:   2018年3月19日 下午11:22:46   
+ * @date:   2018年3月24日18:01:51
  *   
- */
+ */  
 @Entity
-@Table (name = "lending_record")
-public class LendingRecord {
-	private int lrId;					// 借出记录标识，数字自增长
-	private Date createTime;			// 借阅人申请时间，创建订单
-	private Date agreeTime;				// 借出人同意申请时间
-	private Date sendToTime;			// 借出人送达运营商服务点时间
-	private Date takeAwayTime;		    // 借阅人取走图书时间
-	private Date expectedReturnTime;	// 借阅人预期还书时间
-	private Date ActualReturnTime;		// 借阅人实际还书时间
-	private Date takeBackTime;			// 借出人取回图书时间
-	// 借出记录状态 0发布申请，4借出人同意借书申请，6借出人送达运营商，7借阅人逾期未取书，8借阅人拿到图书，9借阅人逾期未还，10借出方已经还书，11借出方逾期没有取回图书
-	private byte lrStruts;				
-	private String loanPhone;			// 借阅人电话号码
+@Table (name = "respond_history")
+public class RespondHistory {
+	private int rhId;					// 响应记录标识，来源RespondRecord表主键
+	private Date respondTime;			// 需求者响应时间
+	private Date sendToTime;			// 响应者送达运营商服务点时间
+	private Date takeAwayTime ;		    // 需求者取走图书时间
+	private Date expectedReturnTime;	// 需求者预期还书时间
+	private Date ActualReturnTime;		// 需求者实际还书时间
+	private Date takeBackTime;			// 响应者取回图书时间
+	// 1需求者取消需求，2响应者取消响应，3响应者逾期未送达运营方，10响应者取回图书，11响应者捐赠图书
+	private byte rhStruts;				
+	private String	respondPhone;		// 响应者电话号码
 	
-	private LoanableBook loanableBook;	// 借阅的图书
-	private User user;					// 借阅人
-	private Administrator receiveAdmin;	// 收到借出人送达图书的机构
+	private DemandBook demandBook;		// 需求的图书
+	private User user;					// 响应者
+	private Administrator receiveAdmin; // 收到借出人送到图书的机构
 	private Administrator backAdmin;	// 收到借阅人还图书的机构
 	
 	/*
 	 * 无参构造函数
 	 */
-	public LendingRecord() {}
+	public RespondHistory() {}
 
 	@Id
 	@GeneratedValue (strategy = GenerationType.IDENTITY)
-	@Column (name = "lr_id")
-	public int getLrId() {
-		return lrId;
+	@Column (name = "rh_id")
+	public int getRhId() {
+		return rhId;
 	}
 
-	public void setLrId(int lrId) {
-		this.lrId = lrId;
-	}
-	
-	@Temporal (TemporalType.TIMESTAMP)
-	@Column (name = "create_time")
-	public Date getCreateTime() {
-		return createTime;
-	}
-
-	public void setCreateTime(Date createTime) {
-		this.createTime = createTime;
+	public void setRhId(int rhId) {
+		this.rhId = rhId;
 	}
 
 	@Temporal (TemporalType.TIMESTAMP)
-	@Column (name = "agree_time")
-	public Date getAgreeTime() {
-		return agreeTime;
+	@Column (name = "respond_time")
+	public Date getRespondTime() {
+		return respondTime;
 	}
 
-	public void setAgreeTime(Date agreeTime) {
-		this.agreeTime = agreeTime;
+	public void setRespondTime(Date respondTime) {
+		this.respondTime = respondTime;
 	}
 
 	@Temporal (TemporalType.TIMESTAMP)
@@ -88,7 +77,7 @@ public class LendingRecord {
 	public void setSendToTime(Date sendToTime) {
 		this.sendToTime = sendToTime;
 	}
-
+	
 	@Temporal (TemporalType.TIMESTAMP)
 	@Column (name = "take_away_time")
 	public Date getTakeAwayTime() {
@@ -129,32 +118,32 @@ public class LendingRecord {
 		this.takeBackTime = takeBackTime;
 	}
 
-	@Column (name = "lr_struts", nullable = false)
-	public byte getLrStruts() {
-		return lrStruts;
+	@Column (name = "rh_struts", nullable = false)
+	public byte getRhStruts() {
+		return rhStruts;
 	}
 
-	public void setLrStruts(byte lrStruts) {
-		this.lrStruts = lrStruts;
-	}
-
-	@Column (name = "loan_phone", length = 12)
-	public String getLoanPhone() {
-		return loanPhone;
-	}
-
-	public void setLoanPhone(String loanPhone) {
-		this.loanPhone = loanPhone;
+	public void setRhStruts(byte rhStruts) {
+		this.rhStruts = rhStruts;
 	}
 	
-	@ManyToOne (fetch = FetchType.LAZY, optional = false, cascade = CascadeType.REFRESH)
-	@JoinColumn (name = "lb_id")
-	public LoanableBook getLoanableBook() {
-		return loanableBook;
+	@Column (name = "respond_phone", length = 12)
+	public String getRespondPhone() {
+		return respondPhone;
 	}
 
-	public void setLoanableBook(LoanableBook loanableBook) {
-		this.loanableBook = loanableBook;
+	public void setRespondPhone(String respondPhone) {
+		this.respondPhone = respondPhone;
+	}
+
+	@ManyToOne (fetch = FetchType.LAZY, optional = false, cascade = CascadeType.REFRESH)
+	@JoinColumn (name = "db_id")
+	public DemandBook getDemandBook() {
+		return demandBook;
+	}
+
+	public void setDemandBook(DemandBook demandBook) {
+		this.demandBook = demandBook;
 	}
 
 	@ManyToOne (fetch = FetchType.LAZY, optional = false, cascade = CascadeType.REFRESH)
@@ -166,7 +155,7 @@ public class LendingRecord {
 	public void setUser(User user) {
 		this.user = user;
 	}
- 
+
 	@ManyToOne (fetch = FetchType.LAZY, optional = true, cascade = CascadeType.REFRESH)
 	@JoinColumn (name = "receive_uuid")
 	public Administrator getReceiveAdmin() {

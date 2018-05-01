@@ -1,28 +1,35 @@
 package com.bsp.entity;
 
-import java.util.HashSet;
-import java.util.Set;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
-/**
- * 图书一级分类类
- * 2018年2月24日22:55:05
- * @author wjb
- *
- */
+/** 
+* @ClassName: PrimaryClassification 
+* @Description: 图书一级分类类别类，用于归类图书
+* @version: 1.0 
+* @author WJB
+* @date 2018年3月15日 下午6:41:27 
+*  
+*/
+@Entity
+@Table (name = "primary_classification")
 public class PrimaryClassification {
-	private int pcId;			//图书一级分类唯一标识
-	private String pcName;		//一级分类名称
-	private byte pcDelete;	//是否删除分类 0表示删除，1没有删除
-	
-	private Set<SecondaryClassification> sClassificationsSet = new HashSet<SecondaryClassification>();//一级分类含有的所有二级分类
+	private int pcId;			// 图书一级分类唯一标识，数字自增长
+	private String pcName;		// 一级分类名称
+	private byte isDelete = 0;	// 是否删除分类 0表示没有删除，1表示删除，默认为0
 	
 	/*
 	 * 无参构造函数
 	 */
-	public PrimaryClassification() {
-		
-	}
+	public PrimaryClassification() {}
 	
+	@Id
+	@GeneratedValue (strategy = GenerationType.IDENTITY)
+	@Column (name = "pc_id")
 	public int getPcId() {
 		return pcId;
 	}
@@ -31,27 +38,21 @@ public class PrimaryClassification {
 		this.pcId = pcId;
 	}
 
-	public Set<SecondaryClassification> getsClassificationsSet() {
-		return sClassificationsSet;
-	}
-
-	public void setsClassificationsSet(Set<SecondaryClassification> sClassificationsSet) {
-		this.sClassificationsSet = sClassificationsSet;
-	}
-
+	@Column (name = "pc_name", length = 50)
 	public String getPcName() {
 		return pcName;
 	}
+	
 	public void setPcName(String pcName) {
 		this.pcName = pcName;
 	}
-
-	public byte getPcDelete() {
-		return pcDelete;
+	
+	@Column (name = "is_delete", nullable = false)
+	public byte getIsDelete() {
+		return isDelete;
 	}
 
-	public void setPcDelete(byte pcDelete) {
-		this.pcDelete = pcDelete;
+	public void setIsDelete(byte isDelete) {
+		this.isDelete = isDelete;
 	}
-
 }

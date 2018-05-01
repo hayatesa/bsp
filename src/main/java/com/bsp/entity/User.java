@@ -1,35 +1,41 @@
 package com.bsp.entity;
 
-import java.util.HashSet;
-import java.util.Set;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.Table;
 
-/**
- * 用户账号类，所有UUID的来源
- * 2018年2月24日17:32:27
- * @author wjb
- *
- */
+import org.hibernate.annotations.GenericGenerator;
+
+/**   
+ * @ClassName:  User   
+ * @Description:  用户账号类
+ * @version: 1.0  
+ * @author: WJB
+ * @date:  2018年3月23日 下午9:34:04   
+ *   
+ */  
+@Entity
+@Table (name = "user")
 public class User {
-	private String UUID;		//用户唯一标识符号
-	private String mail;		//用户邮箱，作为用户登录账号
-	private String password;	//用户登录账号密码
-	
-	private Set<News> newsSet = new HashSet<News>();//用户对应的消息
-	
-	private Set<BorrowBooks> borrowBooksSet = new HashSet<BorrowBooks>();//用户拥有的所有图书
-	private Set<LendingRecord> lendingRecordsSet = new HashSet<LendingRecord>();//用户的正在借阅的图书
-	private Set<ReturnBookRecord> returnBookRecordsSet = new HashSet<ReturnBookRecord>();//用户完成借阅的记录
-	
-	private Set<DemandBooks> demandBooksSet = new HashSet<DemandBooks>();//用户需求的所有图书
-	private Set<DemandReturnRecord> dReturnRecordsSet = new HashSet<DemandReturnRecord>();//用户需求借阅完成的图书
-	private Set<ResponseRecord> responseRecordsSet = new HashSet<ResponseRecord>();//用户被响应的记录
-	
-	
+	private String UUID;		// 用户唯一标识符号
+	private String mail;		// 用户邮箱，作为用户登录账号
+	private String password;	// 用户登录账号密码
+	private byte isDelete = 0;	// 0没有禁用，1被禁用，默认为0
+	private UserInfor userInfor;
 	/*
 	 * 无参构造函数
 	 */
 	public User(){}
-
+	
+	@Id
+	@GeneratedValue (generator = "uuid")
+	@GenericGenerator (name = "uuid", strategy = "uuid")
+	@Column (name = "uuid", length = 33)
 	public String getUUID() {
 		return UUID;
 	}
@@ -37,7 +43,8 @@ public class User {
 	public void setUUID(String uUID) {
 		UUID = uUID;
 	}
-
+	
+	@Column (name = "mail", nullable = false)
 	public String getMail() {
 		return mail;
 	}
@@ -46,6 +53,7 @@ public class User {
 		this.mail = mail;
 	}
 
+	@Column (name = "password", nullable = false, length = 21)
 	public String getPassword() {
 		return password;
 	}
@@ -54,59 +62,22 @@ public class User {
 		this.password = password;
 	}
 
-	public Set<News> getNewsSet() {
-		return newsSet;
+	@Column (name = "is_delete")
+	public void setIsDelete(byte isDelete) {
+		this.isDelete = isDelete;
+	}	
+	
+	public byte getIsDelete() {
+		return isDelete;
 	}
 
-	public void setNewsSet(Set<News> newsSet) {
-		this.newsSet = newsSet;
+	@OneToOne (cascade = CascadeType.ALL)
+	@PrimaryKeyJoinColumn
+	public UserInfor getUserInfor() {
+		return userInfor;
 	}
 
-	public Set<BorrowBooks> getBorrowBooksSet() {
-		return borrowBooksSet;
-	}
-
-	public void setBorrowBooksSet(Set<BorrowBooks> borrowBooksSet) {
-		this.borrowBooksSet = borrowBooksSet;
-	}
-
-	public Set<LendingRecord> getLendingRecordsSet() {
-		return lendingRecordsSet;
-	}
-
-	public void setLendingRecordsSet(Set<LendingRecord> lendingRecordsSet) {
-		this.lendingRecordsSet = lendingRecordsSet;
-	}
-
-	public Set<ReturnBookRecord> getReturnBookRecordsSet() {
-		return returnBookRecordsSet;
-	}
-
-	public void setReturnBookRecordsSet(Set<ReturnBookRecord> returnBookRecordsSet) {
-		this.returnBookRecordsSet = returnBookRecordsSet;
-	}
-
-	public Set<DemandBooks> getDemandBooksSet() {
-		return demandBooksSet;
-	}
-
-	public void setDemandBooksSet(Set<DemandBooks> demandBooksSet) {
-		this.demandBooksSet = demandBooksSet;
-	}
-
-	public Set<DemandReturnRecord> getdReturnRecordsSet() {
-		return dReturnRecordsSet;
-	}
-
-	public void setdReturnRecordsSet(Set<DemandReturnRecord> dReturnRecordsSet) {
-		this.dReturnRecordsSet = dReturnRecordsSet;
-	}
-
-	public Set<ResponseRecord> getResponseRecordsSet() {
-		return responseRecordsSet;
-	}
-
-	public void setResponseRecordsSet(Set<ResponseRecord> responseRecordsSet) {
-		this.responseRecordsSet = responseRecordsSet;
+	public void setUserInfor(UserInfor userInfor) {
+		this.userInfor = userInfor;
 	}
 }

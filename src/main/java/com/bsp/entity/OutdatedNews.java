@@ -5,8 +5,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -25,8 +23,8 @@ import javax.persistence.TemporalType;
 */
 
 @Entity
-@Table (name = "news")
-public class News {
+@Table (name = "outdated_news")
+public class OutdatedNews {
 	private int nId;			// 通知消息记录ID，数字自增长	
 	private String nSubject;	// 通知消息标题
 	private String nContent;	// 通知消息内容
@@ -36,10 +34,9 @@ public class News {
 	/*
 	 * 无参构造函数
 	 */
-	public News() {}
+	public OutdatedNews() {}
 
 	@Id
-	@GeneratedValue (strategy = GenerationType.IDENTITY)	// 自动选择主键生成策略
 	@Column (name = "n_id")
 	public int getnId() {
 		return nId;

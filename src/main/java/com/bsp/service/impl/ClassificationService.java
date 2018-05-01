@@ -34,7 +34,7 @@ public class ClassificationService implements IClassificationService {
 		setPrimaryClassifications=classificationDao.getPrimaryClassification();
 		for (PrimaryClassification primaryClassification : setPrimaryClassifications) {
 			JSONObject jObject = new JSONObject();
-			if (primaryClassification.getPcDelete()==0){ 
+			if (primaryClassification.getIsDelete()==0){ 
 				jObject.put("pcId", primaryClassification.getPcId());
 				jObject.put("cname", primaryClassification.getPcName());
 				list.add(jObject);

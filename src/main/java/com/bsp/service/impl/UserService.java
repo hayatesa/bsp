@@ -4,16 +4,17 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.bsp.dao.IUserDAO;
-import com.bsp.entity.CreditScore;
 import com.bsp.entity.User;
 import com.bsp.entity.UserInfor;
-import com.bsp.exceptions.UserDefinedException;
 import com.bsp.service.IUserService;
+import com.bsp.exceptions.UserDefinedException;
 import com.bsp.utils.md5.MD5Utils;
 
 @Service
+@Transactional
 public class UserService implements IUserService {
 	@Autowired
 	private IUserDAO userDao;
@@ -33,12 +34,11 @@ public class UserService implements IUserService {
 	}
 	
 	@Override
+	@Transactional
 	public void addUser(User user, UserInfor userInfor) {
-		CreditScore creditScore = new CreditScore();
-		creditScore.setCredit(640);
 		//md5加密
 		user.setPassword(MD5Utils.encodeByMD5(user.getPassword()));
-		userDao.addUser(user,userInfor,creditScore);
+		userDao.addUser(user,userInfor);
 	}
 	
 	@Override
