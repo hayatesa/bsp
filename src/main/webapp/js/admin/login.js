@@ -12,12 +12,12 @@ var doLogin = function () {
         app.msg='';
     }
     $.ajax({
-        url: server+'/data/login.json',
+        url: '/module/admin/index',
         method: 'post',
         success: function (data) {
             if (data.code==0) {
                 app.msg='<span class="pull-left text-success">登录成功，正在跳转...</span>';
-                window.location.href='index.html';
+                window.location.href='/module/admin/index';
             } else {
                 app.msg='<span class="pull-left text-danger">'+data.msg+'</span>';
             }
@@ -28,7 +28,7 @@ var doLogin = function () {
 var login_app = new  Vue({
     el: '#login-page',
     data: {
-        username: 'hayate',
+        username: 'admin',
         password: '123456',
         msg: '', //提示信息
         email: ''

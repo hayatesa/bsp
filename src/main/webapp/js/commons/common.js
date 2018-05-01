@@ -1,7 +1,7 @@
 //工具集合Tools
 window.T = {};
 //服务器地址
-window.server = '/webapp';
+window.server = '127.0.1.0:8080';
 
 // 获取请求参数
 // 使用示例

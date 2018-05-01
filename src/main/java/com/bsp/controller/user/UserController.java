@@ -35,7 +35,7 @@ public class UserController extends BaseController {
 	 * 
 	 * @return
 	 */
-	@RequestMapping("checkMail.do")
+	@RequestMapping("checkMail")
 	@ResponseBody
 	public ResultMsgDTO checkMail(HttpServletRequest request) {
 		String mail = request.getParameter("email");
@@ -58,7 +58,7 @@ public class UserController extends BaseController {
 	 * 
 	 * @return
 	 */
-	@RequestMapping("sendMailCode.do")
+	@RequestMapping("sendMailCode")
 	@ResponseBody
 	public ResultMsgDTO sendMailCode(HttpServletRequest request) {
 		// 获取邮箱账号和验证码
@@ -98,7 +98,7 @@ public class UserController extends BaseController {
 	 * 
 	 * @return
 	 */
-	@RequestMapping("checkMailCode.do")
+	@RequestMapping("checkMailCode")
 	@ResponseBody
 	public ResultMsgDTO checkMailVcode(HttpServletRequest request) {
 		String mail = request.getParameter("email");
@@ -121,7 +121,7 @@ public class UserController extends BaseController {
 	 * 
 	 * @return
 	 */
-	@RequestMapping("register.do")
+	@RequestMapping("register")
 	@ResponseBody
 	public ResultMsgDTO register(HttpServletRequest request) {
 		String uNickname = request.getParameter("uNickname");
@@ -158,7 +158,7 @@ public class UserController extends BaseController {
 	 * 
 	 * @return
 	 */
-	@RequestMapping("login.do")
+	@RequestMapping("login")
 	@ResponseBody
 	public ResultMsgDTO login(HttpServletRequest request) {
 		User user = CommonUtils.toBean(request.getParameterMap(), User.class);

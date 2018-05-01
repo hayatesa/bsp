@@ -30,7 +30,7 @@
 
 
   <!-- 項目自定义的Realm -->  
-    <bean id="ShiroRealm" class="com.bsp.realm.ShiroRealm">  
+    <bean id="ShiroRealm" class="com.bsp.shiro.realms.UserRealm">  
          <!-- 配置密码匹配器 -->
         <property name="credentialsMatcher">
             <bean class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
@@ -91,7 +91,7 @@
 		<property name="sessionListeners" ref="sessionListener" />
 	</bean>
 	<!-- 监听会话 -->
-	<bean id="sessionListener" class="com.bsp.realm.MysessionListenr"></bean>
+	<bean id="sessionListener" class="com.bsp.shiro.listeners.MySessionListener"></bean>
 
 	<!-- Shiro's main business-tier object for web-enabled applications -->
 	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
@@ -103,7 +103,7 @@
 	</bean>
 
 	<!-- kickoutSessionControlFilter 用于控制并发登录人数的 -->
-	<bean id="kickoutSessionControlFilter" class="com.bsp.realm.KickoutSessionControlFilter">
+	<bean id="kickoutSessionControlFilter" class="com.bsp.shiro.filters.KickoutSessionControlFilter">
 		<property name="cacheManager" ref="cacheManager" />
 		<property name="sessionManager" ref="sessionManager" />
 		<property name="kickoutAfter" value="false" />

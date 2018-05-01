@@ -25,19 +25,19 @@ import com.bsp.utils.Result;
 @Controller
 public class PageController {
 	private static final Logger logger = LoggerFactory.getLogger(PageController.class);
-
+	
 	/**
 	 * 控制页面跳转
 	 *
 	 * @param request
-	 * @param module 模块名
+	 * @param moduleName 模块名
 	 * @param htmlName 页面
 	 * @return
 	 */
-	@RequestMapping("/{module}/{htmlName}")
-	public String showPage(HttpServletRequest request, @PathVariable("module") String module,
+	@RequestMapping("/module/{moduleName}/{htmlName}")
+	public String showPage(HttpServletRequest request, @PathVariable("moduleName") String moduleName,
 			@PathVariable("htmlName") String htmlName) {
-		return "/" + module + "/" + htmlName;
+		return "/" + moduleName + "/" + htmlName;
 	}
 
 	/**

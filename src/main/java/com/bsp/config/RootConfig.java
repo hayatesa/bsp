@@ -18,7 +18,8 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 @ImportResource(locations = {"classpath*:applicationContext.xml","classpath*:spring-shiro.xml"}) // 引入配置文件
 @EnableTransactionManagement // 开启事务管理
 @EnableAspectJAutoProxy // 配置切面
-@ComponentScan(basePackages = { "com.bsp.dao.impl", "com.bsp.service.impl", "com.bsp.web.interceptor" }, excludeFilters = {
+@ComponentScan(basePackages = { "com.bsp.dao.impl",
+		"com.bsp.service", "com.bsp.controller" }, excludeFilters = {
 		@Filter(type = FilterType.ANNOTATION, value = EnableWebMvc.class) })
 public class RootConfig {
 	

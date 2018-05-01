@@ -1,11 +1,10 @@
 $(function(){
-	fillPage('/templates/admin/userPage.html')
+	fillPage('/module/admin/userPage')
 })
 
 var header_app = new Vue({
 	el: "#header-app",
 	data: {
-		server: server,
 		user: {
 			id: url('u'),
 			username: url('u')
@@ -18,10 +17,10 @@ var header_app = new Vue({
 			confirm('确定退出登录？', function(id){
 				$.ajax({
 					type:"get",
-					url: server + "/data/logout.json?id="+id,
+					url: "/data/logout.json?id="+id,
 					success: function(data){
 						if(data.code === 0){
-							window.location.href='login.html';
+							window.location.href='/module/admin/login';
 						}
 						else{
 							alert('系统异常，请联系管理员');
@@ -35,7 +34,7 @@ var header_app = new Vue({
 			var m = {};
 			$.ajax({
 				type:"get",
-				url: server + "/data/inboxData.json?id="+this.user.username,
+				url: "/data/inboxData.json?id="+this.user.username,
 				success: function(data){
  					if(data.num){
  						app.newMessages = data;
@@ -62,7 +61,7 @@ var header_app = new Vue({
 			return '&middot;&middot;';
 		},
 		settings:function(){
-			sidebar_app.go('/templates/admin/settings.html','系统设置');
+			sidebar_app.go('/module/admin/settings','系统设置');
 		}
 	},
 	computed :{
@@ -112,7 +111,7 @@ var fillPage = function(goal){
 	$.ajax({
 		method:"get",
         dataType: "html",
-		url: server + goal,
+		url: goal,
 		success: function(content) {
 			$("#page-container").html(content)
 		}

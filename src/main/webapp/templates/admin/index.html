@@ -35,7 +35,7 @@
 	              <div class="fa fa-bars tooltips" data-placement="right" data-original-title="隐藏/显示菜单"></div>
 	          </div>
             <!--logo start-->
-            <a href="index.html" class="logo"><b>图书共享平台</b></a>
+            <a href="/module/admin/index" class="logo"><b>图书共享平台</b></a>
             <!--logo end-->
             <div class="nav notify-row" id="top_menu">
                 <!--  notification start -->
@@ -54,7 +54,7 @@
                             </li>
                             <li v-for="message in newMessages.messages" >
                                 <a href="javascript:;">
-                                    <span class="photo"><img alt="avatar" :src="server+message.headerUrl"></span>
+                                    <span class="photo"><img alt="avatar" :src="message.headerUrl"></span>
                                     <span class="time">时间：{{timeFormat(message.timeStamp)}}</span>
                                     <span class="subject">
                                     	<span class="from">来自：{{message.from}}</span>
@@ -106,21 +106,21 @@
               	  <p class="centered"><a href="profile.html"><img src="../../assets/img/ui-sam.jpg" class="img-circle" width="60"></a></p>
               	  <h5 class="centered" title="账户信息"><a @click="profileEdit" href="javascript:;"><span>{{user.username}}</span></a></h5>
                   <li class="mt">
-                      <a class="active" @click="go('/templates/admin/userPage.html','主页')" href="javascript:;">
+                      <a class="active" @click="go('userPage.html','主页')" href="javascript:;">
                           <i class="fa fa-dashboard"></i>
                           <span>主页</span>
                       </a>
                   </li>
 									
                   <li class="sub-menu">
-                      <a @click="go('/templates/admin/userPage.html','共享审核')" href="javascript:;">
+                      <a @click="go('userPage.html','共享审核')" href="javascript:;">
                           <i class="fa fa-desktop"></i>
                           <span>图书审核</span>
                       </a>
                   </li>
 
                   <li class="sub-menu">
-                      <a  @click="go('/templates/admin/userPage.html','订单流转')" href="javascript:;">
+                      <a  @click="go('userPage.html','订单流转')" href="javascript:;">
                           <i class="fa fa-cogs"></i>
                           <span>订单流转</span>
                       </a>
@@ -131,20 +131,20 @@
                           <span>异常订单</span>
                       </a>
                       <ul class="sub">
-                          <li><a @click="go('/templates/admin/userPage.html','异常订单-逾期未送达运营方')" href="javascript:;">借出方逾期未送达运营方</a></li>
-                          <li><a @click="go('/templates/admin/userPage.html','异常订单-逾期未取走')" href="javascript:;">借入方逾期未取书</a></li>
-                          <li><a @click="go('/templates/admin/userPage.html','异常订单-逾期未还')" href="javascript:;">借入方逾期未还</a></li>
-                          <li><a @click="go('/templates/admin/userPage.html','异常订单-逾期未取回')" href="javascript:;">借出方逾期未取回</a></li>
+                          <li><a @click="go('userPage.html','异常订单-逾期未送达运营方')" href="javascript:;">借出方逾期未送达运营方</a></li>
+                          <li><a @click="go('userPage.html','异常订单-逾期未取走')" href="javascript:;">借入方逾期未取书</a></li>
+                          <li><a @click="go('userPage.html','异常订单-逾期未还')" href="javascript:;">借入方逾期未还</a></li>
+                          <li><a @click="go('userPage.html','异常订单-逾期未取回')" href="javascript:;">借出方逾期未取回</a></li>
                       </ul>
                   </li>
                   <li class="sub-menu">
-                      <a @click="go('/templates/admin/userPage.html','历史订单')" href="javascript:;">
+                      <a @click="go('userPage.html','历史订单')" href="javascript:;">
                           <i class="fa fa-tasks"></i>
                           <span>历史订单</span>
                       </a>
                   </li>
                   <li class="sub-menu">
-                      <a @click="go('/templates/admin/userPage.html','捐赠')" href="javascript:;">
+                      <a @click="go('userPage.html','捐赠')" href="javascript:;">
                           <i class="fa fa-th"></i>
                           <span>捐赠</span>
                       </a>
@@ -152,11 +152,11 @@
                   <li class="sub-menu">
                       <a href="javascript:;" >
                           <i class="fa fa-user"></i>
-                          <span>账号管理</span>
+                          <span>用户管理</span>
                       </a>
                       <ul class="sub">
-                          <li><a @click="go('/templates/admin/userPage.html','账号管理-普通用户')" href="javascript:;">普通用户</a></li>
-                          <li><a @click="go('/templates/admin/userPage.html','账号管理-管理员')" href="javascript:;">管理员</a></li>
+                          <li><a @click="go('userPage.html','用户管理-普通用户')" href="javascript:;">普通用户</a></li>
+                          <li><a @click="go('userPage.html','用户管理-管理员')" href="javascript:;">管理员</a></li>
                       </ul>
                   </li>
               </div>
@@ -222,7 +222,7 @@
 	            // (string | mandatory) the text inside the notification
 	            text: '上次登录时间：'+new Date(),
 	            // (string | optional) the image to display on the left
-	            image: server + '/assets/img/ui-sam.jpg',
+	            image: '/assets/img/ui-sam.jpg',
 	            // (bool | optional) if you want it to fade out on its own or just sit there
 	            sticky: false,
 	            // (int | optional) the time you want it to be alive for before fading out

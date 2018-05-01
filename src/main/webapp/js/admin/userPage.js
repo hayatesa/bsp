@@ -1,6 +1,6 @@
 $(function() {
 	var tab = $("#data-list").bootstrapTable({
-		url: server + '/data/tableData.json',
+		url: '/data/tableData.json',
 		method: 'get',
 		contentType: 'application/json',
 		dataType: 'json',
@@ -70,7 +70,7 @@ var toggleFormatter = function(){
 var freezeChange = function () {
 	$.ajax({
 		type: "get",
-		url: server + "/data/changeUserStatusResult.json",
+		url: "/data/changeUserStatusResult.json",
 		data:{
 			id: $(this)[0].id,
 			checked: $(this)[0].checked

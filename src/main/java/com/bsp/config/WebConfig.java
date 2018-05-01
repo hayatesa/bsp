@@ -17,7 +17,7 @@ import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
 
 @Configuration
 @EnableWebMvc  // <!-- 启用注解驱动的SpringMVC --> 等价于 <mvc:annotation-driven />
-@ComponentScan(basePackages= {"com.bsp.web.controller"}) // 扫描Controller
+@ComponentScan(basePackages= {"com.bsp.controller"}) // 扫描Controller
 public class WebConfig extends WebMvcConfigurerAdapter {
 	
 	/**
