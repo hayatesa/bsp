@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.bsp.controller.BaseController;
@@ -32,29 +33,32 @@ public class AdminController extends BaseController {
 	 */
 	@RequestMapping("login")
 	@ResponseBody
-	public Result login(HttpServletRequest request, String userName, String password, String vcode) {
-		Subject subject = ShiroUtils.getSubject();
-		if (!vcode.equals(request.getSession().getAttribute("session_vcode"))) {
+	public Result login(HttpServletRequest request, @RequestParam("username") String username,
+			@RequestParam("password") String password, @RequestParam("vcode") String vcode) {
+		if (!vcode.equalsIgnoreCase((String)request.getSession().getAttribute("session_vcode"))) {
 			return Result.error(BussCode.NOT_LOGIN, "验证码错误");
 		}
-		try {
-			UsernamePasswordToken token = new UsernamePasswordToken(userName.toString(),
-					Cryptography.MD5Hash(password, userName));
-			subject.login(token);
-		} catch (UnknownAccountException e) {
-			return Result.error(e.getMessage());
-		} catch (IncorrectCredentialsException e) {
-			return Result.error(BussCode.NOT_LOGIN, "账号或密码不正确");
-		} catch (LockedAccountException e) {
-			return Result.error(e.getMessage());
-		} catch (AuthenticationException e) {
-			return Result.error("账户验证失败");
-		} catch (SystemErrorException e) {
-			return Result.error(e.getMessage());
-		} catch (Exception e) {
-			return Result.error(BussCode.ERR_UNKNOWN, "系统错误");
-		}
-		logger.info(((Administrator) ShiroUtils.getToken(Administrator.class)).getaId() + "登录系统");
+		// Subject subject = ShiroUtils.getSubject();
+
+//		try {
+//			UsernamePasswordToken token = new UsernamePasswordToken(userName.toString(),
+//					Cryptography.MD5Hash(password, userName));
+//			subject.login(token);
+//		} catch (UnknownAccountException e) {
+//			return Result.error(e.getMessage());
+//		} catch (IncorrectCredentialsException e) {
+//			return Result.error(BussCode.NOT_LOGIN, "账号或密码不正确");
+//		} catch (LockedAccountException e) {
+//			return Result.error(e.getMessage());
+//		} catch (AuthenticationException e) {
+//			return Result.error("账户验证失败");
+//		} catch (SystemErrorException e) {
+//			return Result.error(e.getMessage());
+//		} catch (Exception e) {
+//			return Result.error(BussCode.ERR_UNKNOWN, "系统错误");
+//		}
+//		logger.info(((Administrator) ShiroUtils.getToken(Administrator.class)).getaId() + "登录系统");
+
 		return Result.success();
 	}
 

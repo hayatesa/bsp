@@ -478,13 +478,13 @@ ul.top-menu > li > a {
 }
 
 ul.top-menu > li > a:hover, ul.top-menu > li > a:focus {
-    border:1px solid #f0ad4e !important;
+    border:1px solid #337ab7 !important;
     background-color: transparent !important;
-    border-color: #f0ad4e !important;
+    border-color: #337ab7 !important;
     text-decoration: none;
     border-radius: 4px;
     -webkit-border-radius: 4px;
-    color: #f0ad4e !important;
+    color: #337ab7 !important;
 }
 
 .notify-row .badge {

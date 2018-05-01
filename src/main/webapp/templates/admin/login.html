@@ -27,7 +27,6 @@
       <!-- **********************************************************************************************************************************************************
       MAIN CONTENT
       *********************************************************************************************************************************************************** -->
-
 	  <div id="login-page">
 	  	<div class="container">
 	  	
@@ -37,8 +36,11 @@
 				<input v-model="username" type="text" class="form-control" placeholder="用户名" autofocus>
 				<br>
 				<input v-model="password" type="password" class="form-control" placeholder="密码">
+				<br>
+				<input v-model="vcode" type="text"class="form-control" id="vcode" placeholder="验证码" style="width: 75px;display: inline-block" />
+				<img id="codeImg" src="/getVerifyCode.do" onclick="javascript:_change();" />
 				<label class="checkbox">
-					<span class="pull-left text-danger" v-html="msg"></span>
+					<span class="text-danger" v-html="msg"></span>
 					<span class="pull-right">
 						<a data-toggle="modal" href="login.html#myModal">忘记密码?</a>
 					</span>
