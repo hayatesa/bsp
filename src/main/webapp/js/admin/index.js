@@ -21,7 +21,7 @@ var header_app = new Vue({
 					url: server + "/data/logout.json?id="+id,
 					success: function(data){
 						if(data.code === 0){
-							window.location.href=server+data.url;
+							window.location.href='login.html';
 						}
 						else{
 							alert('系统异常，请联系管理员');
@@ -110,10 +110,11 @@ var title_app = new Vue({
 
 var fillPage = function(goal){
 	$.ajax({
-		type:"get",
+		method:"get",
+        dataType: "html",
 		url: server + goal,
 		success: function(content) {
 			$("#page-container").html(content)
 		}
-	},'html');
+	});
 }

@@ -1,16 +1,27 @@
 var doLogin = function () {
-    var uname=this.username.trim();
-    var upassword=this.password.trim();
+    var app=this; // 调用者，即login_app
+    var uname=app.username.trim();
+    var upassword=app.password.trim();
     if (!uname){
-        this.msg='<span class="pull-left text-danger">请填写用户名</span>';
+        app.msg='<span class="pull-left text-danger">请填写用户名</span>';
         return;
-    }
-    if (!upassword){
-        this.msg='<span class="pull-left text-danger">请填写密码</span>';
+    } else if (!upassword){
+        app.msg='<span class="pull-left text-danger">请填写密码</span>';
         return;
+    } else {
+        app.msg='';
     }
     $.ajax({
-        
+        url: server+'/data/login.json',
+        method: 'post',
+        success: function (data) {
+            if (data.code==0) {
+                app.msg='<span class="pull-left text-success">登录成功，正在跳转...</span>';
+                window.location.href='index.html';
+            } else {
+                app.msg='<span class="pull-left text-danger">'+data.msg+'</span>';
+            }
+        }
     });
 }
 
@@ -19,7 +30,7 @@ var login_app = new  Vue({
     data: {
         username: 'hayate',
         password: '123456',
-        msg: '',
+        msg: '', //提示信息
         email: ''
     },
     methods: {

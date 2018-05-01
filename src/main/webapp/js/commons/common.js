@@ -16,10 +16,13 @@ var url = function(name) {
 T.p = url;
 
 //全局配置
-/*$.ajaxSetup({
+$.ajaxSetup({
     dataType: "json",
-    cache: false
-});*/
+    cache: false,
+    error: function (jqXHR, textStatus, errorThrown) {
+        alert('请求出错');
+    }
+});
 
 //重写alert
 window.alert = function(msg, callback) {
