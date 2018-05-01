@@ -1,4 +1,4 @@
-package com.bsp.web.controller;
+package com.bsp.controller;
 
 import com.bsp.dto.ResultMsgDTO;
 

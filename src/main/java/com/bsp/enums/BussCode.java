@@ -19,18 +19,6 @@ public enum BussCode {
      */
     ERR_UNKNOWN(500),
     /**
-     * 存款失败
-     */
-    DEPOSIT_ERR(1000),
-    /**
-     * 取款失败
-     */
-    WITHDRAW_ERR(1001),
-    /**
-     * 转账失败
-     */
-    TRANSFER_ERR(1002),
-    /**
      * 修改信息失败
      */
     MODIFY_ERR(1003)

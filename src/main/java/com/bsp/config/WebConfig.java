@@ -12,10 +12,8 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
-import org.springframework.web.servlet.view.JstlView;
 
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
-import com.bsp.web.interceptor.LoginInteceptor;
 
 @Configuration
 @EnableWebMvc  // <!-- 启用注解驱动的SpringMVC --> 等价于 <mvc:annotation-driven />
@@ -28,9 +26,8 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 	@Bean
 	public ViewResolver viewResolver() {
 		InternalResourceViewResolver resolver = new InternalResourceViewResolver();
-		resolver.setPrefix("/WEB-INF/views/");
-		resolver.setSuffix(".jsp");
-		resolver.setViewClass(JstlView.class); // 返回jstl视图
+		resolver.setPrefix("/templates");
+		resolver.setSuffix(".html");
 		resolver.setExposeContextBeansAsAttributes(true); // 设置是否把所有在上下文中定义的bean作为request属性可公开访问。
 		return resolver;
 	}
@@ -40,7 +37,6 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 	 */
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new LoginInteceptor()).addPathPatterns("/*");
 	}
 
 	/**

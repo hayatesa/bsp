@@ -1,4 +1,4 @@
-package com.bsp.service;
+package com.bsp.service.user;
 
 import java.util.List;
 

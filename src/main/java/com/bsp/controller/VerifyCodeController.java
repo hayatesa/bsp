@@ -1,4 +1,4 @@
-package com.bsp.web.controller;
+package com.bsp.controller;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;

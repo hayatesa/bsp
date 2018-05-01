@@ -1,4 +1,4 @@
-package com.bsp.web.controller;
+package com.bsp.controller.user;
 
 import java.util.List;
 
@@ -9,11 +9,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.bsp.controller.BaseController;
 import com.bsp.dto.ResultMsgDTO;
 import com.bsp.entity.User;
 import com.bsp.entity.UserInfor;
 import com.bsp.exceptions.UserDefinedException;
-import com.bsp.service.IUserService;
+import com.bsp.service.user.IUserService;
 import com.bsp.utils.mail.MailSendUtils;
 
 import cn.itcast.commons.CommonUtils;
@@ -27,21 +28,6 @@ public class UserController extends BaseController {
 	
 	public void setUserService(IUserService userService) {
 		this.userService = userService;
-	}
-	
-	@RequestMapping("login")
-	public String login() {
-		return "user/login"; 
-	}
-	
-	@RequestMapping("register")
-	public String register() {
-		return "user/register";
-	}
-	
-	@RequestMapping("completeInfo")
-	public String completeInfo() {
-		return "user/completeInfo";
 	}
 	
 	/**
