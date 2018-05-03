@@ -1,92 +1,110 @@
 package com.bsp.entity;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import org.apache.ibatis.type.Alias;
 
-/**   
- * @ClassName:  DonatedBook   
- * @Description:  捐赠图书类
- * @version: 1.0  
- * @author: WJB
- * @date:   2018年3月26日 下午7:49:27   
- *   
- */  
-@Entity
-@Table (name = "donated_book ")
-public class DonatedBook {
-	private int dobId;		// 捐赠的图书标识，数字自增值
-	private String dobName;	// 捐赠的图书名称
-	private String isbn;	// 捐赠的图书ISBN号
-	private int number;		// 捐赠的图书数量
-	
-	private SecondaryClassification sClassification; // 捐赠图书所属的二级分类
-	private User user;		// 捐赠人
-	
-	public DonatedBook() {}
+@Alias("DonatedBook")
+public class DonatedBook extends BaseEntity {
+	private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue (strategy = GenerationType.IDENTITY)
-	@Column (name = "dob_id")
-	public int getDobId() {
-		return dobId;
-	}
+	// 捐赠的图书标识，数字自增值
+    private Integer dobId;
 
-	public void setDobId(int dobId) {
-		this.dobId = dobId;
-	}
+    // 捐赠的图书名称
+    private String dobName;
 
-	@Column (name = "dob_name", nullable = false)
-	public String getDobName() {
-		return dobName;
-	}
+    // 捐赠的图书ISBN号
+    private String isbn;
 
-	public void setDobName(String dobName) {
-		this.dobName = dobName;
-	}
+    // 捐赠的图书数量
+    private Integer number;
 
-	@Column (name = "isbn", length = 30, nullable = false)
-	public String getIsbn() {
-		return isbn;
-	}
+    // 捐赠图书所属的二级分类
+    private SecondaryClassification secondaryClassification;
 
-	public void setIsbn(String isbn) {
-		this.isbn = isbn;
-	}
+    // 捐赠人
+    private User user;
 
-	@Column (name = "number", nullable = false)
-	public int getNumber() {
-		return number;
-	}
+    /**
+     * 捐赠的图书标识，数字自增值
+     */
+    public Integer getDobId() {
+        return dobId;
+    }
 
-	public void setNumber(int number) {
-		this.number = number;
-	}
+    /**
+     * @param dobId 捐赠的图书标识，数字自增值
+     */
+    public void setDobId(Integer dobId) {
+        this.dobId = dobId;
+    }
 
-	@ManyToOne (fetch = FetchType.LAZY, optional = false, cascade = CascadeType.REFRESH)
-	@JoinColumn (name = "sc_id")
-	public SecondaryClassification getsClassification() {
-		return sClassification;
-	}
+    /**
+     * 捐赠的图书名称
+     */
+    public String getDobName() {
+        return dobName;
+    }
 
-	public void setsClassification(SecondaryClassification sClassification) {
-		this.sClassification = sClassification;
-	}
+    /**
+     * @param dobName 捐赠的图书名称
+     */
+    public void setDobName(String dobName) {
+        this.dobName = dobName == null ? null : dobName.trim();
+    }
 
-	@ManyToOne (fetch =FetchType.LAZY, optional = false, cascade = CascadeType.REFRESH)
-	@JoinColumn (name = "uuid")
-	public User getUser() {
-		return user;
-	}
+    /**
+     * 捐赠的图书ISBN号
+     */
+    public String getIsbn() {
+        return isbn;
+    }
 
-	public void setUser(User user) {
-		this.user = user;
-	}
+    /**
+     * @param isbn 捐赠的图书ISBN号
+     */
+    public void setIsbn(String isbn) {
+        this.isbn = isbn == null ? null : isbn.trim();
+    }
+
+    /**
+     * 捐赠的图书数量
+     */
+    public Integer getNumber() {
+        return number;
+    }
+
+    /**
+     * @param number 捐赠的图书数量
+     */
+    public void setNumber(Integer number) {
+        this.number = number;
+    }
+
+    /**
+     * 捐赠图书所属的二级分类
+     */
+    public SecondaryClassification getSecondaryClassification() {
+        return secondaryClassification;
+    }
+
+    /**
+     * @param secondaryClassification 捐赠图书所属的二级分类
+     */
+    public void setSecondaryClassification(SecondaryClassification secondaryClassification) {
+        this.secondaryClassification = secondaryClassification;
+    }
+
+    /**
+     * 捐赠人
+     */
+    public User getUser() {
+        return user;
+    }
+
+    /**
+     * @param uuid 捐赠人
+     */
+    public void setUser(User user) {
+        this.user = user;
+    }
 }

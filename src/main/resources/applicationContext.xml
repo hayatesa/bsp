@@ -23,36 +23,36 @@
 	</bean>
 
 	<!-- sessionFactory创建交给spring管理 -->
-	<bean id="sessionFactory"
-		class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
-		<!-- 因为在hibernate核心配置文件中，没有数据库配置，数据库配置在spring里面配置，注入dataSource -->
-		<property name="dataSource" ref="dataSource"></property>
-		<!-- 映射文件所在位置 -->
-		<property name="mappingDirectoryLocations" value="classpath*:com/bsp/entity" />
+	<!-- 配置sqlSessionFactory -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="configLocation" value="classpath:mybatis-config.xml"/>
+		<property name="typeAliasesPackage" value="com.bsp.entity" />
+		<property name="mapperLocations" value="classpath*:mappers/*Mapper.xml" />
 	</bean>
-
-	<!-- 创建hibernateTemplate对象 -->
-	<bean id="hibernateTemplate" class="org.springframework.orm.hibernate5.HibernateTemplate">
-		<!-- 注入sessionFactory -->
-		<property name="sessionFactory" ref="sessionFactory"></property>
+	
+	<!-- 事务管理器 -->
+	<bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
 	</bean>
-
-	<!-- 第一步 配置事务管理器 -->
-	<bean id="transactionManager"
-		class="org.springframework.orm.hibernate5.HibernateTransactionManager">
-		<!--注入sessionFactory -->
-		<property name="sessionFactory" ref="sessionFactory"></property>
-	</bean>
-
-	<!-- 第二步 开启事务注解 -->
-	<!-- <tx:annotation-driven transaction-manager="transactionManager"/> -->
+	
+	<!-- 配置事务 -->
+	<aop:config>
+		<aop:pointcut id="crudPC"  expression="execution(* com.bsp.service..*.*(..))" />
+		<!-- 切入点 + 通知 = 切面- -->
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="crudPC"/>
+	</aop:config>
+	
+	<!-- 配置事务属性（通知） -->
+	<tx:advice id="txAdvice" transaction-manager="txManager">
+		<tx:attributes>
+			<tx:method name="get*" read-only="true"/>
+			<tx:method name="find*" read-only="true"/>
+			<tx:method name="list*" read-only="true"/>
+			<tx:method name="query*" read-only="true"/>
+			<tx:method name="login*" read-only="true"/>
+			<tx:method name="*" propagation="REQUIRED"/>
+		</tx:attributes>
+	</tx:advice>
    	
-	<bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor" />
-	<bean
-		class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"
-		depends-on="lifecycleBeanPostProcessor" />
-	<bean
-		class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
-		<property name="securityManager" ref="securityManager" />
-   </bean>
 </beans>

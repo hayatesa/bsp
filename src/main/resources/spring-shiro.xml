@@ -21,10 +21,18 @@
         http://www.springframework.org/schema/aop/spring-aop-4.2.xsd "
 
 	default-lazy-init="false">
-
+	
+	<bean
+		class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"
+		depends-on="lifecycleBeanPostProcessor" />
+	<bean
+		class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+		<property name="securityManager" ref="securityManager" />
+   </bean>
+	
 	<!-- 用户授权信息Cache -->
 	<bean id="cacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">
-		<property name="cacheManagerConfigFile" value="classpath:ehcache.xml"></property>
+		<property name="cacheManagerConfigFile" value="classpath:ehcache-shiro.xml"></property>
 	</bean>
 
 

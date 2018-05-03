@@ -1,174 +1,246 @@
 package com.bsp.entity;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import org.apache.ibatis.type.Alias;
 
+@Alias("CheckDemandBook")
+public class CheckDemandBook extends BaseEntity {
+	private static final long serialVersionUID = 1L;
 
-/**   
- * @ClassName:  CheckDemandBook   
- * @Description:  需求图书审核表
- * @version: 1.0  
- * @author: WJB
- * @date:   2018年3月22日 上午12:03:42   
- *   
- */  
-@Entity
-@Table (name = "check_demand_book ")
-public class CheckDemandBook {
-	private int cdbId;				// 需求图书标识，数字自增长
-	private String cdbName;			// 需求图书名称
-	private String cdbAuthor;		// 需求图书作者
-	private String cdbPublishing;	// 需求图书出版社
-	private String isbn;			// 需求图书的ISBN
-	private int cdbDuration;		// 需求图书需求时长
-	private int cdbNumber;			// 需要图书数量
-	private String phone;			// 需求者联系电话
-	private String cdbComment;  	// 备注
-	private String imagePath;		// 需求图书照片路径
-	private byte cdbStatus = 0;		// 图书审核状态:0提交申请未审核转态，1申请失败返回原因
-	private String failureCause;	// 审核人员填写，审核失败的原因
-	
-	private SecondaryClassification sClassification;    //	需求图书所属的二级分类
-	private User user;	 //	需求图书申请人
-	
-	public CheckDemandBook() {}
+	// 需求图书标识，数字自增长
+    private Integer cdbId;
 
-	@Id
-	@GeneratedValue (strategy = GenerationType.IDENTITY)
-	@Column (name = "cdb_id")
-	public int getCdbId() {
-		return cdbId;
-	}
+    // 需求图书名称
+    private String cdbName;
 
-	public void setCdbId(int cdbId) {
-		this.cdbId = cdbId;
-	}
+    // 需求图书作者
+    private String cdbAuthor;
 
-	@Column (name = "cdb_name", nullable = false)
-	public String getCdbName() {
-		return cdbName;
-	}
+    // 需求图书出版社
+    private String cdbPublishing;
 
-	public void setCdbName(String cdbName) {
-		this.cdbName = cdbName;
-	}
+    // 需求图书的ISBN
+    private String isbn;
 
-	@Column (name = "cdb_author", nullable = false, length = 100)
-	public String getCdbAuthor() {
-		return cdbAuthor;
-	}
+    // 需求图书需求时长
+    private Integer cdbDuration;
 
-	public void setCdbAuthor(String cdbAuthor) {
-		this.cdbAuthor = cdbAuthor;
-	}
+    // 需要图书数量
+    private Integer cdbNumber;
 
-	@Column (name = "cdb_publishing", length = 100)
-	public String getCdbPublishing() {
-		return cdbPublishing;
-	}
+    // 需求图书照片路径
+    private String imagePath;
 
-	public void setCdbPublishing(String cdbPublishing) {
-		this.cdbPublishing = cdbPublishing;
-	}
-	
-	@Column (name = "isbn", length = 30)
-	public String getIsbn() {
-		return isbn;
-	}
+    // 备注
+    private String cdbComment;
 
-	public void setIsbn(String isbn) {
-		this.isbn = isbn;
-	}
-	
-	@Column (name = "cdb_duration", nullable = false)
-	public int getCdbDuration() {
-		return cdbDuration;
-	}
+    // 需求者联系电话
+    private String phone;
 
-	public void setCdbDuration(int cdbDuration) {
-		this.cdbDuration = cdbDuration;
-	}
+    // 图书审核状态:0提交申请未审核转态，1申请失败返回原因
+    private Byte cdbStatus;
 
-	@Column (name = "cdb_number", nullable = false)
-	public int getCdbNumber() {
-		return cdbNumber;
-	}
+    // 审核人员填写，审核失败的原因
+    private String failureCause;
 
-	public void setCdbNumber(int cdbNumber) {
-		this.cdbNumber = cdbNumber;
-	}
+    // 需求图书所属的二级分类
+    private SecondaryClassification secondaryClassification;
 
-	@Column (name = "phone", nullable = false, length = 12)
-	public String getPhone() {
-		return phone;
-	}
+    // 需求图书申请人
+    private User user;
 
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}
+    /**
+     * 需求图书标识，数字自增长
+     */
+    public Integer getCdbId() {
+        return cdbId;
+    }
 
-	@Column (name = "cdb_comment")
-	public String getCdbComment() {
-		return cdbComment;
-	}
+    /**
+     * @param cdbId 需求图书标识，数字自增长
+     */
+    public void setCdbId(Integer cdbId) {
+        this.cdbId = cdbId;
+    }
 
-	public void setCdbComment(String cdbComment) {
-		this.cdbComment = cdbComment;
-	}
+    /**
+     * 需求图书名称
+     */
+    public String getCdbName() {
+        return cdbName;
+    }
 
-	@Column (name = "image_path")
-	public String getImagePath() {
-		return imagePath;
-	}
+    /**
+     * @param cdbName 需求图书名称
+     */
+    public void setCdbName(String cdbName) {
+        this.cdbName = cdbName == null ? null : cdbName.trim();
+    }
 
-	public void setImagePath(String imagePath) {
-		this.imagePath = imagePath;
-	}
+    /**
+     * 需求图书作者
+     */
+    public String getCdbAuthor() {
+        return cdbAuthor;
+    }
 
-	@Column (name = "cdb_status", nullable = false)
-	public byte getCdbStatus() {
-		return cdbStatus;
-	}
+    /**
+     * @param cdbAuthor 需求图书作者
+     */
+    public void setCdbAuthor(String cdbAuthor) {
+        this.cdbAuthor = cdbAuthor == null ? null : cdbAuthor.trim();
+    }
 
-	public void setCdbStatus(byte cdbStatus) {
-		this.cdbStatus = cdbStatus;
-	}
+    /**
+     * 需求图书出版社
+     */
+    public String getCdbPublishing() {
+        return cdbPublishing;
+    }
 
-	@Column (name = "failure_cause")
-	public String getFailureCause() {
-		return failureCause;
-	}
+    /**
+     * @param cdbPublishing 需求图书出版社
+     */
+    public void setCdbPublishing(String cdbPublishing) {
+        this.cdbPublishing = cdbPublishing == null ? null : cdbPublishing.trim();
+    }
 
-	public void setFailureCause(String failureCause) {
-		this.failureCause = failureCause;
-	}
+    /**
+     * 需求图书的ISBN
+     */
+    public String getIsbn() {
+        return isbn;
+    }
 
-	@ManyToOne (fetch = FetchType.LAZY, optional = false, cascade = CascadeType.REFRESH)
-	@JoinColumn (name = "sc_id")
-	public SecondaryClassification getsClassification() {
-		return sClassification;
-	}
+    /**
+     * @param isbn 需求图书的ISBN
+     */
+    public void setIsbn(String isbn) {
+        this.isbn = isbn == null ? null : isbn.trim();
+    }
 
-	public void setsClassification(SecondaryClassification sClassification) {
-		this.sClassification = sClassification;
-	}
+    /**
+     * 需求图书需求时长
+     */
+    public Integer getCdbDuration() {
+        return cdbDuration;
+    }
 
-	@ManyToOne (fetch = FetchType.LAZY, optional = false, cascade = CascadeType.REFRESH)
-	@JoinColumn (name = "uuid")
-	public User getUser() {
-		return user;
-	}
+    /**
+     * @param cdbDuration 需求图书需求时长
+     */
+    public void setCdbDuration(Integer cdbDuration) {
+        this.cdbDuration = cdbDuration;
+    }
 
-	public void setUser(User user) {
-		this.user = user;
-	}
+    /**
+     * 需要图书数量
+     */
+    public Integer getCdbNumber() {
+        return cdbNumber;
+    }
+
+    /**
+     * @param cdbNumber 需要图书数量
+     */
+    public void setCdbNumber(Integer cdbNumber) {
+        this.cdbNumber = cdbNumber;
+    }
+
+    /**
+     * 需求图书照片路径
+     */
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    /**
+     * @param imagePath 需求图书照片路径
+     */
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath == null ? null : imagePath.trim();
+    }
+
+    /**
+     * 备注
+     */
+    public String getCdbComment() {
+        return cdbComment;
+    }
+
+    /**
+     * @param cdbComment 备注
+     */
+    public void setCdbComment(String cdbComment) {
+        this.cdbComment = cdbComment == null ? null : cdbComment.trim();
+    }
+
+    /**
+     * 需求者联系电话
+     */
+    public String getPhone() {
+        return phone;
+    }
+
+    /**
+     * @param phone 需求者联系电话
+     */
+    public void setPhone(String phone) {
+        this.phone = phone == null ? null : phone.trim();
+    }
+
+    /**
+     * 图书审核状态:0提交申请未审核转态，1申请失败返回原因
+     */
+    public Byte getCdbStatus() {
+        return cdbStatus;
+    }
+
+    /**
+     * @param cdbStatus 图书审核状态:0提交申请未审核转态，1申请失败返回原因
+     */
+    public void setCdbStatus(Byte cdbStatus) {
+        this.cdbStatus = cdbStatus;
+    }
+
+    /**
+     * 审核人员填写，审核失败的原因
+     */
+    public String getFailureCause() {
+        return failureCause;
+    }
+
+    /**
+     * @param failureCause 审核人员填写，审核失败的原因
+     */
+    public void setFailureCause(String failureCause) {
+        this.failureCause = failureCause == null ? null : failureCause.trim();
+    }
+
+    /**
+     * 需求图书所属的二级分类
+     */
+    public SecondaryClassification getSecondaryClassification() {
+        return secondaryClassification;
+    }
+
+    /**
+     * @param secondaryClassification 需求图书所属的二级分类
+     */
+    public void setSecondaryClassification(SecondaryClassification secondaryClassification) {
+        this.secondaryClassification = secondaryClassification;
+    }
+
+    /**
+     * 需求图书申请人
+     */
+    public User getUser() {
+        return user;
+    }
+
+    /**
+     * @param user 需求图书申请人
+     */
+    public void setUser(User user) {
+        this.user = user;
+    }
 }
-

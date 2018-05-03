@@ -38,26 +38,25 @@ public class AdminController extends BaseController {
 		if (!vcode.equalsIgnoreCase((String)request.getSession().getAttribute("session_vcode"))) {
 			return Result.error(BussCode.NOT_LOGIN, "验证码错误");
 		}
-		// Subject subject = ShiroUtils.getSubject();
-
-//		try {
-//			UsernamePasswordToken token = new UsernamePasswordToken(userName.toString(),
-//					Cryptography.MD5Hash(password, userName));
-//			subject.login(token);
-//		} catch (UnknownAccountException e) {
-//			return Result.error(e.getMessage());
-//		} catch (IncorrectCredentialsException e) {
-//			return Result.error(BussCode.NOT_LOGIN, "账号或密码不正确");
-//		} catch (LockedAccountException e) {
-//			return Result.error(e.getMessage());
-//		} catch (AuthenticationException e) {
-//			return Result.error("账户验证失败");
-//		} catch (SystemErrorException e) {
-//			return Result.error(e.getMessage());
-//		} catch (Exception e) {
-//			return Result.error(BussCode.ERR_UNKNOWN, "系统错误");
-//		}
-//		logger.info(((Administrator) ShiroUtils.getToken(Administrator.class)).getaId() + "登录系统");
+		/*Subject subject = ShiroUtils.getSubject();
+		try {
+			UsernamePasswordToken token = new UsernamePasswordToken(username.toString(),
+					Cryptography.MD5Hash(password, username));
+			subject.login(token);
+		} catch (UnknownAccountException e) {
+			return Result.error(e.getMessage());
+		} catch (IncorrectCredentialsException e) {
+			return Result.error(BussCode.NOT_LOGIN, "账号或密码不正确");
+		} catch (LockedAccountException e) {
+			return Result.error(e.getMessage());
+		} catch (AuthenticationException e) {
+			return Result.error("账户验证失败");
+		} catch (SystemErrorException e) {
+			return Result.error(e.getMessage());
+		} catch (Exception e) {
+			return Result.error(BussCode.ERR_UNKNOWN, "系统错误");
+		}
+		logger.info(((Administrator) ShiroUtils.getToken(Administrator.class)).getaId() + "登录系统");*/
 
 		return Result.success();
 	}

@@ -1,5 +1,6 @@
 package com.bsp.config;
 
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -16,10 +17,10 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
  */
 @Configuration
 @ImportResource(locations = {"classpath*:applicationContext.xml","classpath*:spring-shiro.xml"}) // 引入配置文件
+@MapperScan(basePackages = { "com.bsp.dao" }, sqlSessionFactoryRef = "sqlSessionFactory") // Mapper接口扫描
 @EnableTransactionManagement // 开启事务管理
-@EnableAspectJAutoProxy // 配置切面
-@ComponentScan(basePackages = { "com.bsp.dao.impl",
-		"com.bsp.service", "com.bsp.controller" }, excludeFilters = {
+@EnableAspectJAutoProxy(proxyTargetClass=true) // 配置切面
+@ComponentScan(basePackages = { "com.bsp.service", "com.bsp.controller" }, excludeFilters = {
 		@Filter(type = FilterType.ANNOTATION, value = EnableWebMvc.class) })
 public class RootConfig {
 	

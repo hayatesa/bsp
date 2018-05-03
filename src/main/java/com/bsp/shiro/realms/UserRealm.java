@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.bsp.entity.User;
 import com.bsp.exceptions.UserDefinedException;
-import com.bsp.service.user.impl.UserService;
+import com.bsp.service.user.IUserService;
 
 /**
  * shiro认证权限处理
@@ -41,8 +41,12 @@ public class UserRealm  extends AuthorizingRealm {
 	 */
 	
 	@Autowired
-	private UserService userService;
+	private IUserService userService;
 	
+	public void setUserService(IUserService userService) {
+		this.userService = userService;
+	}
+
 	private void selectRole(String username, SimpleAuthorizationInfo info)
 	{
 		

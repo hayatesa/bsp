@@ -1,197 +1,282 @@
 package com.bsp.entity;
 
-
 import java.util.Date;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-/**   
- * @ClassName:  LoanableBook   
- * @Description:  可以借阅的图书信息
- * @version: 1.2  
- * @author: WJB
- * @date:   2018年3月24日 下午5:47:25   
- *   
- */  
-@Entity
-@Table (name = "loanable_book")
-public class LoanableBook {
-	private int lbId;				// 共享的图书标识，来源CheckLoanableBook表主键
-	private String lbName;			// 共享图书名称
-	private String lbAuthor;		// 共享图书作者
-	private String lbPublishing;	// 共享图书出版社
-	private String isbn;			// 共享图书的ISBN
-	private int lbDuration;			// 共享图书可共享时长
-	private int lbNumber;			// 可共享图书数量
-	private String phone;			// 共享者的联系电话
-	private String lbComment;  	 	// 备注
-	private byte lbStatus = 1;		// 开启借阅状态：0停止共享，1开始共享，默认为1
-	private byte isDelete = 0;		// 删除图书：0没有删除，1表示删除，默认为0
-	private String imagePath;		// 共享图书照片路径
-	private Date openLoanTime;		// 开启图书共享的时间
-	private int TotalLending = 0;	// 共享累计借出总数
-	
-	private SecondaryClassification sClassification;	// 共享图书所属的二级分类
-	private User user ;		 // 共享图书所属的用户
+import org.apache.ibatis.type.Alias;
 
-	/*
-	 * 无参构造函数
-	 */
-	public LoanableBook() {}
+@Alias("LoanableBook")
+public class LoanableBook extends BaseEntity {
+	private static final long serialVersionUID = 1L;
 
-	@Id
-	@Column (name = "lb_id")
-	public int getLbId() {
-		return lbId;
-	}
+	// 共享的图书标识，来源CheckLoanableBook表主键
+    private Integer lbId;
 
-	public void setLbId(int lbId) {
-		this.lbId = lbId;
-	}
+    // 共享图书名称
+    private String lbName;
 
-	@Column (name = "lb_name", nullable = false)
-	public String getLbName() {
-		return lbName;
-	}
+    // 共享图书作者
+    private String lbAuthor;
 
-	public void setLbName(String lbName) {
-		this.lbName = lbName;
-	}
+    // 共享图书出版社
+    private String lbPublishing;
 
-	@Column (name = "lb_author", nullable = false, length = 100)
-	public String getLbAuthor() {
-		return lbAuthor;
-	}
+    // 共享图书的ISBN
+    private String isbn;
 
-	public void setLbAuthor(String lbAuthor) {
-		this.lbAuthor = lbAuthor;
-	}
+    // 共享图书可共享时长
+    private Integer lbDuratuin;
 
-	@Column (name = "lb_publishing", length = 100)
-	public String getLbPublishing() {
-		return lbPublishing;
-	}
+    // 可共享图书数量
+    private Integer lbNumber;
 
-	public void setLbPublishing(String lbPublishing) {
-		this.lbPublishing = lbPublishing;
-	}
+    // 共享图书照片路径
+    private String imagePath;
 
-	@Column (name = "isbn", length = 30, nullable = false)
-	public String getIsbn() {
-		return isbn;
-	}
+    // 备注
+    private String lbComment;
 
-	public void setIsbn(String isbn) {
-		this.isbn = isbn;
-	}
+    // 共享者的联系电话
+    private String phone;
 
-	@Column (name = "lb_duratuin", nullable = false)
-	public int getLbDuration() {
-		return lbDuration;
-	}
+    // 开启图书共享的时间
+    private Date openLoanTime;
 
-	public void setLbDuration(int lbDuration) {
-		this.lbDuration = lbDuration;
-	}
+    // 共享累计借出总数,初始为0
+    private Integer totalLending;
 
-	@Column (name = "lb_number", nullable = false)
-	public int getLbNumber() {
-		return lbNumber;
-	}
+    // 开启借阅状态：0停止共享，1开始共享，默认为1
+    private Byte lbStatus;
 
-	public void setLbNumber(int lbNumber) {
-		this.lbNumber = lbNumber;
-	}
+    // 删除图书：0没有删除，1表示删除，默认为0
+    private Byte isDelete;
 
-	@Column (name = "phone", nullable = false, length = 12)
-	public String getPhone() {
-		return phone;
-	}
+    // 共享图书所属的二级分类
+    private SecondaryClassification secondaryClassification;
 
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}
+    // 共享图书所属的用户
+    private User user;
 
-	@Column (name = "lb_comment")
-	public String getLbComment() {
-		return lbComment;
-	}
+    /**
+     * 共享的图书标识，来源CheckLoanableBook表主键
+     */
+    public Integer getLbId() {
+        return lbId;
+    }
 
-	public void setLbComment(String lbComment) {
-		this.lbComment = lbComment;
-	}
-	
-	@Column (name = "lb_status", nullable = false)
-	public byte getLbStatus() {
-		return lbStatus;
-	}
+    /**
+     * @param lbId 共享的图书标识，来源CheckLoanableBook表主键
+     */
+    public void setLbId(Integer lbId) {
+        this.lbId = lbId;
+    }
 
-	public void setLbStatus(byte lbStatus) {
-		this.lbStatus = lbStatus;
-	}
+    /**
+     * 共享图书名称
+     */
+    public String getLbName() {
+        return lbName;
+    }
 
-	@Column (name = "is_delete", nullable = false)
-	public byte getIsDelete() {
-		return isDelete;
-	}
+    /**
+     * @param lbName 共享图书名称
+     */
+    public void setLbName(String lbName) {
+        this.lbName = lbName == null ? null : lbName.trim();
+    }
 
-	public void setIsDelete(byte isDelete) {
-		this.isDelete = isDelete;
-	}
-	
-	@Column (name = "image_path")
-	public String getImagePath() {
-		return imagePath;
-	}
-	
-	public void setImagePath(String imagePath) {
-		this.imagePath = imagePath;
-	}
+    /**
+     * 共享图书作者
+     */
+    public String getLbAuthor() {
+        return lbAuthor;
+    }
 
-	@Column (name = "total_lending")
-	public int getTotalLending() {
-		return TotalLending;
-	}
+    /**
+     * @param lbAuthor 共享图书作者
+     */
+    public void setLbAuthor(String lbAuthor) {
+        this.lbAuthor = lbAuthor == null ? null : lbAuthor.trim();
+    }
 
-	public void setTotalLending(int totalLending) {
-		TotalLending = totalLending;
-	}
-	
-	@Temporal (TemporalType.TIMESTAMP)
-	@Column (name = "open_loan_time")
-	public Date getOpenLoanTime() {
-		return openLoanTime;
-	}
+    /**
+     * 共享图书出版社
+     */
+    public String getLbPublishing() {
+        return lbPublishing;
+    }
 
-	public void setOpenLoanTime(Date openLoanTime) {
-		this.openLoanTime = openLoanTime;
-	}
+    /**
+     * @param lbPublishing 共享图书出版社
+     */
+    public void setLbPublishing(String lbPublishing) {
+        this.lbPublishing = lbPublishing == null ? null : lbPublishing.trim();
+    }
 
-	@ManyToOne (fetch = FetchType.LAZY, optional = false, cascade = CascadeType.REFRESH)
-	@JoinColumn (name = "sc_id")
-	public SecondaryClassification getsClassification() {
-		return sClassification;
-	}
+    /**
+     * 共享图书的ISBN
+     */
+    public String getIsbn() {
+        return isbn;
+    }
 
-	public void setsClassification(SecondaryClassification sClassification) {
-		this.sClassification = sClassification;
-	}
+    /**
+     * @param isbn 共享图书的ISBN
+     */
+    public void setIsbn(String isbn) {
+        this.isbn = isbn == null ? null : isbn.trim();
+    }
 
-	@ManyToOne (fetch = FetchType.LAZY, optional = false, cascade = CascadeType.REFRESH)
-	@JoinColumn (name = "uuid")
-	public User getUser() {
-		return user;
-	}
+    /**
+     * 共享图书可共享时长
+     */
+    public Integer getLbDuratuin() {
+        return lbDuratuin;
+    }
 
-	public void setUser(User user) {
-		this.user = user;
-	}	
+    /**
+     * @param lbDuratuin 共享图书可共享时长
+     */
+    public void setLbDuratuin(Integer lbDuratuin) {
+        this.lbDuratuin = lbDuratuin;
+    }
+
+    /**
+     * 可共享图书数量
+     */
+    public Integer getLbNumber() {
+        return lbNumber;
+    }
+
+    /**
+     * @param lbNumber 可共享图书数量
+     */
+    public void setLbNumber(Integer lbNumber) {
+        this.lbNumber = lbNumber;
+    }
+
+    /**
+     * 共享图书照片路径
+     */
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    /**
+     * @param imagePath 共享图书照片路径
+     */
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath == null ? null : imagePath.trim();
+    }
+
+    /**
+     * 备注
+     */
+    public String getLbComment() {
+        return lbComment;
+    }
+
+    /**
+     * @param lbComment 备注
+     */
+    public void setLbComment(String lbComment) {
+        this.lbComment = lbComment == null ? null : lbComment.trim();
+    }
+
+    /**
+     * 共享者的联系电话
+     */
+    public String getPhone() {
+        return phone;
+    }
+
+    /**
+     * @param phone 共享者的联系电话
+     */
+    public void setPhone(String phone) {
+        this.phone = phone == null ? null : phone.trim();
+    }
+
+    /**
+     * 开启图书共享的时间
+     */
+    public Date getOpenLoanTime() {
+        return openLoanTime;
+    }
+
+    /**
+     * @param openLoanTime 开启图书共享的时间
+     */
+    public void setOpenLoanTime(Date openLoanTime) {
+        this.openLoanTime = openLoanTime;
+    }
+
+    /**
+     * 共享累计借出总数,初始为0
+     */
+    public Integer getTotalLending() {
+        return totalLending;
+    }
+
+    /**
+     * @param totalLending 共享累计借出总数,初始为0
+     */
+    public void setTotalLending(Integer totalLending) {
+        this.totalLending = totalLending;
+    }
+
+    /**
+     * 开启借阅状态：0停止共享，1开始共享，默认为1
+     */
+    public Byte getLbStatus() {
+        return lbStatus;
+    }
+
+    /**
+     * @param lbStatus 开启借阅状态：0停止共享，1开始共享，默认为1
+     */
+    public void setLbStatus(Byte lbStatus) {
+        this.lbStatus = lbStatus;
+    }
+
+    /**
+     * 删除图书：0没有删除，1表示删除，默认为0
+     */
+    public Byte getIsDelete() {
+        return isDelete;
+    }
+
+    /**
+     * @param isDelete 删除图书：0没有删除，1表示删除，默认为0
+     */
+    public void setIsDelete(Byte isDelete) {
+        this.isDelete = isDelete;
+    }
+
+    /**
+     * 共享图书所属的二级分类
+     */
+    public SecondaryClassification getSecondaryClassification() {
+        return secondaryClassification;
+    }
+
+    /**
+     * @param secondaryClassification 共享图书所属的二级分类
+     */
+    public void setSecondaryClassification(SecondaryClassification secondaryClassification) {
+        this.secondaryClassification = secondaryClassification;
+    }
+
+    /**
+     * 共享图书所属的用户
+     */
+    public User getUser() {
+        return user;
+    }
+
+    /**
+     * @param user 共享图书所属的用户
+     */
+    public void setUser(User user) {
+        this.user = user;
+    }
 }

@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.bsp.dao.IUserDAO;
+import com.bsp.dao.UserMapper;
 import com.bsp.entity.User;
 import com.bsp.entity.UserInfor;
 import com.bsp.exceptions.UserDefinedException;
@@ -17,10 +17,10 @@ import com.bsp.utils.md5.MD5Utils;
 @Transactional
 public class UserService implements IUserService {
 	@Autowired
-	private IUserDAO userDao;
+	private UserMapper userMapper;
 
-	public void setUserDao(IUserDAO userDao) {
-		this.userDao = userDao;
+	public void setUserMapper(UserMapper userMapper) {
+		this.userMapper = userMapper;
 	}
 
 	/**
@@ -30,7 +30,7 @@ public class UserService implements IUserService {
 	 */
 	@Override
 	public List<User> checkMail(String mail) {
-		return userDao.getUserByMail(mail);
+		return userMapper.getUserByMail(mail);
 	}
 	
 	@Override
@@ -38,12 +38,12 @@ public class UserService implements IUserService {
 	public void addUser(User user, UserInfor userInfor) {
 		//md5加密
 		user.setPassword(MD5Utils.encodeByMD5(user.getPassword()));
-		userDao.addUser(user,userInfor);
+		userMapper.insertSelective(user);
 	}
 	
 	@Override
 	public User getUserByMail(User user) throws UserDefinedException {
-		List<User> users = userDao.getUserByMail(user.getMail());
+		List<User> users = userMapper.getUserByMail(user.getMail());
 		if (users.size()==0) {
 			throw new UserDefinedException("用户名不存在！");
 		}else{

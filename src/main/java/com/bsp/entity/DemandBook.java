@@ -1,189 +1,265 @@
 package com.bsp.entity;
 
-
 import java.util.Date;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import org.apache.ibatis.type.Alias;
 
-/**   
- * @ClassName:  DemandBook   
- * @Description:  需求的图书信息
- * @version: 1.0  
- * @author: WJB
- * @date:   2018年3月26日 下午11:39:48   
- *   
- */  
-@Entity
-@Table (name = "demand_book")
-public class DemandBook {
-	private int dbId;				// 需求图书标识，来源于CheckDemandBook表的主键
-	private String dbName;			// 需求图书名称
-	private String dbAuthor;		// 需求图书作者
-	private String dbPublishing;	// 需求图书出版社
-	private String isbn;			// 需求图书的ISBN
-	private int dbDuration;			// 需求图书时长
-	private int dbNumber;			// 需求图书数量
-	private String phone;			// 需求者的联系电话
-	private String dbComment;  	 	// 备注
-	private byte dbStatus = 1;		// 开启需求状态：0停止需求，1开始需求
-	private byte isDelete = 0;		// 删除图书：0没有删除，1表示删除，默认为0
-	private String imagePath;		// 图书照片路径
-	private Date openDemandTime;	// 开启图书需求的时间
-	
-	private SecondaryClassification sClassification;	// 需求图书所属的分类
-	private User user ;	 			// 需求图书所属的用户
+@Alias("DemandBook")
+public class DemandBook extends BaseEntity {
+	private static final long serialVersionUID = 1L;
 
-	
-	/*
-	 * 无参构造函数
-	 */
-	public DemandBook() {}
+	// 需求图书标识，来源于check_demand_book表主键
+    private Integer dbId;
 
-	@Id
-	@Column (name = "db_id")
-	public int getDbId() {
-		return dbId;
-	}
+    // 需求图书名称
+    private String dbName;
 
-	public void setDbId(int dbId) {
-		this.dbId = dbId;
-	}
+    // 需求图书作者
+    private String dbAuthor;
 
-	@Column (name = "db_name", nullable = false)
-	public String getDbName() {
-		return dbName;
-	}
+    //  需求图书的出版社
+    private String dbPublishing;
 
-	public void setDbName(String dbName) {
-		this.dbName = dbName;
-	}
+    // 需求图书的ISBN
+    private String isbn;
 
-	@Column (name = "db_author", nullable = false, length = 100)
-	public String getDbAuthor() {
-		return dbAuthor;
-	}
+    // 需求图书时长
+    private Integer dbDuratuin;
 
-	public void setDbAuthor(String dbAuthor) {
-		this.dbAuthor = dbAuthor;
-	}
+    // 需求图书的数量
+    private Integer dbNumber;
 
-	@Column (name = "db_publishing", length = 100)
-	public String getDbPublishing() {
-		return dbPublishing;
-	}
+    // 需求图书照片路径
+    private String imagePath;
 
-	public void setDbPublishing(String dbPublishing) {
-		this.dbPublishing = dbPublishing;
-	}
+    // 备注
+    private String dbComment;
 
-	@Column (name = "isbn", length = 30)
-	public String getIsbn() {
-		return isbn;
-	}
+    //  需求者的联系电话
+    private String phone;
 
-	public void setIsbn(String isbn) {
-		this.isbn = isbn;
-	}
+    //  开启图书需求的时间
+    private Date openDemandTime;
 
-	@Column (name = "db_duratuin", nullable = false)
-	public int getDbDuration() {
-		return dbDuration;
-	}
+    // 开启需求状态：0停止需求，1开始需求
+    private Byte dbStatus;
 
-	public void setDbDuration(int dbDuration) {
-		this.dbDuration = dbDuration;
-	}
+    // 删除图书：0没有删除，1表示删除，默认为0
+    private Byte isDelete;
 
-	@Column (name = "db_number", nullable = false)
-	public int getDbNumber() {
-		return dbNumber;
-	}
+    //  需求图书所属的二级分类
+    private SecondaryClassification secondaryClassification;
 
-	public void setDbNumber(int dbNumber) {
-		this.dbNumber = dbNumber;
-	}
+    // 需求图书所属的用户
+    private User user;
 
-	@Column (name = "phone", nullable = false, length = 12)
-	public String getPhone() {
-		return phone;
-	}
+    /**
+     * 需求图书标识，来源于check_demand_book表主键
+     */
+    public Integer getDbId() {
+        return dbId;
+    }
 
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}
+    /**
+     * @param dbId 需求图书标识，来源于check_demand_book表主键
+     */
+    public void setDbId(Integer dbId) {
+        this.dbId = dbId;
+    }
 
-	@Column (name = "db_comment")
-	public String getDbComment() {
-		return dbComment;
-	}
+    /**
+     * 需求图书名称
+     */
+    public String getDbName() {
+        return dbName;
+    }
 
-	public void setDbComment(String dbComment) {
-		this.dbComment = dbComment;
-	}
+    /**
+     * @param dbName 需求图书名称
+     */
+    public void setDbName(String dbName) {
+        this.dbName = dbName == null ? null : dbName.trim();
+    }
 
-	@Column (name = "db_status", nullable = false)
-	public byte getDbStatus() {
-		return dbStatus;
-	}
+    /**
+     * 需求图书作者
+     */
+    public String getDbAuthor() {
+        return dbAuthor;
+    }
 
-	public void setDbStatus(byte dbStatus) {
-		this.dbStatus = dbStatus;
-	}
+    /**
+     * @param dbAuthor 需求图书作者
+     */
+    public void setDbAuthor(String dbAuthor) {
+        this.dbAuthor = dbAuthor == null ? null : dbAuthor.trim();
+    }
 
-	@Column (name = "is_delete", nullable = false)
-	public byte getIsDelete() {
-		return isDelete;
-	}
+    /**
+     *  需求图书的出版社
+     */
+    public String getDbPublishing() {
+        return dbPublishing;
+    }
 
-	public void setIsDelete(byte isDelete) {
-		this.isDelete = isDelete;
-	}
+    /**
+     * @param dbPublishing  需求图书的出版社
+     */
+    public void setDbPublishing(String dbPublishing) {
+        this.dbPublishing = dbPublishing == null ? null : dbPublishing.trim();
+    }
 
-	@Column (name = "image_path")
-	public String getImagePath() {
-		return imagePath;
-	}
+    /**
+     * 需求图书的ISBN
+     */
+    public String getIsbn() {
+        return isbn;
+    }
 
-	public void setImagePath(String imagePath) {
-		this.imagePath = imagePath;
-	}
+    /**
+     * @param isbn 需求图书的ISBN
+     */
+    public void setIsbn(String isbn) {
+        this.isbn = isbn == null ? null : isbn.trim();
+    }
 
-	@Temporal (TemporalType.TIMESTAMP)
-	@Column (name = "open_demand_time")
-	public Date getOpenDemandTime() {
-		return openDemandTime;
-	}
+    /**
+     * 需求图书时长
+     */
+    public Integer getDbDuratuin() {
+        return dbDuratuin;
+    }
 
-	public void setOpenDemandTime(Date openDemandTime) {
-		this.openDemandTime = openDemandTime;
-	}
+    /**
+     * @param dbDuratuin 需求图书时长
+     */
+    public void setDbDuratuin(Integer dbDuratuin) {
+        this.dbDuratuin = dbDuratuin;
+    }
 
-	@ManyToOne (fetch = FetchType.LAZY, optional = false, cascade = CascadeType.REFRESH)
-	@JoinColumn (name = "sc_id")
-	public SecondaryClassification getsClassification() {
-		return sClassification;
-	}
+    /**
+     * 需求图书的数量
+     */
+    public Integer getDbNumber() {
+        return dbNumber;
+    }
 
-	public void setsClassification(SecondaryClassification sClassification) {
-		this.sClassification = sClassification;
-	}
+    /**
+     * @param dbNumber 需求图书的数量
+     */
+    public void setDbNumber(Integer dbNumber) {
+        this.dbNumber = dbNumber;
+    }
 
-	@ManyToOne (fetch = FetchType.LAZY, optional = false, cascade = CascadeType.REFRESH)
-	@JoinColumn (name = "uuid")
-	public User getUser() {
-		return user;
-	}
+    /**
+     * 需求图书照片路径
+     */
+    public String getImagePath() {
+        return imagePath;
+    }
 
-	public void setUser(User user) {
-		this.user = user;
-	}
+    /**
+     * @param imagePath 需求图书照片路径
+     */
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath == null ? null : imagePath.trim();
+    }
+
+    /**
+     * 备注
+     */
+    public String getDbComment() {
+        return dbComment;
+    }
+
+    /**
+     * @param dbComment 备注
+     */
+    public void setDbComment(String dbComment) {
+        this.dbComment = dbComment == null ? null : dbComment.trim();
+    }
+
+    /**
+     *  需求者的联系电话
+     */
+    public String getPhone() {
+        return phone;
+    }
+
+    /**
+     * @param phone  需求者的联系电话
+     */
+    public void setPhone(String phone) {
+        this.phone = phone == null ? null : phone.trim();
+    }
+
+    /**
+     *  开启图书需求的时间
+     */
+    public Date getOpenDemandTime() {
+        return openDemandTime;
+    }
+
+    /**
+     * @param openDemandTime  开启图书需求的时间
+     */
+    public void setOpenDemandTime(Date openDemandTime) {
+        this.openDemandTime = openDemandTime;
+    }
+
+    /**
+     * 开启需求状态：0停止需求，1开始需求
+     */
+    public Byte getDbStatus() {
+        return dbStatus;
+    }
+
+    /**
+     * @param dbStatus 开启需求状态：0停止需求，1开始需求
+     */
+    public void setDbStatus(Byte dbStatus) {
+        this.dbStatus = dbStatus;
+    }
+
+    /**
+     * 删除图书：0没有删除，1表示删除，默认为0
+     */
+    public Byte getIsDelete() {
+        return isDelete;
+    }
+
+    /**
+     * @param isDelete 删除图书：0没有删除，1表示删除，默认为0
+     */
+    public void setIsDelete(Byte isDelete) {
+        this.isDelete = isDelete;
+    }
+
+    /**
+     *  需求图书所属的二级分类
+     */
+    public SecondaryClassification getSecondaryClassification() {
+        return secondaryClassification;
+    }
+
+    /**
+     * @param secondaryClassification  需求图书所属的二级分类
+     */
+    public void setSecondaryClassification(SecondaryClassification secondaryClassification) {
+        this.secondaryClassification = secondaryClassification;
+    }
+
+    /**
+     * 需求图书所属的用户
+     */
+    public User getUser() {
+        return user;
+    }
+
+    /**
+     * @param user 需求图书所属的用户
+     */
+    public void setUser(User user) {
+        this.user = user;
+    }
 }

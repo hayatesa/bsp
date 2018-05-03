@@ -3,3 +3,6 @@
     border-color: #21639c !important;
     background-color: #337ab7 !important;
 }
+[v-cloak] {
+    display: none;
+}

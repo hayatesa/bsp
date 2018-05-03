@@ -2,188 +2,247 @@ package com.bsp.entity;
 
 import java.util.Date;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import org.apache.ibatis.type.Alias;
 
-/**   
- * @ClassName:  LendingRecord   
- * @Description: 借出图书记录类
- * @version: 1.0  
- * @author: WJB
- * @date:   2018年3月19日 下午11:22:46   
- *   
- */
-@Entity
-@Table (name = "lending_record")
-public class LendingRecord {
-	private int lrId;					// 借出记录标识，数字自增长
-	private Date createTime;			// 借阅人申请时间，创建订单
-	private Date agreeTime;				// 借出人同意申请时间
-	private Date sendToTime;			// 借出人送达运营商服务点时间
-	private Date takeAwayTime;		    // 借阅人取走图书时间
-	private Date expectedReturnTime;	// 借阅人预期还书时间
-	private Date ActualReturnTime;		// 借阅人实际还书时间
-	private Date takeBackTime;			// 借出人取回图书时间
-	// 借出记录状态 0发布申请，4借出人同意借书申请，6借出人送达运营商，7借阅人逾期未取书，8借阅人拿到图书，9借阅人逾期未还，10借出方已经还书，11借出方逾期没有取回图书
-	private byte lrStruts;				
-	private String loanPhone;			// 借阅人电话号码
-	
-	private LoanableBook loanableBook;	// 借阅的图书
-	private User user;					// 借阅人
-	private Administrator receiveAdmin;	// 收到借出人送达图书的机构
-	private Administrator backAdmin;	// 收到借阅人还图书的机构
-	
-	/*
-	 * 无参构造函数
-	 */
-	public LendingRecord() {}
+@Alias("LendingRecord")
+public class LendingRecord extends BaseEntity {
+	private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue (strategy = GenerationType.IDENTITY)
-	@Column (name = "lr_id")
-	public int getLrId() {
-		return lrId;
-	}
+	// 借出记录标识，数字自增长
+    private Integer lrId;
 
-	public void setLrId(int lrId) {
-		this.lrId = lrId;
-	}
-	
-	@Temporal (TemporalType.TIMESTAMP)
-	@Column (name = "create_time")
-	public Date getCreateTime() {
-		return createTime;
-	}
+    // 借阅人申请时间，创建订单
+    private Date createTime;
 
-	public void setCreateTime(Date createTime) {
-		this.createTime = createTime;
-	}
+    // 借出人同意申请时间
+    private Date agreeTime;
 
-	@Temporal (TemporalType.TIMESTAMP)
-	@Column (name = "agree_time")
-	public Date getAgreeTime() {
-		return agreeTime;
-	}
+    // 借出人送达运营商服务点时间
+    private Date sendToTime;
 
-	public void setAgreeTime(Date agreeTime) {
-		this.agreeTime = agreeTime;
-	}
+    // 借阅人取走图书时间
+    private Date takeAwayTime;
 
-	@Temporal (TemporalType.TIMESTAMP)
-	@Column (name = "send_to_time")
-	public Date getSendToTime() {
-		return sendToTime;
-	}
+    // 借阅人预期还书时间
+    private Date expectedReturnTime;
 
-	public void setSendToTime(Date sendToTime) {
-		this.sendToTime = sendToTime;
-	}
+    // 借阅人实际还书时间
+    private Date actualReturnTime;
 
-	@Temporal (TemporalType.TIMESTAMP)
-	@Column (name = "take_away_time")
-	public Date getTakeAwayTime() {
-		return takeAwayTime;
-	}
+    // 借出人取回图书时间
+    private Date takeBackTime;
 
-	public void setTakeAwayTime(Date takeAwayTime) {
-		this.takeAwayTime = takeAwayTime;
-	}
+    // 借出记录状态 0发布申请，4借出人同意借书申请，6借出人送达运营商，7借阅人逾期未取书，8借阅人拿到图书，9借阅人逾期未还，10借出方已经还书，11借出方逾期没有取回图书
+    private Byte lrStruts;
 
-	@Temporal (TemporalType.TIMESTAMP)
-	@Column (name = "expected_return_time")
-	public Date getExpectedReturnTime() {
-		return expectedReturnTime;
-	}
+    // 借阅人电话号码
+    private String loanPhone;
 
-	public void setExpectedReturnTime(Date expectedReturnTime) {
-		this.expectedReturnTime = expectedReturnTime;
-	}
+    // 借阅的图书
+    private LoanableBook loanableBook;
 
-	@Temporal (TemporalType.TIMESTAMP)
-	@Column (name = "actual_return_time")
-	public Date getActualReturnTime() {
-		return ActualReturnTime;
-	}
+    // 借阅人
+    private User user;
 
-	public void setActualReturnTime(Date actualReturnTime) {
-		ActualReturnTime = actualReturnTime;
-	}
+    // 收到借出人送达图书的管理员
+    private Administrator receiveAdmin;
 
-	@Temporal (TemporalType.TIMESTAMP)
-	@Column (name = "take_back_time")
-	public Date getTakeBackTime() {
-		return takeBackTime;
-	}
+    // 收到借阅人还图书的管理员
+    private Administrator backAdmin;
 
-	public void setTakeBackTime(Date takeBackTime) {
-		this.takeBackTime = takeBackTime;
-	}
+    /**
+     * 借出记录标识，数字自增长
+     */
+    public Integer getLrId() {
+        return lrId;
+    }
 
-	@Column (name = "lr_struts", nullable = false)
-	public byte getLrStruts() {
-		return lrStruts;
-	}
+    /**
+     * @param lrId 借出记录标识，数字自增长
+     */
+    public void setLrId(Integer lrId) {
+        this.lrId = lrId;
+    }
 
-	public void setLrStruts(byte lrStruts) {
-		this.lrStruts = lrStruts;
-	}
+    /**
+     * 借阅人申请时间，创建订单
+     */
+    public Date getCreateTime() {
+        return createTime;
+    }
 
-	@Column (name = "loan_phone", length = 12)
-	public String getLoanPhone() {
-		return loanPhone;
-	}
+    /**
+     * @param createTime 借阅人申请时间，创建订单
+     */
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
 
-	public void setLoanPhone(String loanPhone) {
-		this.loanPhone = loanPhone;
-	}
-	
-	@ManyToOne (fetch = FetchType.LAZY, optional = false, cascade = CascadeType.REFRESH)
-	@JoinColumn (name = "lb_id")
-	public LoanableBook getLoanableBook() {
-		return loanableBook;
-	}
+    /**
+     * 借出人同意申请时间
+     */
+    public Date getAgreeTime() {
+        return agreeTime;
+    }
 
-	public void setLoanableBook(LoanableBook loanableBook) {
-		this.loanableBook = loanableBook;
-	}
+    /**
+     * @param agreeTime 借出人同意申请时间
+     */
+    public void setAgreeTime(Date agreeTime) {
+        this.agreeTime = agreeTime;
+    }
 
-	@ManyToOne (fetch = FetchType.LAZY, optional = false, cascade = CascadeType.REFRESH)
-	@JoinColumn (name = "uuid")
-	public User getUser() {
-		return user;
-	}
+    /**
+     * 借出人送达运营商服务点时间
+     */
+    public Date getSendToTime() {
+        return sendToTime;
+    }
 
-	public void setUser(User user) {
-		this.user = user;
-	}
- 
-	@ManyToOne (fetch = FetchType.LAZY, optional = true, cascade = CascadeType.REFRESH)
-	@JoinColumn (name = "receive_uuid")
-	public Administrator getReceiveAdmin() {
-		return receiveAdmin;
-	}
+    /**
+     * @param sendToTime 借出人送达运营商服务点时间
+     */
+    public void setSendToTime(Date sendToTime) {
+        this.sendToTime = sendToTime;
+    }
 
-	public void setReceiveAdmin(Administrator receiveAdmin) {
-		this.receiveAdmin = receiveAdmin;
-	}
+    /**
+     * 借阅人取走图书时间
+     */
+    public Date getTakeAwayTime() {
+        return takeAwayTime;
+    }
 
-	@ManyToOne (fetch = FetchType.LAZY, optional = true, cascade = CascadeType.REFRESH)
-	@JoinColumn (name = "back_uuid")
-	public Administrator getBackAdmin() {
-		return backAdmin;
-	}
+    /**
+     * @param takeAwayTime 借阅人取走图书时间
+     */
+    public void setTakeAwayTime(Date takeAwayTime) {
+        this.takeAwayTime = takeAwayTime;
+    }
 
-	public void setBackAdmin(Administrator backAdmin) {
-		this.backAdmin = backAdmin;
-	}
+    /**
+     * 借阅人预期还书时间
+     */
+    public Date getExpectedReturnTime() {
+        return expectedReturnTime;
+    }
+
+    /**
+     * @param expectedReturnTime 借阅人预期还书时间
+     */
+    public void setExpectedReturnTime(Date expectedReturnTime) {
+        this.expectedReturnTime = expectedReturnTime;
+    }
+
+    /**
+     * 借阅人实际还书时间
+     */
+    public Date getActualReturnTime() {
+        return actualReturnTime;
+    }
+
+    /**
+     * @param actualReturnTime 借阅人实际还书时间
+     */
+    public void setActualReturnTime(Date actualReturnTime) {
+        this.actualReturnTime = actualReturnTime;
+    }
+
+    /**
+     * 借出人取回图书时间
+     */
+    public Date getTakeBackTime() {
+        return takeBackTime;
+    }
+
+    /**
+     * @param takeBackTime 借出人取回图书时间
+     */
+    public void setTakeBackTime(Date takeBackTime) {
+        this.takeBackTime = takeBackTime;
+    }
+
+    /**
+     * 借出记录状态 0发布申请，4借出人同意借书申请，6借出人送达运营商，7借阅人逾期未取书，8借阅人拿到图书，9借阅人逾期未还，10借出方已经还书，11借出方逾期没有取回图书
+     */
+    public Byte getLrStruts() {
+        return lrStruts;
+    }
+
+    /**
+     * @param lrStruts 借出记录状态 0发布申请，4借出人同意借书申请，6借出人送达运营商，7借阅人逾期未取书，8借阅人拿到图书，9借阅人逾期未还，10借出方已经还书，11借出方逾期没有取回图书
+     */
+    public void setLrStruts(Byte lrStruts) {
+        this.lrStruts = lrStruts;
+    }
+
+    /**
+     * 借阅人电话号码
+     */
+    public String getLoanPhone() {
+        return loanPhone;
+    }
+
+    /**
+     * @param loanPhone 借阅人电话号码
+     */
+    public void setLoanPhone(String loanPhone) {
+        this.loanPhone = loanPhone == null ? null : loanPhone.trim();
+    }
+
+    /**
+     * 借阅的图书
+     */
+    public LoanableBook getLoanableBook() {
+        return loanableBook;
+    }
+
+    /**
+     * @param loanableBook 借阅的图书
+     */
+    public void setLoanableBook(LoanableBook loanableBook) {
+        this.loanableBook = loanableBook;
+    }
+
+    /**
+     * 借阅人
+     */
+    public User getUuid() {
+        return user;
+    }
+
+    /**
+     * @param user 借阅人
+     */
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    /**
+     * 收到借出人送达图书的管理员
+     */
+    public Administrator getReceiveAdmin() {
+        return receiveAdmin;
+    }
+
+    /**
+     * @param receiveAdmin 收到借出人送达图书的管理员
+     */
+    public void setReceiveAdmin(Administrator receiveAdmin) {
+        this.receiveAdmin = receiveAdmin;
+    }
+
+    /**
+     * 收到借阅人还图书的管理员
+     */
+    public Administrator getBackAdmin() {
+        return backAdmin;
+    }
+
+    /**
+     * @param backAdmin 收到借阅人还图书的管理员
+     */
+    public void setBackAdmin(Administrator backAdmin) {
+        this.backAdmin = backAdmin;
+    }
 }

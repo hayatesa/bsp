@@ -333,7 +333,7 @@ CREATE TABLE `secondary_classification`  (
   `sc_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '图书二级分类唯一标识，数字增长值',
   `sc_name` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '二级分类名称',
   `pc_id` int(11) NOT NULL COMMENT '所属一级分类',
-  `is_dalete` tinyint(4) NOT NULL COMMENT '是否删除分类 0表示没有删除，1表示删除，默认为0',
+  `is_delete` tinyint(4) NOT NULL COMMENT '是否删除分类 0表示没有删除，1表示删除，默认为0',
   PRIMARY KEY (`sc_id`) USING BTREE,
   INDEX `FKfnox8i80pxh4rxj3ubjk7b0kd`(`pc_id`) USING BTREE,
   CONSTRAINT `FKfnox8i80pxh4rxj3ubjk7b0kd` FOREIGN KEY (`pc_id`) REFERENCES `primary_classification` (`pc_id`) ON DELETE RESTRICT ON UPDATE RESTRICT

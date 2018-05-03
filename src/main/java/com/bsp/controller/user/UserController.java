@@ -168,7 +168,7 @@ public class UserController extends BaseController {
 		} else {
 			try {
 				User succuser = this.userService.getUserByMail(user);
-				request.getSession().setAttribute("user", succuser.getUUID());
+				request.getSession().setAttribute("user", succuser.getUuid());
 				super.result = new ResultMsgDTO(true, "登录成功", null);
 			} catch (UserDefinedException e) {
 				super.result = new ResultMsgDTO(false, "密码错误", null);

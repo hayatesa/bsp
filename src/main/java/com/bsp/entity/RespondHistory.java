@@ -2,177 +2,230 @@ package com.bsp.entity;
 
 import java.util.Date;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import org.apache.ibatis.type.Alias;
 
-/**   
- * @ClassName:  RespondHistory   
- * @Description:  响应完成或者中断历史
- * @version: 1.0  
- * @author: WJB
- * @date:   2018年3月24日18:01:51
- *   
- */  
-@Entity
-@Table (name = "respond_history")
-public class RespondHistory {
-	private int rhId;					// 响应记录标识，来源RespondRecord表主键
-	private Date respondTime;			// 需求者响应时间
-	private Date sendToTime;			// 响应者送达运营商服务点时间
-	private Date takeAwayTime ;		    // 需求者取走图书时间
-	private Date expectedReturnTime;	// 需求者预期还书时间
-	private Date ActualReturnTime;		// 需求者实际还书时间
-	private Date takeBackTime;			// 响应者取回图书时间
-	// 1需求者取消需求，2响应者取消响应，3响应者逾期未送达运营方，10响应者取回图书，11响应者捐赠图书
-	private byte rhStruts;				
-	private String	respondPhone;		// 响应者电话号码
-	
-	private DemandBook demandBook;		// 需求的图书
-	private User user;					// 响应者
-	private Administrator receiveAdmin; // 收到借出人送到图书的机构
-	private Administrator backAdmin;	// 收到借阅人还图书的机构
-	
-	/*
-	 * 无参构造函数
-	 */
-	public RespondHistory() {}
+@Alias("RespondHistory")
+public class RespondHistory extends BaseEntity {
+	private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue (strategy = GenerationType.IDENTITY)
-	@Column (name = "rh_id")
-	public int getRhId() {
-		return rhId;
-	}
+	// 响应记录标识，来源RespondRecord表主键
+    private Integer rhId;
 
-	public void setRhId(int rhId) {
-		this.rhId = rhId;
-	}
+    // 需求者响应时间
+    private Date respondTime;
 
-	@Temporal (TemporalType.TIMESTAMP)
-	@Column (name = "respond_time")
-	public Date getRespondTime() {
-		return respondTime;
-	}
+    // 响应者送达运营商服务点时间
+    private Date sendToTime;
 
-	public void setRespondTime(Date respondTime) {
-		this.respondTime = respondTime;
-	}
+    // 需求者取走图书时间
+    private Date takeAwayTime;
 
-	@Temporal (TemporalType.TIMESTAMP)
-	@Column (name = "send_to_time")
-	public Date getSendToTime() {
-		return sendToTime;
-	}
+    // 需求者预期还书时间
+    private Date expectedReturnTime;
 
-	public void setSendToTime(Date sendToTime) {
-		this.sendToTime = sendToTime;
-	}
-	
-	@Temporal (TemporalType.TIMESTAMP)
-	@Column (name = "take_away_time")
-	public Date getTakeAwayTime() {
-		return takeAwayTime;
-	}
+    // 需求者实际还书时间
+    private Date actualReturnTime;
 
-	public void setTakeAwayTime(Date takeAwayTime) {
-		this.takeAwayTime = takeAwayTime;
-	}
+    // 响应者取回图书时间
+    private Date takeBackTime;
 
-	@Temporal (TemporalType.TIMESTAMP)
-	@Column (name = "expected_return_time")
-	public Date getExpectedReturnTime() {
-		return expectedReturnTime;
-	}
+    // 1需求者取消需求，2响应者取消响应，3响应者逾期未送达运营方，10响应者取回图书，11响应者捐赠图书
+    private Byte rhStruts;
 
-	public void setExpectedReturnTime(Date expectedReturnTime) {
-		this.expectedReturnTime = expectedReturnTime;
-	}
+    // 响应者电话号码
+    private String respondPhone;
 
-	@Temporal (TemporalType.TIMESTAMP)
-	@Column (name = "actual_return_time")
-	public Date getActualReturnTime() {
-		return ActualReturnTime;
-	}
+    // 需求的图书
+    private DemandBook demandBook;
 
-	public void setActualReturnTime(Date actualReturnTime) {
-		ActualReturnTime = actualReturnTime;
-	}
+    // 响应者
+    private User user;
 
-	@Temporal (TemporalType.TIMESTAMP)
-	@Column (name = "take_back_time")
-	public Date getTakeBackTime() {
-		return takeBackTime;
-	}
+    // 收到借出人送到图书的管理员
+    private Administrator receiveAdmin;
 
-	public void setTakeBackTime(Date takeBackTime) {
-		this.takeBackTime = takeBackTime;
-	}
+    // 收到借阅人还图书的管理员
+    private Administrator backAdmin;
 
-	@Column (name = "rh_struts", nullable = false)
-	public byte getRhStruts() {
-		return rhStruts;
-	}
+    /**
+     * 响应记录标识，来源RespondRecord表主键
+     */
+    public Integer getRhId() {
+        return rhId;
+    }
 
-	public void setRhStruts(byte rhStruts) {
-		this.rhStruts = rhStruts;
-	}
-	
-	@Column (name = "respond_phone", length = 12)
-	public String getRespondPhone() {
-		return respondPhone;
-	}
+    /**
+     * @param rhId 响应记录标识，来源RespondRecord表主键
+     */
+    public void setRhId(Integer rhId) {
+        this.rhId = rhId;
+    }
 
-	public void setRespondPhone(String respondPhone) {
-		this.respondPhone = respondPhone;
-	}
+    /**
+     * 需求者响应时间
+     */
+    public Date getRespondTime() {
+        return respondTime;
+    }
 
-	@ManyToOne (fetch = FetchType.LAZY, optional = false, cascade = CascadeType.REFRESH)
-	@JoinColumn (name = "db_id")
-	public DemandBook getDemandBook() {
-		return demandBook;
-	}
+    /**
+     * @param respondTime 需求者响应时间
+     */
+    public void setRespondTime(Date respondTime) {
+        this.respondTime = respondTime;
+    }
 
-	public void setDemandBook(DemandBook demandBook) {
-		this.demandBook = demandBook;
-	}
+    /**
+     * 响应者送达运营商服务点时间
+     */
+    public Date getSendToTime() {
+        return sendToTime;
+    }
 
-	@ManyToOne (fetch = FetchType.LAZY, optional = false, cascade = CascadeType.REFRESH)
-	@JoinColumn (name = "uuid")
-	public User getUser() {
-		return user;
-	}
+    /**
+     * @param sendToTime 响应者送达运营商服务点时间
+     */
+    public void setSendToTime(Date sendToTime) {
+        this.sendToTime = sendToTime;
+    }
 
-	public void setUser(User user) {
-		this.user = user;
-	}
+    /**
+     * 需求者取走图书时间
+     */
+    public Date getTakeAwayTime() {
+        return takeAwayTime;
+    }
 
-	@ManyToOne (fetch = FetchType.LAZY, optional = true, cascade = CascadeType.REFRESH)
-	@JoinColumn (name = "receive_uuid")
-	public Administrator getReceiveAdmin() {
-		return receiveAdmin;
-	}
+    /**
+     * @param takeAwayTime 需求者取走图书时间
+     */
+    public void setTakeAwayTime(Date takeAwayTime) {
+        this.takeAwayTime = takeAwayTime;
+    }
 
-	public void setReceiveAdmin(Administrator receiveAdmin) {
-		this.receiveAdmin = receiveAdmin;
-	}
+    /**
+     * 需求者预期还书时间
+     */
+    public Date getExpectedReturnTime() {
+        return expectedReturnTime;
+    }
 
-	@ManyToOne (fetch = FetchType.LAZY, optional = true, cascade = CascadeType.REFRESH)
-	@JoinColumn (name = "back_uuid")
-	public Administrator getBackAdmin() {
-		return backAdmin;
-	}
+    /**
+     * @param expectedReturnTime 需求者预期还书时间
+     */
+    public void setExpectedReturnTime(Date expectedReturnTime) {
+        this.expectedReturnTime = expectedReturnTime;
+    }
 
-	public void setBackAdmin(Administrator backAdmin) {
-		this.backAdmin = backAdmin;
-	}
+    /**
+     * 需求者实际还书时间
+     */
+    public Date getActualReturnTime() {
+        return actualReturnTime;
+    }
+
+    /**
+     * @param actualReturnTime 需求者实际还书时间
+     */
+    public void setActualReturnTime(Date actualReturnTime) {
+        this.actualReturnTime = actualReturnTime;
+    }
+
+    /**
+     * 响应者取回图书时间
+     */
+    public Date getTakeBackTime() {
+        return takeBackTime;
+    }
+
+    /**
+     * @param takeBackTime 响应者取回图书时间
+     */
+    public void setTakeBackTime(Date takeBackTime) {
+        this.takeBackTime = takeBackTime;
+    }
+
+    /**
+     * 1需求者取消需求，2响应者取消响应，3响应者逾期未送达运营方，10响应者取回图书，11响应者捐赠图书
+     */
+    public Byte getRhStruts() {
+        return rhStruts;
+    }
+
+    /**
+     * @param rhStruts 1需求者取消需求，2响应者取消响应，3响应者逾期未送达运营方，10响应者取回图书，11响应者捐赠图书
+     */
+    public void setRhStruts(Byte rhStruts) {
+        this.rhStruts = rhStruts;
+    }
+
+    /**
+     * 响应者电话号码
+     */
+    public String getRespondPhone() {
+        return respondPhone;
+    }
+
+    /**
+     * @param respondPhone 响应者电话号码
+     */
+    public void setRespondPhone(String respondPhone) {
+        this.respondPhone = respondPhone == null ? null : respondPhone.trim();
+    }
+
+    /**
+     * 需求的图书
+     */
+    public DemandBook getDemandBook() {
+        return demandBook;
+    }
+
+    /**
+     * @param demandBook 需求的图书
+     */
+    public void setDemandBook(DemandBook demandBook) {
+        this.demandBook = demandBook;
+    }
+
+    /**
+     * 响应者
+     */
+    public User getUser() {
+        return user;
+    }
+
+    /**
+     * @param user 响应者
+     */
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    /**
+     * 收到借出人送到图书的管理员
+     */
+    public Administrator getReceiveAdmin() {
+        return receiveAdmin;
+    }
+
+    /**
+     * @param receiveAdmin 收到借出人送到图书的管理员
+     */
+    public void setReceiveAdmin(Administrator receiveAdmin) {
+        this.receiveAdmin = receiveAdmin;
+    }
+
+    /**
+     * 收到借阅人还图书的管理员
+     */
+    public Administrator getBackAdmin() {
+        return backAdmin;
+    }
+
+    /**
+     * @param backAdmin 收到借阅人还图书的管理员
+     */
+    public void setBackAdmin(Administrator backAdmin) {
+        this.backAdmin = backAdmin;
+    }
 }

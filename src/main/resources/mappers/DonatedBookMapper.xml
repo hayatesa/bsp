@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bsp.dao.DonatedBookMapper" >
+  <resultMap id="BaseResultMap" type="com.bsp.entity.DonatedBook" >
+    <id column="dob_id" property="dobId" jdbcType="INTEGER" />
+    <result column="dob_name" property="dobName" jdbcType="VARCHAR" />
+    <result column="isbn" property="isbn" jdbcType="VARCHAR" />
+    <result column="number" property="number" jdbcType="INTEGER" />
+    <association property="secondaryClassification" column="sc_id" javaType="SecondaryClassification" select="com.bsp.dao.SecondaryClassificationMapper.selectByPrimaryKey" />
+    <association property="user" column="uuid" javaType="User" select="com.bsp.dao.UserMapper.selectByPrimaryKey" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    dob_id, dob_name, isbn, number, sc_id, uuid
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from donated_book
+    where dob_id = #{dobId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from donated_book
+    where dob_id = #{dobId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.bsp.entity.DonatedBook" >
+    insert into donated_book (dob_id, dob_name, isbn, 
+      number, sc_id, uuid)
+    values (#{dobId,jdbcType=INTEGER}, #{dobName,jdbcType=VARCHAR}, #{isbn,jdbcType=VARCHAR}, 
+      #{number,jdbcType=INTEGER}, #{secondaryClassification.scId,jdbcType=INTEGER}, #{user.uuid,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.bsp.entity.DonatedBook" >
+    insert into donated_book
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="dobId != null" >
+        dob_id,
+      </if>
+      <if test="dobName != null" >
+        dob_name,
+      </if>
+      <if test="isbn != null" >
+        isbn,
+      </if>
+      <if test="number != null" >
+        number,
+      </if>
+      <if test="secondaryClassification.scId != null" >
+        sc_id,
+      </if>
+      <if test="user.uuid != null" >
+        uuid,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="dobId != null" >
+        #{dobId,jdbcType=INTEGER},
+      </if>
+      <if test="dobName != null" >
+        #{dobName,jdbcType=VARCHAR},
+      </if>
+      <if test="isbn != null" >
+        #{isbn,jdbcType=VARCHAR},
+      </if>
+      <if test="number != null" >
+        #{number,jdbcType=INTEGER},
+      </if>
+      <if test="secondaryClassification.scId != null" >
+        #{secondaryClassification.scId,jdbcType=INTEGER},
+      </if>
+      <if test="user.uuid != null" >
+        #{user.uuid,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.bsp.entity.DonatedBook" >
+    update donated_book
+    <set >
+      <if test="dobName != null" >
+        dob_name = #{dobName,jdbcType=VARCHAR},
+      </if>
+      <if test="isbn != null" >
+        isbn = #{isbn,jdbcType=VARCHAR},
+      </if>
+      <if test="number != null" >
+        number = #{number,jdbcType=INTEGER},
+      </if>
+      <if test="secondaryClassification.scId != null" >
+        sc_id = #{secondaryClassification.scId,jdbcType=INTEGER},
+      </if>
+      <if test="user.uuid != null" >
+        uuid = #{user.uuid,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where dob_id = #{dobId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.bsp.entity.DonatedBook" >
+    update donated_book
+    set dob_name = #{dobName,jdbcType=VARCHAR},
+      isbn = #{isbn,jdbcType=VARCHAR},
+      number = #{number,jdbcType=INTEGER},
+      sc_id = #{secondaryClassification.scId,jdbcType=INTEGER},
+      uuid = #{user.uuid,jdbcType=VARCHAR}
+    where dob_id = #{dobId,jdbcType=INTEGER}
+  </update>
+</mapper>

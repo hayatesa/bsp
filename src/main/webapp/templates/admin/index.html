@@ -39,7 +39,7 @@
             <!--logo end-->
             <div class="nav notify-row" id="top_menu">
                 <!--  notification start -->
-                <ul class="nav top-menu" id="header-app" >
+                <ul class="nav top-menu" id="header-app" v-cloak>
                     <!-- inbox dropdown start-->
                     <li id="header_inbox_bar" :title="newMessages.num+'条消息'"  class="dropdown" >
                         <a data-toggle="dropdown" class="dropdown-toggle" href="javascript:;">
@@ -102,7 +102,7 @@
           <div id="sidebar" class="nav-collapse" >
               <!-- sidebar menu start-->
               <ul class="sidebar-menu" id="nav-accordion">
-              <div  id="sidebar-app">
+              <div  id="sidebar-app" v-cloak>
               	  <p class="centered"><a href="profile.html"><img src="../../assets/img/ui-sam.jpg" class="img-circle" width="60"></a></p>
               	  <h5 class="centered" title="账户信息"><a @click="profileEdit" href="javascript:;"><span>{{user.username}}</span></a></h5>
                   <li class="mt">
@@ -173,7 +173,7 @@
       <!--main content start-->
       <section id="main-content">
           <section class="wrapper">
-          		<div id="title-app">
+          		<div id="title-app" v-cloak>
 							<h4><i class="fa fa-angle-right"></i> {{title}}</h4>
 							</div>
               <div id="page-container" class="row"></div>

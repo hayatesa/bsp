@@ -1,83 +1,76 @@
 package com.bsp.entity;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
-import javax.persistence.PrimaryKeyJoinColumn;
-import javax.persistence.Table;
+import org.apache.ibatis.type.Alias;
 
-import org.hibernate.annotations.GenericGenerator;
+@Alias("User")
+public class User extends BaseEntity {
+	private static final long serialVersionUID = 1L;
 
-/**   
- * @ClassName:  User   
- * @Description:  用户账号类
- * @version: 1.0  
- * @author: WJB
- * @date:  2018年3月23日 下午9:34:04   
- *   
- */  
-@Entity
-@Table (name = "user")
-public class User {
-	private String UUID;		// 用户唯一标识符号
-	private String mail;		// 用户邮箱，作为用户登录账号
-	private String password;	// 用户登录账号密码
-	private byte isDelete = 0;	// 0没有禁用，1被禁用，默认为0
-	private UserInfor userInfor;
-	/*
-	 * 无参构造函数
-	 */
-	public User(){}
-	
-	@Id
-	@GeneratedValue (generator = "uuid")
-	@GenericGenerator (name = "uuid", strategy = "uuid")
-	@Column (name = "uuid", length = 33)
-	public String getUUID() {
-		return UUID;
-	}
+	// 用户唯一标识符号
+    private String uuid;
 
-	public void setUUID(String uUID) {
-		UUID = uUID;
-	}
-	
-	@Column (name = "mail", nullable = false)
-	public String getMail() {
-		return mail;
-	}
+    // 用户邮箱，作为用户登录账号
+    private String mail;
 
-	public void setMail(String mail) {
-		this.mail = mail;
-	}
+    // 用户登录账号密码
+    private String password;
 
-	@Column (name = "password", nullable = false, length = 21)
-	public String getPassword() {
-		return password;
-	}
+    // 0没有禁用，1被禁用，默认为0
+    private Byte isDelete;
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
+    /**
+     * 用户唯一标识符号
+     */
+    public String getUuid() {
+        return uuid;
+    }
 
-	@Column (name = "is_delete")
-	public void setIsDelete(byte isDelete) {
-		this.isDelete = isDelete;
-	}	
-	
-	public byte getIsDelete() {
-		return isDelete;
-	}
+    /**
+     * @param uuid 用户唯一标识符号
+     */
+    public void setUuid(String uuid) {
+        this.uuid = uuid == null ? null : uuid.trim();
+    }
 
-	@OneToOne (cascade = CascadeType.ALL)
-	@PrimaryKeyJoinColumn
-	public UserInfor getUserInfor() {
-		return userInfor;
-	}
+    /**
+     * 用户邮箱，作为用户登录账号
+     */
+    public String getMail() {
+        return mail;
+    }
 
-	public void setUserInfor(UserInfor userInfor) {
-		this.userInfor = userInfor;
-	}
+    /**
+     * @param mail 用户邮箱，作为用户登录账号
+     */
+    public void setMail(String mail) {
+        this.mail = mail == null ? null : mail.trim();
+    }
+
+    /**
+     * 用户登录账号密码
+     */
+    public String getPassword() {
+        return password;
+    }
+
+    /**
+     * @param password 用户登录账号密码
+     */
+    public void setPassword(String password) {
+        this.password = password == null ? null : password.trim();
+    }
+
+    /**
+     * 0没有禁用，1被禁用，默认为0
+     */
+    public Byte getIsDelete() {
+        return isDelete;
+    }
+
+    /**
+     * @param isDelete 0没有禁用，1被禁用，默认为0
+     */
+    public void setIsDelete(Byte isDelete) {
+        this.isDelete = isDelete;
+    }
 }

@@ -1,58 +1,57 @@
 package com.bsp.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import org.apache.ibatis.type.Alias;
 
-/** 
-* @ClassName: PrimaryClassification 
-* @Description: 图书一级分类类别类，用于归类图书
-* @version: 1.0 
-* @author WJB
-* @date 2018年3月15日 下午6:41:27 
-*  
-*/
-@Entity
-@Table (name = "primary_classification")
-public class PrimaryClassification {
-	private int pcId;			// 图书一级分类唯一标识，数字自增长
-	private String pcName;		// 一级分类名称
-	private byte isDelete = 0;	// 是否删除分类 0表示没有删除，1表示删除，默认为0
-	
-	/*
-	 * 无参构造函数
-	 */
-	public PrimaryClassification() {}
-	
-	@Id
-	@GeneratedValue (strategy = GenerationType.IDENTITY)
-	@Column (name = "pc_id")
-	public int getPcId() {
-		return pcId;
-	}
+@Alias("PrimaryClassification")
+public class PrimaryClassification extends BaseEntity {
+	private static final long serialVersionUID = 1L;
 
-	public void setPcId(int pcId) {
-		this.pcId = pcId;
-	}
+	// 图书一级分类唯一标识，数字自增长
+    private Integer pcId;
 
-	@Column (name = "pc_name", length = 50)
-	public String getPcName() {
-		return pcName;
-	}
-	
-	public void setPcName(String pcName) {
-		this.pcName = pcName;
-	}
-	
-	@Column (name = "is_delete", nullable = false)
-	public byte getIsDelete() {
-		return isDelete;
-	}
+    // 一级分类名称
+    private String pcName;
 
-	public void setIsDelete(byte isDelete) {
-		this.isDelete = isDelete;
-	}
+    // 是否删除分类 0表示没有删除，1表示删除，默认为0
+    private Byte isDelete;
+
+    /**
+     * 图书一级分类唯一标识，数字自增长
+     */
+    public Integer getPcId() {
+        return pcId;
+    }
+
+    /**
+     * @param pcId 图书一级分类唯一标识，数字自增长
+     */
+    public void setPcId(Integer pcId) {
+        this.pcId = pcId;
+    }
+
+    
+    public String getPcName() {
+        return pcName;
+    }
+
+    /**
+     * @param isDelete 一级分类名称
+     */
+    public void setPcName(String pcName) {
+        this.pcName = pcName == null ? null : pcName.trim();
+    }
+
+    /**
+     * 一级分类名称
+     */
+    public Byte getIsDelete() {
+        return isDelete;
+    }
+
+    /**
+     * @param pcName 是否删除分类 0表示没有删除，1表示删除，默认为0
+     */
+    public void setIsDelete(Byte isDelete) {
+        this.isDelete = isDelete;
+    }
 }
