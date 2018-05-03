@@ -10,6 +10,7 @@ import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -22,6 +23,7 @@ import com.bsp.exceptions.SystemErrorException;
 import com.bsp.shiro.ShiroUtils;
 import com.bsp.utils.Cryptography;
 import com.bsp.utils.Result;
+import com.bsp.vo.AdministratorVO;
 
 @Controller
 @RequestMapping("admin")
@@ -43,7 +45,9 @@ public class AdminController extends BaseController {
 			logger.error(ShiroUtils.getSession().getId() + "获取登录信息失败");
 			return Result.error("系统错误，获取登录信息失败");
 		}
+		AdministratorVO vo = new AdministratorVO();
 		Result result = Result.success();
+		BeanUtils.copyProperties(administrator, vo);
 		result.put("token", administrator);
 		return result;
 	}

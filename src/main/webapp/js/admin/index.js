@@ -1,23 +1,34 @@
+
 $(function(){
 	fillPage('/module/admin/userPage')
 })
 
+function loadToken(app) {
+	$.ajax({
+        type:"get",
+        url: "/admin/token",
+        success: function(data){
+            if(data.code === 0){
+				app.user=data.token;
+            }
+            else{
+                alert('获取当前登录用户信息失败，请重新登录');
+            }
+        }
+    });
+}
+
 var header_app = new Vue({
 	el: "#header-app",
 	data: {
-		user: {
-			id: url('u'),
-			username: url('u')
-		},
 		newMessages: {}
 	},
 	methods: {
 		logout: function() {
-			var id = this.user.id;
 			confirm('确定退出登录？', function(id){
 				$.ajax({
 					type:"get",
-					url: "/data/logout.json?id="+id,
+					url: "/admin/logout",
 					success: function(data){
 						if(data.code === 0){
 							window.location.href='/module/admin/login';
@@ -34,7 +45,7 @@ var header_app = new Vue({
 			var m = {};
 			$.ajax({
 				type:"get",
-				url: "/data/inboxData.json?id="+this.user.username,
+				url: "/data/inboxData.json",
 				success: function(data){
  					if(data.num){
  						app.newMessages = data;
@@ -77,10 +88,7 @@ var sidebar_app = new Vue({
 	el: "#sidebar-app",
 	data:{
 		title: '主页',
-		user: {
-			id: url('u'),
-			username: url('u')
-		}
+		user: {}
 	},
 	methods: {
 		profileEdit: function(){
@@ -90,7 +98,10 @@ var sidebar_app = new Vue({
 			fillPage(p)
 			this.title = tilte;
 		}
-	}
+	},
+	created: function () {
+		loadToken(this);
+    }
 })
 
 var title_app = new Vue({
