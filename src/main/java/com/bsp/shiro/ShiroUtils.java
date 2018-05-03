@@ -28,11 +28,9 @@ public class ShiroUtils {
 	
 	/**
 	 * 获取登录用户
-	 * @param T 用户类型
 	 */
-	@SuppressWarnings("unchecked")
-	public static <T> T getToken(Class<?> T) {
-		return (T) SecurityUtils.getSubject().getPrincipal();
+	public static Object getToken() {
+		return SecurityUtils.getSubject().getPrincipal();
 	}
 
 	public static void setSessionAttribute(Object key, Object value) {

@@ -27,7 +27,27 @@ import com.bsp.utils.Result;
 @RequestMapping("admin")
 public class AdminController extends BaseController {
 	private static final Logger logger = LoggerFactory.getLogger(AdminController.class);
-
+	
+	/**
+	 * 获取登录用户
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("/token")
+	public Result getToken() {
+		Administrator administrator = null;
+		try {
+			administrator = (Administrator) ShiroUtils.getToken();
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(ShiroUtils.getSession().getId() + "获取登录信息失败");
+			return Result.error("系统错误，获取登录信息失败");
+		}
+		Result result = Result.success();
+		result.put("token", administrator);
+		return result;
+	}
+	
 	/**
 	 * 管理员登录
 	 */
@@ -38,15 +58,15 @@ public class AdminController extends BaseController {
 		if (!vcode.equalsIgnoreCase((String)request.getSession().getAttribute("session_vcode"))) {
 			return Result.error(BussCode.NOT_LOGIN, "验证码错误");
 		}
-		/*Subject subject = ShiroUtils.getSubject();
+		Subject subject = ShiroUtils.getSubject();
 		try {
-			UsernamePasswordToken token = new UsernamePasswordToken(username.toString(),
+			UsernamePasswordToken token = new UsernamePasswordToken(username,
 					Cryptography.MD5Hash(password, username));
 			subject.login(token);
 		} catch (UnknownAccountException e) {
 			return Result.error(e.getMessage());
 		} catch (IncorrectCredentialsException e) {
-			return Result.error(BussCode.NOT_LOGIN, "账号或密码不正确");
+			return Result.error(BussCode.NOT_LOGIN, "用户名或密码不正确");
 		} catch (LockedAccountException e) {
 			return Result.error(e.getMessage());
 		} catch (AuthenticationException e) {
@@ -56,8 +76,7 @@ public class AdminController extends BaseController {
 		} catch (Exception e) {
 			return Result.error(BussCode.ERR_UNKNOWN, "系统错误");
 		}
-		logger.info(((Administrator) ShiroUtils.getToken(Administrator.class)).getaId() + "登录系统");*/
-
+		logger.info(((Administrator)ShiroUtils.getToken()).getaId() + "登录系统");
 		return Result.success();
 	}
 

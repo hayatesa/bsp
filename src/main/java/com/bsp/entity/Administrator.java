@@ -29,7 +29,14 @@ public class Administrator extends BaseEntity {
 
     // 是否可用，登录时需要判断，0没有禁用，1被禁用
     private Byte isDelete;
-
+    
+    /**
+     * 判断是否为有效用户，是：true，否：false
+     */
+    public boolean isAvailible() {
+    	return this.isDelete == 0 ? true : false;
+    }
+    
     /**
      * 管理员唯一标识
      */

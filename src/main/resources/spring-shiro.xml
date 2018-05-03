@@ -37,19 +37,19 @@
 
 
 
-  <!-- 項目自定义的Realm -->  
-    <bean id="ShiroRealm" class="com.bsp.shiro.realms.UserRealm">  
+  	<!-- 項目自定义的Realm -->  
+    <bean id="ShiroRealm" class="com.bsp.shiro.realms.AdminRealm">  
          <!-- 配置密码匹配器 -->
-        <property name="credentialsMatcher">
+        <!-- <property name="credentialsMatcher">
             <bean class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
-                <!-- 加密算法为MD5 -->
+                加密算法为MD5
                 <property name="hashAlgorithmName" value="MD5"></property>
-                <!-- 加密次数 -->
+                加密次数
                 <property name="hashIterations" value="1024"></property>
-                <!-- 如果是true就使用realm所加密的hex 否则就使用base64 hex  -->
+                如果是true就使用realm所加密的hex 否则就使用base64 hex 
                 <property name="storedCredentialsHexEncoded" value="true"></property>
             </bean>
-        </property>
+        </property> -->
     </bean>  
 
 	<!-- 会话ID 生成器 -->
