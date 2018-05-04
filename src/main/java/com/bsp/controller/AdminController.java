@@ -1,4 +1,4 @@
-package com.bsp.controller.admin;
+package com.bsp.controller;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.bsp.controller.BaseController;
 import com.bsp.entity.Administrator;
 import com.bsp.enums.BussCode;
 import com.bsp.exceptions.SystemErrorException;
@@ -81,6 +80,12 @@ public class AdminController extends BaseController {
 			return Result.error(BussCode.ERR_UNKNOWN, "系统错误");
 		}
 		logger.info(((Administrator)ShiroUtils.getToken()).getaId() + "登录系统");
+		return Result.success();
+	}
+	
+	@RequestMapping("logout")
+	public Result logout() {
+		ShiroUtils.getSubject().logout();
 		return Result.success();
 	}
 

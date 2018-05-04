@@ -1,4 +1,4 @@
-package com.bsp.service.admin.impl;
+package com.bsp.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import com.bsp.dao.AdministratorMapper;
 import com.bsp.entity.Administrator;
 import com.bsp.exceptions.SystemErrorException;
-import com.bsp.service.admin.IAdminService;
+import com.bsp.service.IAdminService;
 
 @Service("adminService")
 public class AdminService implements IAdminService {

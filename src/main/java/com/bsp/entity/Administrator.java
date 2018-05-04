@@ -1,8 +1,5 @@
 package com.bsp.entity;
 
-import org.apache.ibatis.type.Alias;
-
-@Alias("Administrator")
 public class Administrator extends BaseEntity {
 	private static final long serialVersionUID = 1L;
 
@@ -15,7 +12,7 @@ public class Administrator extends BaseEntity {
     // 密码
     private String aPassword;
 
-    // 运营方名称
+    // 姓名
     private String aName;
 
     // 联系电话
@@ -26,6 +23,9 @@ public class Administrator extends BaseEntity {
 
     // 运营者描述
     private String aComments;
+
+    // 管理员权限等级，1为系统管理员，2为普通管理员
+    private Integer aLevel;
 
     // 是否可用，登录时需要判断，0没有禁用，1被禁用
     private Byte isDelete;
@@ -80,14 +80,14 @@ public class Administrator extends BaseEntity {
     }
 
     /**
-     * 运营方名称
+     * 姓名
      */
     public String getaName() {
         return aName;
     }
 
     /**
-     * @param aName 运营方名称
+     * @param aName 姓名
      */
     public void setaName(String aName) {
         this.aName = aName == null ? null : aName.trim();
@@ -133,6 +133,20 @@ public class Administrator extends BaseEntity {
      */
     public void setaComments(String aComments) {
         this.aComments = aComments == null ? null : aComments.trim();
+    }
+
+    /**
+     * 管理员权限等级，1为系统管理员，2为普通管理员
+     */
+    public Integer getaLevel() {
+        return aLevel;
+    }
+
+    /**
+     * @param aLevel 管理员权限等级，1为系统管理员，2为普通管理员
+     */
+    public void setaLevel(Integer aLevel) {
+        this.aLevel = aLevel;
     }
 
     /**

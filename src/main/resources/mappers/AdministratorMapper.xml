@@ -9,22 +9,17 @@
     <result column="a_phone" property="aPhone" jdbcType="VARCHAR" />
     <result column="a_address" property="aAddress" jdbcType="VARCHAR" />
     <result column="a_comments" property="aComments" jdbcType="VARCHAR" />
+    <result column="a_level" property="aLevel" jdbcType="INTEGER" />
     <result column="is_delete" property="isDelete" jdbcType="TINYINT" />
   </resultMap>
   <sql id="Base_Column_List" >
-    a_uuid, a_id, a_password, a_name, a_phone, a_address, a_comments, is_delete
+    a_uuid, a_id, a_password, a_name, a_phone, a_address, a_comments, a_level, is_delete
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
     <include refid="Base_Column_List" />
     from administrator
     where a_uuid = #{aUuid,jdbcType=VARCHAR}
-  </select>
-  <select id="selectByAID" resultMap="BaseResultMap" parameterType="java.lang.String" >
-    select 
-    <include refid="Base_Column_List" />
-    from administrator
-    where a_id = #{aid,jdbcType=VARCHAR}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from administrator
@@ -33,10 +28,12 @@
   <insert id="insert" parameterType="com.bsp.entity.Administrator" >
     insert into administrator (a_uuid, a_id, a_password, 
       a_name, a_phone, a_address, 
-      a_comments, is_delete)
+      a_comments, a_level, is_delete
+      )
     values (#{aUuid,jdbcType=VARCHAR}, #{aId,jdbcType=VARCHAR}, #{aPassword,jdbcType=VARCHAR}, 
       #{aName,jdbcType=VARCHAR}, #{aPhone,jdbcType=VARCHAR}, #{aAddress,jdbcType=VARCHAR}, 
-      #{aComments,jdbcType=VARCHAR}, #{isDelete,jdbcType=TINYINT})
+      #{aComments,jdbcType=VARCHAR}, #{aLevel,jdbcType=INTEGER}, #{isDelete,jdbcType=TINYINT}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.bsp.entity.Administrator" >
     insert into administrator
@@ -61,6 +58,9 @@
       </if>
       <if test="aComments != null" >
         a_comments,
+      </if>
+      <if test="aLevel != null" >
+        a_level,
       </if>
       <if test="isDelete != null" >
         is_delete,
@@ -88,6 +88,9 @@
       <if test="aComments != null" >
         #{aComments,jdbcType=VARCHAR},
       </if>
+      <if test="aLevel != null" >
+        #{aLevel,jdbcType=INTEGER},
+      </if>
       <if test="isDelete != null" >
         #{isDelete,jdbcType=TINYINT},
       </if>
@@ -114,6 +117,9 @@
       <if test="aComments != null" >
         a_comments = #{aComments,jdbcType=VARCHAR},
       </if>
+      <if test="aLevel != null" >
+        a_level = #{aLevel,jdbcType=INTEGER},
+      </if>
       <if test="isDelete != null" >
         is_delete = #{isDelete,jdbcType=TINYINT},
       </if>
@@ -128,6 +134,7 @@
       a_phone = #{aPhone,jdbcType=VARCHAR},
       a_address = #{aAddress,jdbcType=VARCHAR},
       a_comments = #{aComments,jdbcType=VARCHAR},
+      a_level = #{aLevel,jdbcType=INTEGER},
       is_delete = #{isDelete,jdbcType=TINYINT}
     where a_uuid = #{aUuid,jdbcType=VARCHAR}
   </update>

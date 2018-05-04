@@ -4,8 +4,7 @@
 	xmlns:util="http://www.springframework.org/schema/util" xmlns:jee="http://www.springframework.org/schema/jee"
 	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:mvc="http://www.springframework.org/schema/mvc"
 	xmlns:aop="http://www.springframework.org/schema/aop"
-	xsi:schemaLocation="
-                         http://www.springframework.org/schema/util
+	xsi:schemaLocation="http://www.springframework.org/schema/util
         http://www.springframework.org/schema/util/spring-util-3.0.xsd
         http://www.springframework.org/schema/beans 
         http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
@@ -19,7 +18,6 @@
         http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
         http://www.springframework.org/schema/aop 
         http://www.springframework.org/schema/aop/spring-aop-4.2.xsd "
-
 	default-lazy-init="false">
 	
 	<bean
@@ -149,8 +147,6 @@
 		</property>
 		<property name="filterChainDefinitions">
 			<value>
-			
-               
 				/**=anon
 			</value>
 		</property>

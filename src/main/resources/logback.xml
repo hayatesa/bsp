@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration scan="true" scanPeriod="60 seconds" debug="false">
-	<property name="APP_NAME" value="atm" />
+	<property name="APP_NAME" value="bsp" />
 	<property name="LOG_HOME" value="logs" />
 	
 	<contextName>${APP_NAME}</contextName>
@@ -37,7 +37,7 @@
 	<!--FATAL level: 指出每个严重的错误事件将会导致应用程序的退出.-->
 	<!--ALL level: 是最低等级的,用于打开所有日志记录.-->
 	<!--OFF level: 是最高等级的,用于关闭所有日志记录.-->
-	<logger name="group.six.atm" level="DEBUG" />
+	<logger name="com.bsp" level="DEBUG" />
 	<!--myibatis log configure-->
 	<!-- <logger name="com.ibatis" level="DEBUG" />
 	<logger name="com.ibatis.common.jdbc.SimpleDataSource" level="DEBUG" />  

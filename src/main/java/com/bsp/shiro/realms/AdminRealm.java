@@ -13,9 +13,9 @@ import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.bsp.service.admin.IAdminService;
 import com.bsp.entity.Administrator;
 import com.bsp.exceptions.SystemErrorException;
+import com.bsp.service.IAdminService;
 
 @Component
 public class AdminRealm  extends AuthorizingRealm  {

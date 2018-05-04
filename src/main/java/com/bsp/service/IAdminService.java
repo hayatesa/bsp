@@ -1,4 +1,4 @@
-package com.bsp.service.admin;
+package com.bsp.service;
 
 import org.springframework.stereotype.Service;
 
