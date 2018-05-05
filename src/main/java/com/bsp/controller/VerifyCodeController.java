@@ -6,6 +6,7 @@ import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -13,9 +14,10 @@ import cn.itcast.vcode.utils.VerifyCode;
 
 
 @Controller
+@Scope(value="prototype")
 public class VerifyCodeController {
 	
-	@RequestMapping("/getVerifyCode.do")
+	@RequestMapping("/verifyCode")
 	public void getVerifyCode(HttpServletRequest request, HttpServletResponse response) {
 		/*
 		 * 1. 创建验证码类

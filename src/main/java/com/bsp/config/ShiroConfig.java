@@ -53,7 +53,12 @@ public class ShiroConfig {
 		simpleCookie.setName("WEBSID");
 		return simpleCookie;
 	}*/
-
+	
+	@Bean
+	public AdminRealm adminRealm() {
+		return new AdminRealm();
+	}
+	
 	@Bean("securityManager")
 	public SecurityManager securityManager(AdminRealm adminRealm, SessionManager sessionManager) {
 		DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
@@ -72,12 +77,14 @@ public class ShiroConfig {
 		Map<String, Filter> filters = new LinkedHashMap<>();
 		filters.put("login", loginFilter()); // 登录过滤器
 		shiroFilter.setFilters(filters);
-		//shiroFilter.setLoginUrl("/not_login");
+		shiroFilter.setLoginUrl("/login");
 		//shiroFilter.setUnauthorizedUrl("/no_access");
 		// 放权请求
 		Map<String, String> filterMap = new LinkedHashMap<>();
+		filterMap.put("/static/**", "anon");
+		filterMap.put("/verifyCode", "anon");
 		filterMap.put("/login", "anon");
-		filterMap.put("/logout", "logout");
+		//filterMap.put("/logout", "logout");
 		filterMap.put("/**", "login,authc");// 拦截所有请求
 		shiroFilter.setFilterChainDefinitionMap(filterMap);
 		return shiroFilter;

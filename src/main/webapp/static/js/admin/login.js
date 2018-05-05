@@ -1,6 +1,6 @@
 function _change() {//重新获取验证码
     var ele = document.getElementById("codeImg");
-    ele.src = "/getVerifyCode.do?xxx=" + new Date().getTime();
+    ele.src = "/verifyCode?xxx=" + new Date().getTime();
 }
 
 var doLogin = function () {
@@ -21,7 +21,7 @@ var doLogin = function () {
         app.msg='';
     }
     $.ajax({
-        url: '/admin/login',
+        url: '/login',
         type: 'post',
         data: {
             username: uname,

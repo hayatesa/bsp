@@ -6,7 +6,7 @@ import java.util.Properties;
 import javax.mail.MessagingException;
 import javax.mail.Session;
 
-import com.bsp.exceptions.UserDefinedException;
+import com.bsp.exceptions.SendEmailException;
 
 import cn.itcast.mail.Mail;
 import cn.itcast.mail.MailUtils;
@@ -40,7 +40,7 @@ public class MailSendUtils {
 		session = MailUtils.createSession(host, username, password);
 	}
 
-	public void sendMail(String to, String subject, String content) throws UserDefinedException {
+	public void sendMail(String to, String subject, String content) throws SendEmailException {
 		// 加载配置文件内容,生成session
 		loadProperties();
 		// 创建邮件体

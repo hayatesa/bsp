@@ -6,20 +6,20 @@
 
     <!--<link rel="stylesheet" href="layui/css/layui.css" />-->
     <!-- Bootstrap core CSS -->
-    <link href="../../assets/css/bootstrap.css" rel="stylesheet">
+    <link href="../../static/assets/css/bootstrap.css" rel="stylesheet">
     <!--external css-->
-    <link href="../../assets/font-awesome/css/font-awesome.css" rel="stylesheet" />
-    <link rel="stylesheet" type="text/css" href="../../assets/js/gritter/css/jquery.gritter.css" />
-    <link rel="stylesheet" type="text/css" href="../../assets/lineicons/style.css">
+    <link href="../../static/assets/font-awesome/css/font-awesome.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="../../static/assets/js/gritter/css/jquery.gritter.css" />
+    <link rel="stylesheet" type="text/css" href="../../static/assets/lineicons/style.css">
     <!-- Custom styles for this template -->
-    <link href="../../assets/css/style.css" rel="stylesheet">
-    <link href="../../assets/css/style-responsive.css" rel="stylesheet">
-    <link rel="stylesheet" href="../../css/style_admin.css">
+    <link href="../../static/assets/css/style.css" rel="stylesheet">
+    <link href="../../static/assets/css/style-responsive.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../static/css/style_admin.css">
 
       <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
-      <script src="../../assets/js/html5shiv.js"></script>
-      <script src="../../assets/js/respond.min.js"></script>
+      <script src="../../static/assets/js/html5shiv.js"></script>
+      <script src="../../static/assets/js/respond.min.js"></script>
     <![endif]-->
   </head>
 
@@ -103,7 +103,7 @@
               <!-- sidebar menu start-->
               <ul class="sidebar-menu" id="nav-accordion">
               <div  id="sidebar-app" v-cloak>
-              	  <p class="centered"><a href="profile.html"><img src="../../assets/img/ui-sam.jpg" class="img-circle" width="60"></a></p>
+              	  <p class="centered"><a href="profile.html"><img src="../../static/assets/img/ui-sam.jpg" class="img-circle" width="60"></a></p>
               	  <h5 class="centered" title="账户信息"><a @click="profileEdit" href="javascript:;"><span>{{user.aId}}</span></a></h5>
                   <li class="mt">
                       <a class="active" @click="go('userPage.html','主页')" href="javascript:;">
@@ -111,7 +111,7 @@
                           <span>主页</span>
                       </a>
                   </li>
-									
+
                   <li class="sub-menu">
                       <a @click="go('userPage.html','共享审核')" href="javascript:;">
                           <i class="fa fa-desktop"></i>
@@ -166,7 +166,7 @@
       </aside>
       <!--sidebar end-->
       <!-- sidebar app end -->
-      
+
       <!-- **********************************************************************************************************************************************************
       MAIN CONTENT
       *********************************************************************************************************************************************************** -->
@@ -179,7 +179,7 @@
               <div id="page-container" class="row"></div>
           </section>
       </section>
-      
+
 
       <!--main content end-->
       <!--footer start-->
@@ -193,26 +193,26 @@
       </footer>-->
       <!--footer end-->
   </section>
-	
-    <script src="../../js/jquery-3.3.1.js"></script>
-    <script src="../../js/plugins/bootstrap/js/bootstrap.js"></script>
-    
+
+    <script src="../../static/js/jquery-3.3.1.js"></script>
+    <script src="../../static/js/plugins/bootstrap/js/bootstrap.js"></script>
+
     <!-- 模板js -->
-    <!--<script src="../../assets/js/jquery.js"></script>-->
-    <!--<script src="../../assets/js/jquery-1.8.3.min.js"></script>-->
-    <!--<script src="../../assets/js/bootstrap.min.js"></script>-->
+    <!--<script src="../../static/assets/js/jquery.js"></script>-->
+    <!--<script src="../../static/assets/js/jquery-1.8.3.min.js"></script>-->
+    <!--<script src="../../static/assets/js/bootstrap.min.js"></script>-->
     <!-- 手风琴菜单 -->
-    <script src="../../assets/js/jquery.dcjqaccordion.2.7.js"></script>
-    <script src="../../assets/js/jquery.scrollTo.min.js"></script>
-    <script src="../../assets/js/jquery.nicescroll.js"></script>
+    <script src="../../static/assets/js/jquery.dcjqaccordion.2.7.js"></script>
+    <script src="../../static/assets/js/jquery.scrollTo.min.js"></script>
+    <script src="../../static/assets/js/jquery.nicescroll.js"></script>
     <!--模板js-->
-    <script src="../../assets/js/common-scripts.js"></script>
+    <script src="../../static/assets/js/common-scripts.js"></script>
     <!-- 提醒插件 -->
-    <script src="../../assets/js/gritter/js/jquery.gritter.js"></script>
-    <script src="../../assets/js/gritter-conf.js"></script>
+    <script src="../../static/assets/js/gritter/js/jquery.gritter.js"></script>
+    <script src="../../static/assets/js/gritter-conf.js"></script>
     <!-- layer -->
-    <script src="../../js/plugins/layer/layer.js"></script>
-    	
+    <script src="../../static/js/plugins/layer/layer.js"></script>
+
     <!-- 欢迎提醒 -->
 		<script type="text/javascript">
 	    $(document).ready(function () {
@@ -222,7 +222,7 @@
 	            // (string | mandatory) the text inside the notification
 	            text: '上次登录时间：'+new Date(),
 	            // (string | optional) the image to display on the left
-	            image: '/assets/img/ui-sam.jpg',
+	            image: '/static/assets/img/ui-sam.jpg',
 	            // (bool | optional) if you want it to fade out on its own or just sit there
 	            sticky: false,
 	            // (int | optional) the time you want it to be alive for before fading out
@@ -234,8 +234,8 @@
 	        return false;
 	    });
 		</script>
-    <script src="../../js/commons/common.js"></script>
-  	<script src="../../js/vue.js"></script>
-  	<script src="../../js/admin/index.js"></script>
+    <script src="../../static/js/commons/common.js"></script>
+  	<script src="../../static/js/vue.js"></script>
+  	<script src="../../static/js/admin/index.js"></script>
   </body>
 </html>

@@ -6,7 +6,7 @@ $(function(){
 function loadToken(app) {
 	$.ajax({
         type:"get",
-        url: "/admin/token",
+        url: "/token",
         success: function(data){
             if(data.code === 0){
 				app.user=data.token;
@@ -28,10 +28,10 @@ var header_app = new Vue({
 			confirm('确定退出登录？', function(id){
 				$.ajax({
 					type:"get",
-					url: "/admin/logout",
+					url: "/logout",
 					success: function(data){
 						if(data.code === 0){
-							window.location.href='/module/admin/login';
+							window.location.href='/login';
 						}
 						else{
 							alert('系统异常，请联系管理员');
@@ -45,7 +45,7 @@ var header_app = new Vue({
 			var m = {};
 			$.ajax({
 				type:"get",
-				url: "/data/inboxData.json",
+				url: "/static/data/inboxData.json",
 				success: function(data){
  					if(data.num){
  						app.newMessages = data;

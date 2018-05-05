@@ -29,8 +29,14 @@ public class AdminRealm  extends AuthorizingRealm  {
 
 	@Override
 	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
+		Administrator admin = (Administrator) principals.getPrimaryPrincipal();
+		// 存放权限信息
 		SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
 		info.addRole("admin");
+		// 是否为超级管理员
+		if (admin.getaLevel()==1) {
+			info.addRole("supper_admin");
+		}
 		return info;
 	}
 

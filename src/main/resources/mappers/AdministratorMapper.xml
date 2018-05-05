@@ -21,6 +21,12 @@
     from administrator
     where a_uuid = #{aUuid,jdbcType=VARCHAR}
   </select>
+  <select id="selectByAID" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from administrator
+    where a_id = #{aid,jdbcType=VARCHAR}
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from administrator
     where a_uuid = #{aUuid,jdbcType=VARCHAR}

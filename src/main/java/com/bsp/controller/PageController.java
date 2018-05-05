@@ -5,11 +5,11 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.bsp.enums.BussCode;
@@ -23,6 +23,7 @@ import com.bsp.utils.Result;
  *
  */
 @Controller
+@Scope(value="prototype")
 public class PageController {
 	private static final Logger logger = LoggerFactory.getLogger(PageController.class);
 	
@@ -38,15 +39,6 @@ public class PageController {
 	public String showPage(HttpServletRequest request, @PathVariable("moduleName") String moduleName,
 			@PathVariable("htmlName") String htmlName) {
 		return "/" + moduleName + "/" + htmlName;
-	}
-
-	/**
-	 * 账号登陆
-	 */
-	@ResponseBody
-	@RequestMapping(value = "/sign_in", method = RequestMethod.POST)
-	public Result signIn(@RequestParam String ATM_ID, @RequestParam String cardNumber, @RequestParam String passwd) {
-		return Result.success();
 	}
 
 	/**
