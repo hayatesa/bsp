@@ -29,4 +29,10 @@ public class AdminService implements IAdminService {
 		return admin;
 	}
 
+	@Override
+	public void changePassword(Administrator admin, String currentPassword, String newPassword,
+			String confirmPassword) {
+		
+	}
+
 }

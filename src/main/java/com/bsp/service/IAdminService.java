@@ -13,4 +13,12 @@ public interface IAdminService {
 	 */
 	Administrator selectByAID(String username);
 	
+	/**
+	 * 修改密码
+	 * @param admin 登录对象
+	 * @param currentPassword 原密码
+	 * @param newPassword 新密码
+	 * @param confirmPassword 确认密码
+	 */
+	void changePassword(Administrator admin, String currentPassword, String newPassword, String confirmPassword);
 }

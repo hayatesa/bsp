@@ -5,6 +5,8 @@ import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
 
+import com.bsp.entity.Administrator;
+
 /**
  * Shiro工具类
  */
@@ -29,8 +31,8 @@ public class ShiroUtils {
 	/**
 	 * 获取登录用户
 	 */
-	public static Object getToken() {
-		return SecurityUtils.getSubject().getPrincipal();
+	public static Administrator getToken() {
+		return (Administrator)SecurityUtils.getSubject().getPrincipal();
 	}
 
 	public static void setSessionAttribute(Object key, Object value) {
