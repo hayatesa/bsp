@@ -39,10 +39,14 @@ public class AdminController extends BaseController {
 			adminService.changePassword(admin, currentPassword, newPassword, confirmPassword);
 		} catch (DataUpdateException e) {
 			e.printStackTrace();
+			logger.error(e.getMessage());
 			return Result.error(e.getMessage());
 		} catch (SystemErrorException e) {
+			e.printStackTrace();
+			logger.error(e.getMessage());
 			return Result.error(e.getMessage());
 		}
+		logger.info(admin.getaId()+"修改密码成功");
 		return Result.success();
 	}
 }

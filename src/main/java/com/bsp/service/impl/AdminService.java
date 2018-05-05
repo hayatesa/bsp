@@ -1,12 +1,15 @@
 package com.bsp.service.impl;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.bsp.dao.AdministratorMapper;
 import com.bsp.entity.Administrator;
+import com.bsp.exceptions.DataUpdateException;
 import com.bsp.exceptions.SystemErrorException;
 import com.bsp.service.IAdminService;
+import com.bsp.utils.Cryptography;
 
 @Service("adminService")
 public class AdminService implements IAdminService {
@@ -32,7 +35,27 @@ public class AdminService implements IAdminService {
 	@Override
 	public void changePassword(Administrator admin, String currentPassword, String newPassword,
 			String confirmPassword) {
-		
+		if (!StringUtils.equals(newPassword, confirmPassword)) {
+			throw new DataUpdateException("更改失败，密两次输入密码不一致");
+		}
+		Administrator newAdmin = null;
+		try {
+			newAdmin = administratorMapper.selectByPrimaryKey(admin.getaUuid());
+		} catch (Exception e) {
+			throw new SystemErrorException("密码更改失败，系统异常，请联系管理员");
+		}
+		boolean correct = Cryptography.checkMd5Hash(newAdmin.getaPassword(), currentPassword, newAdmin.getaId());
+		if (!correct) {
+			throw new DataUpdateException("密码更改失败，原密码错误");
+		}
+		newPassword = Cryptography.MD5Hash(newPassword, newAdmin.getaId());
+		// 只更新密码
+		newAdmin.setaPassword(newPassword);
+		try {
+			administratorMapper.updateByPrimaryKeySelective(newAdmin);
+		} catch (Exception e) {
+			throw new SystemErrorException("系统异常，密码更改失败，请联系管理员");
+		}
 	}
 
 }

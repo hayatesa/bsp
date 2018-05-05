@@ -11,7 +11,7 @@
  Target Server Version : 50721
  File Encoding         : 65001
 
- Date: 03/05/2018 14:41:50
+ Date: 05/05/2018 15:42:28
 */
 
 SET NAMES utf8mb4;
@@ -25,10 +25,11 @@ CREATE TABLE `administrator`  (
   `a_uuid` varchar(33) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '管理员唯一标识',
   `a_id` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '管理员登录账号',
   `a_password` varchar(33) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '密码',
-  `a_name` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '运营方名称',
+  `a_name` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '姓名',
   `a_phone` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '联系电话',
   `a_address` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '运营方地址',
   `a_comments` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '运营者描述',
+  `a_level` int(20) NOT NULL DEFAULT 2 COMMENT '管理员权限等级，1为系统管理员，2为普通管理员',
   `is_delete` tinyint(4) NOT NULL COMMENT '是否可用，登录时需要判断，0没有禁用，1被禁用',
   PRIMARY KEY (`a_uuid`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
@@ -36,7 +37,7 @@ CREATE TABLE `administrator`  (
 -- ----------------------------
 -- Records of administrator
 -- ----------------------------
-INSERT INTO `administrator` VALUES ('e55b4494e04146aca17c3c59ca760bcc', 'admin', 'f6fdffe48c908deb0f4c3bd36c032e72', '溶酶菌', '13824865025', '中国广东', '菌です、よろしくお願いします。', 0);
+INSERT INTO `administrator` VALUES ('e55b4494e04146aca17c3c59ca760bcc', 'admin', 'f6fdffe48c908deb0f4c3bd36c032e72', '溶酶菌', '13824865025', '中国广东', '菌です、よろしくお願いします。', 1, 0);
 
 -- ----------------------------
 -- Table structure for check_demand_book
@@ -232,6 +233,19 @@ CREATE TABLE `mapping`  (
   `m_value` longtext CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT ' 值',
   PRIMARY KEY (`mapkey`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+
+-- ----------------------------
+-- Records of mapping
+-- ----------------------------
+INSERT INTO `mapping` VALUES ('contact_emails', 'bsp@163.com</>bsp@126.com');
+INSERT INTO `mapping` VALUES ('contact_phones', '[{\"name\":\"邬同学\",\"phone\":\"13800138000\"},{\"name\":\"陈同学\",\"phone\":\"13800138001\"},{\"name\":\"赖同学\",\"phone\":\"13800138002\"},{\"name\":\"梁同学\",\"phone\":\"13800138003\"}]');
+INSERT INTO `mapping` VALUES ('msg_template', '待定');
+INSERT INTO `mapping` VALUES ('overtime_agree_apply', '7');
+INSERT INTO `mapping` VALUES ('overtime_book_apply_check', '7');
+INSERT INTO `mapping` VALUES ('overtime_bring_to_transfer_station', '3');
+INSERT INTO `mapping` VALUES ('overtime_take_from_transfer_station', '7');
+INSERT INTO `mapping` VALUES ('qq_group', '7895426416</>1891578894');
+INSERT INTO `mapping` VALUES ('transfer_station', '肇庆学院图书馆102室');
 
 -- ----------------------------
 -- Table structure for news
@@ -630,9 +644,14 @@ CREATE TABLE `user`  (
   `uuid` varchar(33) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '用户唯一标识符号',
   `mail` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '用户邮箱，作为用户登录账号',
   `password` varchar(33) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '用户登录账号密码',
-  `is_delete` tinyint(4) NOT NULL COMMENT '0没有禁用，1被禁用，默认为0',
+  `is_delete` tinyint(4) NOT NULL DEFAULT 0 COMMENT '0没有禁用，1被禁用，默认为0',
   PRIMARY KEY (`uuid`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+
+-- ----------------------------
+-- Records of user
+-- ----------------------------
+INSERT INTO `user` VALUES ('f01c3b8acd114a689e237564d925789b', '358739303@qq.com', '44f2ee414b1fd8cdae0113803fcc968b', 0);
 
 -- ----------------------------
 -- Table structure for user_infor
