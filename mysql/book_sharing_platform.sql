@@ -11,7 +11,7 @@
  Target Server Version : 50721
  File Encoding         : 65001
 
- Date: 05/05/2018 15:42:28
+ Date: 06/05/2018 22:43:22
 */
 
 SET NAMES utf8mb4;
@@ -239,7 +239,7 @@ CREATE TABLE `mapping`  (
 -- ----------------------------
 INSERT INTO `mapping` VALUES ('contact_emails', 'bsp@163.com</>bsp@126.com');
 INSERT INTO `mapping` VALUES ('contact_phones', '[{\"name\":\"邬同学\",\"phone\":\"13800138000\"},{\"name\":\"陈同学\",\"phone\":\"13800138001\"},{\"name\":\"赖同学\",\"phone\":\"13800138002\"},{\"name\":\"梁同学\",\"phone\":\"13800138003\"}]');
-INSERT INTO `mapping` VALUES ('msg_template', '待定');
+INSERT INTO `mapping` VALUES ('msg_template', '待定s%');
 INSERT INTO `mapping` VALUES ('overtime_agree_apply', '7');
 INSERT INTO `mapping` VALUES ('overtime_book_apply_check', '7');
 INSERT INTO `mapping` VALUES ('overtime_bring_to_transfer_station', '3');
