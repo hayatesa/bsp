@@ -42,6 +42,7 @@ public class AdminRealm  extends AuthorizingRealm  {
 
 	@Override
 	protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
+		System.err.println("doGetAuthenticationInfo");
 		String username = (String) token.getPrincipal();
 		Administrator admin  = null;
 		try {
@@ -61,5 +62,5 @@ public class AdminRealm  extends AuthorizingRealm  {
 		// 参数分别是对象，凭证(会拿去和登陆逻辑参数比较)
 		return new SimpleAuthenticationInfo(admin, admin.getaPassword(), getName());
 	}
-
+	
 }

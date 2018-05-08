@@ -1,5 +1,6 @@
 package com.bsp.controller;
 
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -12,12 +13,13 @@ import com.bsp.dao.SecondaryClassificationMapper;
 import com.bsp.entity.Administrator;
 import com.bsp.entity.PrimaryClassification;
 import com.bsp.entity.SecondaryClassification;
+import com.bsp.utils.Result;
 
 
 @Controller
 @Scope(value="prototype")
 @RequestMapping("/test")
-public class TestController {
+public class TestController extends BaseController {
 	
 	@Autowired private SecondaryClassificationMapper secondaryClassificationMapper;
 	@Autowired private PrimaryClassificationMapper primaryClassificationMapper;
@@ -53,4 +55,15 @@ public class TestController {
 		return administratorMapper.selectByPrimaryKey("e55b4494e04146aca17c3c59ca760bcc");
 	}
 	
+	/**
+	 * 测试角色权限
+	 * 
+	 * @return
+	 */
+	@RequiresRoles("ttt")
+	@ResponseBody
+	@RequestMapping("/role")
+	public Result tt() {
+		return Result.success("ok");
+	}
 }

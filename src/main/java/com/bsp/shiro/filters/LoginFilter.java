@@ -5,7 +5,6 @@ import java.util.Map;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
 
 import org.apache.shiro.web.filter.AccessControlFilter;
 
@@ -19,7 +18,7 @@ public class LoginFilter  extends AccessControlFilter {
 	protected boolean isAccessAllowed(ServletRequest request,
 			ServletResponse response, Object mappedValue) throws Exception {
 		Administrator token = (Administrator)ShiroUtils.getToken();
-		System.err.println(((HttpServletRequest)request).getRequestURI());
+		//System.err.println(((HttpServletRequest)request).getRequestURI());
 		if(null != token || isLoginRequest(request, response)){// && isEnabled()
             return Boolean.TRUE;
         } 

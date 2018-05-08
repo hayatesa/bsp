@@ -31,7 +31,7 @@ var doLogin = function () {
         success: function (data) {
             if (data.code==0) {
                 app.msg='<span class="pull-left text-success">登录成功，正在跳转...</span>';
-                window.location.href='/module/admin/index';
+                window.location.href='/';
             } else {
                 _change();//重新获取验证码
                 app.msg='<span class="pull-left text-danger">'+data.msg+'</span>';

@@ -29,16 +29,8 @@ import com.bsp.vo.AdministratorVO;
 
 @Controller
 @Scope(value="prototype")
-public class LoginController {
+public class LoginController extends BaseController {
 	private static final Logger logger = LoggerFactory.getLogger(AdminController.class);
-	
-	/**
-	 * 账号登陆页面
-	 */
-	@RequestMapping(value = "/login", method = RequestMethod.GET)
-	public String signIn() {
-		return "/admin/login";
-	}
 	
 	/**
 	 * 获取登录用户
@@ -58,7 +50,7 @@ public class LoginController {
 		AdministratorVO vo = new AdministratorVO();
 		Result result = Result.success();
 		BeanUtils.copyProperties(administrator, vo);
-		result.put("token", administrator);
+		result.put("token", vo);
 		return result;
 	}
 	

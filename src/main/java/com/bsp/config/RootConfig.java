@@ -22,7 +22,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 @MapperScan(basePackages = { "com.bsp.dao" }, sqlSessionFactoryRef = "sqlSessionFactory") // Mapper接口扫描
 @EnableTransactionManagement // 开启事务管理
 @EnableAspectJAutoProxy(proxyTargetClass=true) // 配置切面
-@ComponentScan(basePackages = { "com.bsp.service", "com.bsp.controller" }, excludeFilters = {
+@ComponentScan(basePackages = { "com.bsp.service", "com.bsp.shiro" }, excludeFilters = {
 		@Filter(type = FilterType.ANNOTATION, value = EnableWebMvc.class) })
 public class RootConfig {
 	
