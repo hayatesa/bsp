@@ -30,7 +30,7 @@ import com.bsp.vo.AdministratorVO;
 @Controller
 @Scope(value="prototype")
 public class LoginController extends BaseController {
-	private static final Logger logger = LoggerFactory.getLogger(AdminController.class);
+	private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
 	
 	/**
 	 * 获取登录用户
