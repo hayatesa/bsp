@@ -68,10 +68,10 @@ public class UserService implements IUserService {
 	}
 
 	@Override
-	public void lockOrDeleteUser(User user) {
+	public void lockOrDeleteUser(String uuid) {
 		User newUser;
 		try {
-			newUser = userMapper.selectByPrimaryKey(user.getUuid());
+			newUser = userMapper.selectByPrimaryKey(uuid);
 			newUser.lockOrDelete();
 			userMapper.updateByPrimaryKeySelective(newUser);
 		} catch (Exception e) {

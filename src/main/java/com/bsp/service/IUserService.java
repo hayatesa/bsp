@@ -22,8 +22,7 @@ public interface IUserService {
 	
 	/**
 	 * 冻结或（软）删除用户
-	 * @param user
 	 */
-	void lockOrDeleteUser(User user);
+	void lockOrDeleteUser(String uuid);
 
 }
