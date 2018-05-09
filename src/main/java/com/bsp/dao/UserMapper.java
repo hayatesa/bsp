@@ -11,5 +11,5 @@ public interface UserMapper extends GenericMapper<User, String> {
 	 * @param mail 邮箱
 	 * @return 用户列表
 	 */
-	List<User> getUserByMail(String mail);
+	List<User> selectByMail(String mail);
 }

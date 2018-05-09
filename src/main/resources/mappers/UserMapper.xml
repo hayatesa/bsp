@@ -16,6 +16,12 @@
     from user
     where uuid = #{uuid,jdbcType=VARCHAR}
   </select>
+  <select id="selectByMail" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from user
+    where mail = #{mail,jdbcType=VARCHAR}
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from user
     where uuid = #{uuid,jdbcType=VARCHAR}

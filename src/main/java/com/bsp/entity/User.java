@@ -17,7 +17,11 @@ public class User extends BaseEntity {
 
     // 0没有禁用，1被禁用，默认为0
     private Byte isDelete;
-
+    
+    public void lockOrDelete() {
+    	this.isDelete = 1;
+    }
+    
     /**
      * 用户唯一标识符号
      */
