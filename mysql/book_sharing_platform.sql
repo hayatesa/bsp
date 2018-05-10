@@ -11,7 +11,7 @@
  Target Server Version : 50721
  File Encoding         : 65001
 
- Date: 06/05/2018 22:43:22
+ Date: 10/05/2018 22:56:07
 */
 
 SET NAMES utf8mb4;
@@ -239,6 +239,10 @@ CREATE TABLE `mapping`  (
 -- ----------------------------
 INSERT INTO `mapping` VALUES ('contact_emails', 'bsp@163.com</>bsp@126.com');
 INSERT INTO `mapping` VALUES ('contact_phones', '[{\"name\":\"邬同学\",\"phone\":\"13800138000\"},{\"name\":\"陈同学\",\"phone\":\"13800138001\"},{\"name\":\"赖同学\",\"phone\":\"13800138002\"},{\"name\":\"梁同学\",\"phone\":\"13800138003\"}]');
+INSERT INTO `mapping` VALUES ('msg_email_from', 'books_sharing@126.com');
+INSERT INTO `mapping` VALUES ('msg_email_host', 'smtp.126.com');
+INSERT INTO `mapping` VALUES ('msg_email_password', '123456bsp');
+INSERT INTO `mapping` VALUES ('msg_email_username', 'books_sharing');
 INSERT INTO `mapping` VALUES ('msg_template', '待定s%');
 INSERT INTO `mapping` VALUES ('overtime_agree_apply', '7');
 INSERT INTO `mapping` VALUES ('overtime_book_apply_check', '7');
@@ -651,7 +655,7 @@ CREATE TABLE `user`  (
 -- ----------------------------
 -- Records of user
 -- ----------------------------
-INSERT INTO `user` VALUES ('f01c3b8acd114a689e237564d925789b', '358739303@qq.com', '44f2ee414b1fd8cdae0113803fcc968b', 0);
+INSERT INTO `user` VALUES ('f01c3b8acd114a689e237564d925789b', '358739303@qq.com', 'b8cd35019d332fc19bb4a06e3e2e1998', 0);
 
 -- ----------------------------
 -- Table structure for user_infor
