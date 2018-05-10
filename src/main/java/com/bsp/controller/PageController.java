@@ -27,7 +27,7 @@ public class PageController {
 	 */
 	@RequestMapping("/p/{htmlName}")
 	public String showPage(HttpServletRequest request, @PathVariable("htmlName") String htmlName) {
-		return "/admin" + htmlName;
+		return "/admin/" + htmlName;
 	}
 	
 	/**
