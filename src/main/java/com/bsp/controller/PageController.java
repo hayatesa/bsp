@@ -22,14 +22,12 @@ public class PageController {
 	 * 控制页面跳转
 	 *
 	 * @param request
-	 * @param moduleName 模块名
 	 * @param htmlName 页面
 	 * @return
 	 */
-	@RequestMapping("/module/{moduleName}/{htmlName}")
-	public String showPage(HttpServletRequest request, @PathVariable("moduleName") String moduleName,
-			@PathVariable("htmlName") String htmlName) {
-		return "/" + moduleName + "/" + htmlName;
+	@RequestMapping("/p/{htmlName}")
+	public String showPage(HttpServletRequest request, @PathVariable("htmlName") String htmlName) {
+		return "/admin" + htmlName;
 	}
 	
 	/**

@@ -1,6 +1,6 @@
 
 $(function(){
-	fillPage('/module/admin/userPage')
+	fillPage('/p/userPage')
 })
 
 function loadToken(app) {
@@ -72,7 +72,7 @@ var header_app = new Vue({
 			return '&middot;&middot;';
 		},
 		settings:function(){
-			sidebar_app.go('/module/admin/settings','系统设置');
+			sidebar_app.go('/p/settings','系统设置');
 		}
 	},
 	computed :{
