@@ -8,12 +8,22 @@ package com.bsp.dto;
  */
 public class QueryObject {
 
-	private Integer limit; // 页大小
-	private Integer pageNumber; // 页码
-	private String order; // 排序，desc|asc
+	private Integer limit = 10; // 页大小
+	private Integer pageNumber = 1; // 页码
+	private String order = "asc"; // 排序，desc|asc
 	private String sort; // 排序字段
 	private String search; // 搜索关键字
 	
+	public QueryObject() {
+	}
+	
+	/**
+	 * 获取查询开始索引
+	 */
+	public Integer getStartIndex() {
+		return (pageNumber - 1) * limit;
+	}
+
 	/**
 	 * 封装分页请求参数
 	 * @param limit 页大小
