@@ -7,7 +7,9 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import com.bsp.dto.PageParams;
 import com.bsp.entity.Administrator;
 import com.bsp.exceptions.DataUpdateException;
 import com.bsp.exceptions.SystemErrorException;
@@ -27,10 +29,17 @@ public class AdminController extends BaseController {
 	public void setAdminService(IAdminService adminService) {
 		this.adminService = adminService;
 	}
-
+	
 	/**
-	 * 修改密码
-	 * @return
+	 * 更新资料，只能修改当前用户资料的部分字段，实现时请完成参数列表
+	 */
+	@RequestMapping("update")
+	public Result update() {
+		return Result.success();
+	}
+	
+	/**
+	 * 修改当前用户密码
 	 */
 	@RequestMapping(value="password", method=RequestMethod.POST)
 	public Result changePassword(String currentPassword, String newPassword, String confirmPassword) {
@@ -47,6 +56,32 @@ public class AdminController extends BaseController {
 			return Result.error(e.getMessage());
 		}
 		logger.info(admin.getaId()+"修改密码成功");
+		return Result.success();
+	}
+	
+	/**
+	 * 获取管理员列表
+	 * @param pageParams 分页参数
+	 */
+	@RequestMapping("list")
+	public Result list(PageParams pageParams) {
+		return Result.success();
+	}
+	
+	/**
+	 * 添加管理员，只有超级管理员能调用，实现时请完成参数列表
+	 */
+	@RequestMapping("add")
+	public Result add() {
+		return Result.success();
+	}
+	
+	/**
+	 * 禁用|删除一个管理员，只有超级管理员能调用，不能禁用当前用户
+	 * @param uuid 管理员id
+	 */
+	@RequestMapping("lockOrDelete")
+	public Result lockOrDelete(@RequestParam("uuid") String uuid) {
 		return Result.success();
 	}
 }
