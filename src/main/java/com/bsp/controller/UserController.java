@@ -7,7 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.bsp.dto.PageParams;
+import com.bsp.dto.QueryObject;
 import com.bsp.exceptions.SystemErrorException;
 import com.bsp.service.IUserService;
 import com.bsp.utils.Result;
@@ -41,7 +41,7 @@ public class UserController extends BaseController {
 	 * @return
 	 */
 	@RequestMapping("list")
-	public Result list(PageParams pageParams) {
+	public Result list(QueryObject pageParams) {
 		return Result.success();
 	}
 	

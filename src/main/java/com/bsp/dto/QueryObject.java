@@ -6,7 +6,7 @@ package com.bsp.dto;
  * @author hayate
  *
  */
-public class PageParams {
+public class QueryObject {
 
 	private Integer limit; // 页大小
 	private Integer pageNumber; // 页码
@@ -22,7 +22,7 @@ public class PageParams {
 	 * @param sort 排序字段
 	 * @param search 搜索关键字
 	 */
-	public PageParams(Integer limit, Integer pageNumber, String order, String sort, String search) {
+	public QueryObject(Integer limit, Integer pageNumber, String order, String sort, String search) {
 		super();
 		this.limit = limit;
 		this.pageNumber = pageNumber;

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.bsp.dto.PageParams;
+import com.bsp.dto.QueryObject;
 import com.bsp.entity.Administrator;
 import com.bsp.exceptions.DataUpdateException;
 import com.bsp.exceptions.SystemErrorException;
@@ -64,7 +64,7 @@ public class AdminController extends BaseController {
 	 * @param pageParams 分页参数
 	 */
 	@RequestMapping("list")
-	public Result list(PageParams pageParams) {
+	public Result list(QueryObject pageParams) {
 		return Result.success();
 	}
 	
