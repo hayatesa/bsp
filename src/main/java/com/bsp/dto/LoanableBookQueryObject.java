@@ -5,7 +5,7 @@ import com.bsp.entity.SecondaryClassification;
 
 public class LoanableBookQueryObject extends QueryObject{
 	
-	private PrimaryClassification primaryClassification; // 一级分类设置,二级分类后无效
+	private PrimaryClassification primaryClassification; // 一级分类,设置二级分类后无效
 	private SecondaryClassification secondaryClassification; // 二级分类
 	
 	public LoanableBookQueryObject() {
