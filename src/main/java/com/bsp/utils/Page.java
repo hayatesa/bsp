@@ -9,15 +9,15 @@ import java.util.List;
 public class Page implements Serializable {
 	private static final long serialVersionUID = 1L;
 	//总记录数
-	private int totalCount;
+	private int total;
 	//每页记录数
-	private int pageSize;
+	private int limit;
 	//总页数
 	private int totalPage;
 	//当前页数
 	private int currPage;
 	//列表数据
-	private List<?> list;
+	private List<?> rows;
 
 	/**
 	 * 分页
@@ -27,27 +27,27 @@ public class Page implements Serializable {
 	 * @param currPage    当前页数
 	 */
 	public Page(List<?> list, int totalCount, int pageSize, int currPage) {
-		this.list = list;
-		this.totalCount = totalCount;
-		this.pageSize = pageSize;
+		this.rows = list;
+		this.total = totalCount;
+		this.limit = pageSize;
 		this.currPage = currPage;
 		this.totalPage = (int)Math.ceil((double)totalCount/pageSize);
 	}
 
 	public int getTotalCount() {
-		return totalCount;
+		return total;
 	}
 
 	public void setTotalCount(int totalCount) {
-		this.totalCount = totalCount;
+		this.total = totalCount;
 	}
 
 	public int getPageSize() {
-		return pageSize;
+		return limit;
 	}
 
 	public void setPageSize(int pageSize) {
-		this.pageSize = pageSize;
+		this.limit = pageSize;
 	}
 
 	public int getTotalPage() {
@@ -67,11 +67,11 @@ public class Page implements Serializable {
 	}
 
 	public List<?> getList() {
-		return list;
+		return rows;
 	}
 
 	public void setList(List<?> list) {
-		this.list = list;
+		this.rows = list;
 	}
 
 
