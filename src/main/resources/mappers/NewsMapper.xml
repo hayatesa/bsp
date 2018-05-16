@@ -5,7 +5,7 @@
     <id column="n_id" property="nId" jdbcType="INTEGER" />
     <result column="n_subject" property="nSubject" jdbcType="VARCHAR" />
     <result column="news_time" property="newsTime" jdbcType="TIMESTAMP" />
-    <association property="secondaryClassification" column="sc_id" javaType="SecondaryClassification" select="com.bsp.dao.SecondaryClassificationMapper.selectByPrimaryKey" />
+    <association property="user" column="uuid" javaType="User" select="com.bsp.dao.UserMapper.selectByPrimaryKey" />
   </resultMap>
   <resultMap id="ResultMapWithBLOBs" type="com.bsp.entity.News" extends="BaseResultMap" >
     <result column="n_content" property="nContent" jdbcType="LONGVARCHAR" />
@@ -16,6 +16,28 @@
   <sql id="Blob_Column_List" >
     n_content
   </sql>
+  <select id="getNewMsgAmount" resultType="java.lang.Integer" parameterType="java.lang.String" >
+    select COUNT(*)
+    from news
+    where uuid = #{uuid,jdbcType=VARCHAR}
+  </select>
+  <select id="getTotalCount" resultType="java.lang.Integer" parameterType="com.bsp.dto.QueryObject" >
+    select COUNT(*)
+    from news
+    where uuid = #{search,jdbcType=VARCHAR}
+  </select>
+  <select id="selectByQueryObject" resultMap="ResultMapWithBLOBs" parameterType="com.bsp.dto.QueryObject" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from news
+    where uuid = #{search,jdbcType=VARCHAR}
+    ORDER BY news_time desc
+    <if test="startIndex>-1">
+		LIMIT #{startIndex},#{limit}
+	</if>
+  </select>
   <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
@@ -24,6 +46,10 @@
     from news
     where n_id = #{nId,jdbcType=INTEGER}
   </select>
+  <delete id="deleteByUserIdAndNid" parameterType="java.util.Map" >
+    delete from news
+    where n_id = #{nId,jdbcType=INTEGER} AND uuid = #{uuid,jdbcType=VARCHAR}
+  </delete>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from news
     where n_id = #{nId,jdbcType=INTEGER}
