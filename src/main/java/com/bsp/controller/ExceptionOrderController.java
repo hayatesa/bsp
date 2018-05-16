@@ -24,6 +24,7 @@ public class ExceptionOrderController {
 	@RequestMapping("list")
 	public Result list(QueryObject queryObject) {
 		return Result.success();
-	}
+	} 
+	
 	
 }
