@@ -23,7 +23,17 @@ public class News extends BaseEntity {
     // 通知消息内容
     private String nContent;
 
-    /**
+    public News (){}
+    
+    public News(String nSubject, Date newsTime, User user, String nContent) {
+		super();
+		this.nSubject = nSubject;
+		this.newsTime = newsTime;
+		this.user = user;
+		this.nContent = nContent;
+	}
+
+	/**
      * 通知消息记录ID，数字自增长	
      */
     public Integer getnId() {

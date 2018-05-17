@@ -86,7 +86,7 @@
       <if test="receiveAdmin.aUuid != null" >
         receive_uuid,
       </if>
-      <if test="backAdmin.aUuid. != null" >
+      <if test="backAdmin.aUuid != null" >
         back_uuid,
       </if>
     </trim>
@@ -130,7 +130,7 @@
       <if test="receiveAdmin.aUuid != null" >
         #{receiveAdmin.aUuid,jdbcType=VARCHAR},
       </if>
-      <if test="backAdmin.aUuid. != null" >
+      <if test="backAdmin.aUuid != null" >
         #{backAdmin.aUuid,jdbcType=VARCHAR},
       </if>
     </trim>
@@ -174,7 +174,7 @@
       <if test="receiveAdmin.aUuid != null" >
         receive_uuid = #{receiveAdmin.aUuid,jdbcType=VARCHAR},
       </if>
-      <if test="backAdmin.aUuid. != null" >
+      <if test="backAdmin.aUuid != null" >
         back_uuid = #{backAdmin.aUuid,jdbcType=VARCHAR},
       </if>
     </set>

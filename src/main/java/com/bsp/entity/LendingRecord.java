@@ -207,7 +207,7 @@ public class LendingRecord extends BaseEntity {
     /**
      * 借阅人
      */
-    public User getUuid() {
+    public User getUser() {
         return user;
     }
 

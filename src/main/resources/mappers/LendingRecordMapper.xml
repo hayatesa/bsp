@@ -22,6 +22,12 @@
     actual_return_time, take_back_time, lr_struts, loan_phone, lb_id, uuid, receive_uuid, 
     back_uuid
   </sql>
+  
+  <select id="selectAllLendingRecord" resultMap="BaseResultMap" >
+    select 
+    <include refid="Base_Column_List" />
+    from lending_record
+  </select>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
