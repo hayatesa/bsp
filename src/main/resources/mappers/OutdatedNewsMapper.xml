@@ -16,6 +16,23 @@
   <sql id="Blob_Column_List" >
     n_content
   </sql>
+  <select id="getTotalCount" resultType="java.lang.Integer" parameterType="com.bsp.dto.QueryObject" >
+    select COUNT(*)
+    from outdated_news
+    where uuid = #{search,jdbcType=VARCHAR}
+  </select>
+  <select id="selectByQueryObject" resultMap="ResultMapWithBLOBs" parameterType="com.bsp.dto.QueryObject" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from outdated_news
+    where uuid = #{search,jdbcType=VARCHAR}
+    ORDER BY news_time desc
+    <if test="startIndex>-1">
+		LIMIT #{startIndex},#{limit}
+	</if>
+  </select>
   <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
