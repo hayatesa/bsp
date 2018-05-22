@@ -35,7 +35,7 @@ public class LendingTimerTaskService implements ILendingTimerTaskService {
 	@Autowired
 	private LendingHistoryMapper lendingHistoryMapper;
 	private int daySeconds = 3600 * 24; // 一天的秒数
-	private int intervalUpdateSeconds = 60; // 间隔30更新一次
+	private int intervalUpdateSeconds = 10800; // 每天间隔3小时更新一次
 
 	public void setLendingRecordMapper(LendingRecordMapper lendingRecordMapper) {
 		this.lendingRecordMapper = lendingRecordMapper;
@@ -60,22 +60,40 @@ public class LendingTimerTaskService implements ILendingTimerTaskService {
 	public void checkLendingRecordAllOvertime() {
 		// 现在的服务器的时间
 		Date nowDate = new Date();
-		// 数据库所有的借出记录
-		List<LendingRecord> lendingRecords = lendingRecordMapper.selectAllLendingRecord();
-		List<MailEntity> mailBeans = new ArrayList<MailEntity>(); 	// 批量存放邮件
-		List<News> newss = new ArrayList<News>(); 					// 批量存放通知消息
+		// 借出人超时未同意天数
+		int overtimeAgreeApply = Integer
+				.valueOf((mappingMapper.selectByPrimaryKey("overtime_agree_apply").getmValue()));
+		// 借出人超时未将图书送到运营点的天数
+		int overtimeBringToTransferStation = Integer
+				.valueOf((mappingMapper.selectByPrimaryKey("overtime_bring_to_transfer_station").getmValue()));
+		// 借阅者超时未将图书取走的天数
+		int overtimeTakeFromTransferStation = Integer
+				.valueOf((mappingMapper.selectByPrimaryKey("overtime_take_from_transfer_station").getmValue()));
+		// 借出人超时未将图书取回的天数
+		int overtimeTakeBackFromTransferStation = Integer
+				.valueOf((mappingMapper.selectByPrimaryKey("overtime_take_back_from_transfer_station").getmValue()));
+		// 数据库所有的状态为0、4、6、7、8、10借出记录
+		List<LendingRecord> lendingRecords = lendingRecordMapper.selectBylrStrutsLendingRecord();
+		List<MailEntity> mailBeans = new ArrayList<MailEntity>(); // 批量存放邮件
+		List<News> newss = new ArrayList<News>(); // 批量存放通知消息
 		// 遍历查询
 		for (LendingRecord lendingRecord : lendingRecords) {
 			if (lendingRecord.getLrStruts() == 0) {
-				isOvertimeAgreeApply(lendingRecord, mailBeans, newss, nowDate);
+				isOvertimeAgreeApply(lendingRecord, mailBeans, newss, nowDate, overtimeAgreeApply);
 			} else if (lendingRecord.getLrStruts() == 4) {
-				isOvertimeBringToTransferStation(lendingRecord, mailBeans, newss, nowDate);
+				isOvertimeBringToTransferStation(lendingRecord, mailBeans, newss, nowDate,
+						overtimeBringToTransferStation);
 			} else if (lendingRecord.getLrStruts() == 6) {
-				isOvertimeTakeFromTransferStation(lendingRecord, mailBeans, newss, nowDate);
+				isOvertimeTakeFromTransferStation(lendingRecord, mailBeans, newss, nowDate,
+						overtimeTakeFromTransferStation);
+			} else if (lendingRecord.getLrStruts() == 7) {
+				isOvertimeTakeBackFromTransferStation(lendingRecord, mailBeans, newss, nowDate,
+						overtimeTakeBackFromTransferStation, overtimeTakeFromTransferStation);
 			} else if (lendingRecord.getLrStruts() == 8) {
-
+				isOvertimeReturnToTransferStation(lendingRecord, mailBeans, newss, nowDate);
 			} else if (lendingRecord.getLrStruts() == 10) {
-
+				isOvertimeTakeBackFromTransferStation2(lendingRecord, mailBeans, newss, nowDate,
+						overtimeTakeBackFromTransferStation);
 			}
 		}
 		// 批量发送邮件
@@ -95,19 +113,216 @@ public class LendingTimerTaskService implements ILendingTimerTaskService {
 	}
 
 	/**
-	 * 状态为6表示借出人已经把书送到运营点，判断借阅人是否逾期未把图书取走
+	 * 状态为10，借阅者已经归还图书，等待借出人取书，判断借出人是否逾期取书。逾期10-11
+	 * @param lendingRecord
+	 * @param mailBeans
+	 * @param newss
+	 * @param nowDate
+	 * @param overtimeTakeBackFromTransferStation
+	 */
+	private void isOvertimeTakeBackFromTransferStation2(LendingRecord lendingRecord, List<MailEntity> mailBeans,
+			List<News> newss, Date nowDate, int overtimeTakeBackFromTransferStation) {
+		// 借阅者真实的还书时间
+		Date actualReturnTime = lendingRecord.getActualReturnTime();
+
+		// 相差的时间秒数
+		long seconds = (nowDate.getTime() - actualReturnTime.getTime()) / 1000;
+
+		if (seconds >= (overtimeTakeBackFromTransferStation - 2) * daySeconds
+				&& seconds < ((overtimeTakeBackFromTransferStation - 2) * daySeconds
+						+ intervalUpdateSeconds)) {
+			/*
+			 * 还有两天时间就超时，但借阅人没有把图书取走。 发送通知信息到借出人账号和发送邮件提醒。
+			 */
+			String destMail = lendingRecord.getLoanableBook().getUser().getMail();
+
+			// 生成邮件主题内容以及添加邮件到mailBeans
+			String subject = "书籍取回提醒"; // 邮件主题
+			String content = "您同意借出的《" + lendingRecord.getLoanableBook().getLbName()
+					+ "》图书，你已经过了" + (overtimeTakeBackFromTransferStation - 2) + "天没有前往"
+					+ mappingMapper.selectByPrimaryKey("transfer_station").getmValue() + "取回图书，请你尽快将图书取回。谢谢!!!"; // 邮件主体内容
+			MailEntity mailBean = new MailEntity(destMail, subject, content);
+			mailBeans.add(mailBean);
+
+			// 发送账号通知信息
+			News news = new News(subject, new Date(), lendingRecord.getLoanableBook().getUser(), content);
+			newss.add(news);
+		} else if (seconds >= (overtimeTakeBackFromTransferStation - 1) * daySeconds
+				&& seconds < ((overtimeTakeBackFromTransferStation - 1) * daySeconds
+						+ intervalUpdateSeconds)) {
+			/*
+			 * 还有一天时间就超时，但借阅人没有把图书取走。 发送通知信息到借出人账号和发送邮件提醒。
+			 */
+			String destMail = lendingRecord.getLoanableBook().getUser().getMail();
+
+			// 生成邮件主题内容以及添加邮件到mailBeans
+			String subject = "书籍取回提醒"; // 邮件主题
+			String content = "您同意借出的《" + lendingRecord.getLoanableBook().getLbName()
+					+ "》图书，你已经过了" + (overtimeTakeBackFromTransferStation - 1) + "天没有前往"
+					+ mappingMapper.selectByPrimaryKey("transfer_station").getmValue() + "取回图书，请你尽快将图书取回。谢谢!!!"; // 邮件主体内容
+			MailEntity mailBean = new MailEntity(destMail, subject, content);
+			mailBeans.add(mailBean);
+
+			// 发送账号通知信息
+			News news = new News(subject, new Date(), lendingRecord.getLoanableBook().getUser(), content);
+			newss.add(news);
+		} else if (seconds >= overtimeTakeBackFromTransferStation * daySeconds) {
+			/*
+			 * 借出人超时没有把图书取走。 并修改状态为11表示借出人超时未取走图书,显示到管理员端人工处理
+			 */
+			// 把该条记录lending_record表中，并修改状态为11表示借出人取回超时
+			lendingRecord.setLrStruts((byte) 11);
+			lendingRecordMapper.updateByPrimaryKey(lendingRecord);
+		}
+
+	}
+
+	/**
+	 * 状态为8，借阅者已经从运营点取走图书，等待还书，判断借阅者是否逾期还书。逾期8-9
 	 * 
 	 * @param lendingRecord
 	 * @param mailBeans
 	 * @param newss
 	 * @param nowDate
 	 */
-	private void isOvertimeTakeFromTransferStation(LendingRecord lendingRecord, List<MailEntity> mailBeans,
+	private void isOvertimeReturnToTransferStation(LendingRecord lendingRecord, List<MailEntity> mailBeans,
 			List<News> newss, Date nowDate) {
-		// 借阅人超时未将图书取走的天数
-		int overtimeTakeFromTransferStation = Integer
-				.valueOf((mappingMapper.selectByPrimaryKey("overtime_take_from_transfer_station").getmValue()));
+		// 预计归还时间
+		Date expectedReturnTime = lendingRecord.getExpectedReturnTime();
+		// 相差的时间秒数
+		long seconds = (expectedReturnTime.getTime() - nowDate.getTime()) / 1000;
+		if (seconds >= daySeconds * 2 - intervalUpdateSeconds && seconds < 2 * daySeconds) {
+			/*
+			 * 还有两天时间就逾期归还图书，但借阅者没有把图书还回运营点。 发送通知信息到借阅者账号和发送邮件提醒。
+			 */
+			String destMail = lendingRecord.getUser().getMail();
+
+			// 生成邮件主题内容以及添加邮件到mailBeans
+			String subject = "还书提醒"; // 邮件主题
+			String content = "您借阅的《" + lendingRecord.getLoanableBook().getLbName()
+					+ "》图书，距离还书逾期还有两天，请你尽快将图书还回到取书地点。谢谢!!!"; // 邮件主体内容
+			MailEntity mailBean = new MailEntity(destMail, subject, content);
+			mailBeans.add(mailBean);
+
+			// 发送账号通知信息
+			News news = new News(subject, new Date(), lendingRecord.getUser(), content);
+			newss.add(news);
+		} else if (seconds >= daySeconds - intervalUpdateSeconds && seconds < daySeconds) {
+			/*
+			 * 还有一天时间就逾期归还图书，但借阅者没有把图书还回运营点。 发送通知信息到借阅人账号和发送邮件提醒。
+			 */
+			String destMail = lendingRecord.getUser().getMail();
+			// 生成邮件主题内容以及添加邮件到mailBeans
+			String subject = "还书提醒"; // 邮件主题
+			String content = "您借阅的《" + lendingRecord.getLoanableBook().getLbName()
+					+ "》图书，距离还书逾期还有一天，请你尽快将图书还回到取书地点。谢谢!!!"; // 邮件主体内容
+			MailEntity mailBean = new MailEntity(destMail, subject, content);
+			mailBeans.add(mailBean);
+
+			// 发送账号通知信息
+			News news = new News(subject, new Date(), lendingRecord.getUser(), content);
+			newss.add(news);
+		} else if (seconds <=  intervalUpdateSeconds) {
+			/*
+			 * 借阅者超时没有归还图书。 并修改状态为9表示借阅者逾期还书,显示到管理员端人工处理
+			 */
+			String destMail = lendingRecord.getUser().getMail();
+			// 生成邮件主题内容以及添加邮件到mailBeans
+			String subject = "还书提醒"; // 邮件主题
+			String content = "您借阅的《" + lendingRecord.getLoanableBook().getLbName()
+					+ "》图书，已经超过预期的还书时间，请你尽快将图书还回到取书地点。谢谢!!!"; // 邮件主体内容
+			MailEntity mailBean = new MailEntity(destMail, subject, content);
+			mailBeans.add(mailBean);
+
+			// 发送账号通知信息
+			News news = new News(subject, new Date(), lendingRecord.getUser(), content);
+			newss.add(news);
+			// 把该条记录lending_record表中，并修改状态为9表示借阅者逾期未还书
+			lendingRecord.setLrStruts((byte) 9);
+			lendingRecordMapper.updateByPrimaryKey(lendingRecord);
+		}
+
+	}
+
+	/**
+	 * 状态为7，借阅者逾期未取书，等待借出人取回书籍，判断借出人是否逾期未从运营点取回书籍。逾期7-11
+	 * 
+	 * @param lendingRecord
+	 * @param mailBeans
+	 * @param newss
+	 * @param nowDate
+	 * @param overtimeTakeBackFromTransferStation
+	 * @param overtimeTakeFromTransferStation
+	 */
+	private void isOvertimeTakeBackFromTransferStation(LendingRecord lendingRecord, List<MailEntity> mailBeans,
+			List<News> newss, Date nowDate, int overtimeTakeBackFromTransferStation,
+			int overtimeTakeFromTransferStation) {
 		// 借出人把图书送达运营点的时间
+		Date sendToTime = lendingRecord.getSendToTime();
+
+		// 相差的时间秒数
+		long seconds = (nowDate.getTime() - sendToTime.getTime()) / 1000;
+
+		if (seconds >= (overtimeTakeFromTransferStation + overtimeTakeBackFromTransferStation - 2) * daySeconds
+				&& seconds < ((overtimeTakeFromTransferStation + overtimeTakeBackFromTransferStation - 2) * daySeconds
+						+ intervalUpdateSeconds)) {
+			/*
+			 * 还有两天时间就超时，但借阅人没有把图书取走。 发送通知信息到借出人账号和发送邮件提醒。
+			 */
+			String destMail = lendingRecord.getLoanableBook().getUser().getMail();
+
+			// 生成邮件主题内容以及添加邮件到mailBeans
+			String subject = "书籍取回提醒"; // 邮件主题
+			String content = "您同意借出的《" + lendingRecord.getLoanableBook().getLbName()
+					+ "》图书，由于对方超时没有将图书取走，系统已经自动取消此次借阅，你已经过了" + (overtimeTakeBackFromTransferStation - 2) + "天没有前往"
+					+ mappingMapper.selectByPrimaryKey("transfer_station").getmValue() + "取回图书，请你尽快将图书取回。谢谢!!!"; // 邮件主体内容
+			MailEntity mailBean = new MailEntity(destMail, subject, content);
+			mailBeans.add(mailBean);
+
+			// 发送账号通知信息
+			News news = new News(subject, new Date(), lendingRecord.getLoanableBook().getUser(), content);
+			newss.add(news);
+		} else if (seconds >= (overtimeTakeFromTransferStation + overtimeTakeBackFromTransferStation - 1) * daySeconds
+				&& seconds < ((overtimeTakeFromTransferStation + overtimeTakeBackFromTransferStation - 1) * daySeconds
+						+ intervalUpdateSeconds)) {
+			/*
+			 * 还有一天时间就超时，但借阅人没有把图书取走。 发送通知信息到借出人账号和发送邮件提醒。
+			 */
+			String destMail = lendingRecord.getLoanableBook().getUser().getMail();
+
+			// 生成邮件主题内容以及添加邮件到mailBeans
+			String subject = "书籍取回提醒"; // 邮件主题
+			String content = "您同意借出的《" + lendingRecord.getLoanableBook().getLbName()
+					+ "》图书，由于对方超时没有将图书取走，系统已经自动取消此次借阅，你已经过了" + (overtimeTakeBackFromTransferStation - 1) + "天没有前往"
+					+ mappingMapper.selectByPrimaryKey("transfer_station").getmValue() + "取回图书，请你尽快将图书取回。谢谢!!!"; // 邮件主体内容
+			MailEntity mailBean = new MailEntity(destMail, subject, content);
+			mailBeans.add(mailBean);
+
+			// 发送账号通知信息
+			News news = new News(subject, new Date(), lendingRecord.getLoanableBook().getUser(), content);
+			newss.add(news);
+		} else if (seconds >= (overtimeTakeFromTransferStation + overtimeTakeBackFromTransferStation) * daySeconds) {
+			/*
+			 * 借出人超时没有把图书取走。 并修改状态为11表示借出人超时未取走图书,显示到管理员端人工处理
+			 */
+			// 把该条记录lending_record表中，并修改状态为11表示借出人取回超时
+			lendingRecord.setLrStruts((byte) 11);
+			lendingRecordMapper.updateByPrimaryKey(lendingRecord);
+		}
+	}
+
+	/**
+	 * 状态为6,表示借出人已经把书送到运营点，判断借阅人是否逾期未把图书取走。逾期6-7
+	 * 
+	 * @param lendingRecord
+	 * @param mailBeans
+	 * @param newss
+	 * @param nowDate
+	 * @param overtimeTakeFromTransferStation
+	 */
+	private void isOvertimeTakeFromTransferStation(LendingRecord lendingRecord, List<MailEntity> mailBeans,
+			List<News> newss, Date nowDate, int overtimeTakeFromTransferStation) {
+		// 借阅者把图书送达运营点的时间
 		Date sendToTime = lendingRecord.getSendToTime();
 
 		// 相差的时间秒数
@@ -118,15 +333,15 @@ public class LendingTimerTaskService implements ILendingTimerTaskService {
 		if (seconds >= (overtimeTakeFromTransferStation - 2) * daySeconds
 				&& seconds < ((overtimeTakeFromTransferStation - 2) * daySeconds + intervalUpdateSeconds)) {
 			/*
-			 * 还有两天时间就超时，但借阅人没有把图书取走。 发送通知信息到借出人账号和发送邮件提醒。
+			 * 还有两天时间就超时，但借阅者没有把图书取走。 发送通知信息到借阅者账号和发送邮件提醒。
 			 */
 			String destMail = lendingRecord.getUser().getMail();
-			
+
 			// 生成邮件主题内容以及添加邮件到mailBeans
 			String subject = "取书提醒"; // 邮件主题
 			String content = "您申请借阅的《" + lendingRecord.getLoanableBook().getLbName() + "》图书，已送到运营点："
-			+mappingMapper.selectByPrimaryKey("transfer_station").getmValue()
-			+",距离最迟取走图书还有两天(最后期限为："+ deadline + ")，请你尽快将图书取走。谢谢!!!"; // 邮件主体内容
+					+ mappingMapper.selectByPrimaryKey("transfer_station").getmValue() + ",距离最迟取走图书还有两天(最后期限为："
+					+ deadline + ")，请你尽快将图书取走。谢谢!!!"; // 邮件主体内容
 			MailEntity mailBean = new MailEntity(destMail, subject, content);
 			mailBeans.add(mailBean);
 
@@ -136,24 +351,24 @@ public class LendingTimerTaskService implements ILendingTimerTaskService {
 		} else if (seconds >= (overtimeTakeFromTransferStation - 1) * daySeconds
 				&& seconds < ((overtimeTakeFromTransferStation - 1) * daySeconds + intervalUpdateSeconds)) {
 			/*
-			 * 还有一天时间就超时，但借阅人没有把图书取走。 发送通知信息到借出人账号和发送邮件提醒。
+			 * 还有一天时间就超时，但借阅者没有把图书取走。 发送通知信息到借阅者账号和发送邮件提醒。
 			 */
-			String destMail = lendingRecord.getLoanableBook().getUser().getMail();
+			String destMail = lendingRecord.getUser().getMail();
+
 			// 生成邮件主题内容以及添加邮件到mailBeans
 			String subject = "取书提醒"; // 邮件主题
 			String content = "您申请借阅的《" + lendingRecord.getLoanableBook().getLbName() + "》图书，已送到运营点："
-			+mappingMapper.selectByPrimaryKey("transfer_station").getmValue()
-			+",距离最迟取走图书还有一天(最后期限为："+ deadline + ")，请你尽快将图书取走。谢谢!!!"; // 邮件主体内容
+					+ mappingMapper.selectByPrimaryKey("transfer_station").getmValue() + ",距离最迟取走图书还有一天(最后期限为："
+					+ deadline + ")，请你尽快将图书取走。谢谢!!!"; // 邮件主体内容
 			MailEntity mailBean = new MailEntity(destMail, subject, content);
 			mailBeans.add(mailBean);
 
 			// 发送账号通知信息
-			News news = new News(subject, new Date(), lendingRecord.getLoanableBook().getUser(), content);
+			News news = new News(subject, new Date(), lendingRecord.getUser(), content);
 			newss.add(news);
 		} else if (seconds >= overtimeTakeFromTransferStation * daySeconds) {
 			/*
-			 * 送书期限已经超时，但借阅人没有把图书取走。 发送通知信息到借出人账号和发送邮件提醒。
-			 * 发送通知信息到借阅人账号和发送邮件提醒。
+			 * 借阅者超时没有从运营点把图书取走。 发送通知信息到借出人账号和发送邮件提醒。 发送通知信息到借阅者账号和发送邮件提醒。
 			 * 并修改状态为7表示借阅人超时未取走图书
 			 */
 			String loanMail = lendingRecord.getLoanableBook().getUser().getMail();
@@ -162,9 +377,8 @@ public class LendingTimerTaskService implements ILendingTimerTaskService {
 			// 生成邮件主题内容以及添加邮件到mailBeans
 			String subject = "取书逾期提醒"; // 邮件主题
 			String loanContent = "您同意借出的《" + lendingRecord.getLoanableBook().getLbName() + "》图书，由于借阅者逾期未到运营点取走图书(最后期限为："
-					+ deadline + ")，系统已自动帮您取消了此次借阅。请您在"+overtimeTakeFromTransferStation
-					+"天内前往"+mappingMapper.selectByPrimaryKey("transfer_station").getmValue()
-					+"取回图书。谢谢!!!"; // 给借出人邮件主体内容
+					+ deadline + ")，系统已自动帮您取消了此次借阅。请您尽快前往"
+					+ mappingMapper.selectByPrimaryKey("transfer_station").getmValue() + "取回图书。谢谢!!!"; // 给借出人邮件主体内容
 			String borrowContent = "您申请借阅的《" + lendingRecord.getLoanableBook().getLbName()
 					+ "》图书，由于你未在取书逾期之前到运营点取走图书(最后期限为：" + deadline + ")，系统已自动帮您取消了借阅。你可以去寻找别的图书进行借阅。谢谢!!!"; // 给借阅人邮件主体内容
 			MailEntity mailBean1 = new MailEntity(loanMail, subject, loanContent);
@@ -185,18 +399,16 @@ public class LendingTimerTaskService implements ILendingTimerTaskService {
 	}
 
 	/**
-	 * 状态为4表示借出人同意借出，判断借出人是否逾期未把图书送到运营点
+	 * 状态为4,表示借出人同意借出，判断借出人是否逾期未把图书送到运营点。逾期4-5
 	 * 
 	 * @param lendingRecord
 	 * @param mailBeans
 	 * @param newss
 	 * @param nowDate
+	 * @param overtimeBringToTransferStation
 	 */
 	private void isOvertimeBringToTransferStation(LendingRecord lendingRecord, List<MailEntity> mailBeans,
-			List<News> newss, Date nowDate) {
-		// 借出人超时未将图书送到运营点的天数
-		int overtimeBringToTransferStation = Integer
-				.valueOf((mappingMapper.selectByPrimaryKey("overtime_bring_to_transfer_station").getmValue()));
+			List<News> newss, Date nowDate, int overtimeBringToTransferStation) {
 		// 借出人同意借阅的时间
 		Date agreeTime = lendingRecord.getAgreeTime();
 
@@ -213,9 +425,9 @@ public class LendingTimerTaskService implements ILendingTimerTaskService {
 			String destMail = lendingRecord.getLoanableBook().getUser().getMail();
 			// 生成邮件主题内容以及添加邮件到mailBeans
 			String subject = "送书提醒"; // 邮件主题
-			String content = "您同意借出的《" + lendingRecord.getLoanableBook().getLbName() 
-					+ "》图书，距离最迟送达运营点("+mappingMapper.selectByPrimaryKey("transfer_station").getmValue()
-					+")时间的还有两天(最后期限为："+ deadline + ")，请你尽快将图书送到运营点。谢谢!!!"; // 邮件主体内容
+			String content = "您同意借出的《" + lendingRecord.getLoanableBook().getLbName() + "》图书，距离最迟送达运营点("
+					+ mappingMapper.selectByPrimaryKey("transfer_station").getmValue() + ")的时间还有两天(最后期限为：" + deadline
+					+ ")，请你尽快将图书送到运营点。谢谢!!!"; // 邮件主体内容
 			MailEntity mailBean = new MailEntity(destMail, subject, content);
 			mailBeans.add(mailBean);
 
@@ -230,9 +442,9 @@ public class LendingTimerTaskService implements ILendingTimerTaskService {
 			String destMail = lendingRecord.getLoanableBook().getUser().getMail();
 			// 生成邮件主题内容以及添加邮件到mailBeans
 			String subject = "送书提醒"; // 邮件主题
-			String content = "您同意借出的《" + lendingRecord.getLoanableBook().getLbName() 
-					+ "》图书，距离最迟送达运营点("+mappingMapper.selectByPrimaryKey("transfer_station").getmValue()
-					+")时间的还有一天(最后期限为："+ deadline + ")，请你尽快将图书送到运营点。谢谢!!!"; // 邮件主体内容
+			String content = "您同意借出的《" + lendingRecord.getLoanableBook().getLbName() + "》图书，距离最迟送达运营点("
+					+ mappingMapper.selectByPrimaryKey("transfer_station").getmValue() + ")的时间还有一天(最后期限为：" + deadline
+					+ ")，请你尽快将图书送到运营点。谢谢!!!"; // 邮件主体内容
 			MailEntity mailBean = new MailEntity(destMail, subject, content);
 			mailBeans.add(mailBean);
 
@@ -276,22 +488,22 @@ public class LendingTimerTaskService implements ILendingTimerTaskService {
 	}
 
 	/**
-	 * 状态为0表示借书人提交了借书申请，判断借出人是否超时未同意借书人的借书请求。
+	 * 状态为0,表示借书人提交了借书申请，判断借出人是否超时未同意借书人的借书请求。逾期0-3
 	 * 
 	 * @param lendingRecord
 	 * @param mailBeans
+	 * @param newss
+	 * @param nowDate
+	 * @param overtimeAgreeApply
 	 */
 	private void isOvertimeAgreeApply(LendingRecord lendingRecord, List<MailEntity> mailBeans, List<News> newss,
-			Date nowDate) {
-		// 借出人超时未同意天数
-		int overtimeAgreeApply = Integer
-				.valueOf((mappingMapper.selectByPrimaryKey("overtime_agree_apply").getmValue()));
-
+			Date nowDate, int overtimeAgreeApply) {
 		// 提交借书的时间
 		Date createTime = lendingRecord.getCreateTime();
 
 		// 相差的时间秒数
 		long seconds = (nowDate.getTime() - createTime.getTime()) / 1000;
+		System.out.println(seconds);
 		// 最后的期限
 		String deadline = getDeadline(createTime, overtimeAgreeApply);
 		if (seconds >= (overtimeAgreeApply - 2) * daySeconds
@@ -392,6 +604,7 @@ public class LendingTimerTaskService implements ILendingTimerTaskService {
 
 		lendingHistory.setLhId(lendingRecord.getLrId());
 		lendingHistory.setCreateTime(lendingRecord.getCreateTime());
+		lendingHistory.setAgreeTime(lendingRecord.getAgreeTime());
 		lendingHistory.setSendToTime(lendingRecord.getSendToTime());
 		lendingHistory.setTakeAwayTime(lendingRecord.getTakeAwayTime());
 		lendingHistory.setExpectedReturnTime(lendingRecord.getExpectedReturnTime());
@@ -406,7 +619,7 @@ public class LendingTimerTaskService implements ILendingTimerTaskService {
 		} else {
 			lendingHistory.setReceiveAdmin(administrator);
 		}
-		if (lendingRecord.getReceiveAdmin() != null) {
+		if (lendingRecord.getBackAdmin() != null) {
 			lendingHistory.setBackAdmin(lendingRecord.getBackAdmin());
 		} else {
 			lendingHistory.setBackAdmin(administrator);

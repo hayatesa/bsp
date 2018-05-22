@@ -23,10 +23,10 @@
     back_uuid
   </sql>
   
-  <select id="selectAllLendingRecord" resultMap="BaseResultMap" >
+  <select id="selectBylrStrutsLendingRecord" resultMap="BaseResultMap" >
     select 
     <include refid="Base_Column_List" />
-    from lending_record
+    from lending_record where lr_struts in(0,4,6,7,8,10)	
   </select>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 

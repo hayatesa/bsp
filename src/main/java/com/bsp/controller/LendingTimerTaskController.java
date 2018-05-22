@@ -30,7 +30,7 @@ public class LendingTimerTaskController extends BaseController {
 	/**
 	 * 检查借出记录LendingRecord中的订单，各种状态是否超时。
 	 */
-	@Scheduled(cron = "0/60 * * * * ?") // 每天一次
+	@Scheduled(cron = "0 0 0,3,6,9,12,15,18,21 * * ?") // 指定时间没三小时一次执行
 	public void checkLendingRecordStatus() {
 		Date day = new Date();
 		DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
