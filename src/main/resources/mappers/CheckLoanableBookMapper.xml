@@ -21,6 +21,36 @@
     clb_id, clb_author, clb_name, clb_publishing, isbn, clb_duration, clb_number, image_path, 
     clb_comment, phone, clb_status, failure_cause, sc_id, uuid
   </sql>
+  <!-- 高级+分页查询的where语句块 -->
+  <sql id="where_of_query">
+	<where>
+		<if test="search!=null">AND (
+			clb_name LIKE CONCAT('%',#{search},'%')
+			OR isbn LIKE CONCAT('%',#{search},'%')
+			OR clb_author LIKE CONCAT('%',#{search},'%')
+			OR clb_publishing LIKE CONCAT('%',#{search},'%')
+		)
+		</if>
+		<if test="clbStatus!=null">AND clb_status=#{clbStatus}</if>
+	</where>
+  </sql>
+  <select id="getTotalCount" resultType="java.lang.Integer" parameterType="com.bsp.dto.LoanableBookQueryObject" >
+    select COUNT(*) from check_loanable_book 
+    <include refid="where_of_query" />
+  </select>
+  <select id="selectByQueryObject" resultMap="BaseResultMap" parameterType="com.bsp.dto.LoanableBookQueryObject" >
+    select
+	<include refid="Base_Column_List" />
+    from check_loanable_book
+    <include refid="where_of_query" />
+	<if test="sort!=null">
+		ORDER BY ${sort}
+		<if test="order!=null">${order}</if>
+	</if>
+    <if test="startIndex>-1">
+		LIMIT #{startIndex},#{limit}
+	</if>
+  </select>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
