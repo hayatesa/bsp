@@ -34,20 +34,20 @@ public class Page implements Serializable {
 		this.totalPage = (int)Math.ceil((double)totalCount/pageSize);
 	}
 
-	public int getTotalCount() {
+	public int getTotal() {
 		return total;
 	}
 
-	public void setTotalCount(int totalCount) {
-		this.total = totalCount;
+	public void setTotal(int total) {
+		this.total = total;
 	}
 
-	public int getPageSize() {
+	public int getLimit() {
 		return limit;
 	}
 
-	public void setPageSize(int pageSize) {
-		this.limit = pageSize;
+	public void setLimit(int limit) {
+		this.limit = limit;
 	}
 
 	public int getTotalPage() {
@@ -66,13 +66,16 @@ public class Page implements Serializable {
 		this.currPage = currPage;
 	}
 
-	public List<?> getList() {
+	public List<?> getRows() {
 		return rows;
 	}
 
-	public void setList(List<?> list) {
-		this.rows = list;
+	public void setRows(List<?> rows) {
+		this.rows = rows;
 	}
 
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
 
 }
