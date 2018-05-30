@@ -16,12 +16,12 @@ public interface ICheckLoanableBookService {
 	 * 审核通过
 	 * @param clbId 记录id
 	 */
-	void agree(Integer clbId);
+	void approve(Integer clbId);
 	
 	/**
 	 * 审核不通过
 	 * @param clbId 记录id
 	 */
-	void disagree(Integer clbId);
+	void deny(Integer clbId);
 	
 }

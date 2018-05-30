@@ -2,6 +2,9 @@ package com.bsp.service.impl;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.bsp.dao.CheckLoanableBookMapper;
 import com.bsp.dto.CheckLoanableBookQueryObject;
 import com.bsp.entity.CheckLoanableBook;
@@ -9,8 +12,10 @@ import com.bsp.exceptions.SystemErrorException;
 import com.bsp.service.ICheckLoanableBookService;
 import com.bsp.utils.Page;
 
+@Service("checkLoanableBookService")
 public class CheckLoanableBookService implements ICheckLoanableBookService {
 	
+	@Autowired
 	private CheckLoanableBookMapper checkLoanableBookMapper;
 	
 	public void setCheckLoanableBookMapper(CheckLoanableBookMapper checkLoanableBookMapper) {
@@ -32,12 +37,12 @@ public class CheckLoanableBookService implements ICheckLoanableBookService {
 	}
 
 	@Override
-	public void agree(Integer clbId) {
+	public void approve(Integer clbId) {
 		
 	}
 
 	@Override
-	public void disagree(Integer clbId) {
+	public void deny(Integer clbId) {
 		
 	}
 

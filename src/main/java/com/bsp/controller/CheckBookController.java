@@ -1,11 +1,15 @@
 package com.bsp.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.bsp.dto.QueryObject;
+import com.bsp.dto.CheckLoanableBookQueryObject;
+import com.bsp.service.ICheckLoanableBookService;
+import com.bsp.utils.Page;
 import com.bsp.utils.Result;
 
 /**
@@ -15,8 +19,16 @@ import com.bsp.utils.Result;
  */
 @RestController
 @Scope(value="prototype")
+@RequestMapping("clb")
 public class CheckBookController {
 	
+	@Autowired
+	private ICheckLoanableBookService checkLoanableBookService;
+	
+	public void setCheckLoanableBookService(ICheckLoanableBookService checkLoanableBookService) {
+		this.checkLoanableBookService = checkLoanableBookService;
+	}
+
 	/**
 	 * 审核不通过
 	 * @param clbId 待审核的图书id
@@ -49,8 +61,9 @@ public class CheckBookController {
 	 * 获取待审核的书的列表
 	 * @param queryObject
 	 */
-	@RequestMapping("list")
-	public Result list(QueryObject queryObject) {
-		return Result.success();
+	@RequestMapping(value="page", method=RequestMethod.GET)
+	public Page list(CheckLoanableBookQueryObject queryObject) {
+		Page page = checkLoanableBookService.findByQueryObject(queryObject);
+		return page;
 	}
 }
