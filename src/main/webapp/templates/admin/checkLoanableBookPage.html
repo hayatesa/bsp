@@ -5,31 +5,33 @@
     <title>Title</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-    
-    <link rel="stylesheet" href="../../static/js/plugins/bootstrap/css/bootstrap.css" />
-    <link rel="stylesheet" href="../../static/js/plugins/bootstrap-table/bootstrap-table.css" />
-    <link rel="stylesheet" href="../../static/js/plugins/bootstrapvalidator/css/bootstrapValidator.css" />
-    <link rel="stylesheet" href="../../static/js/plugins/bootstrap-toggle/css/bootstrap-toggle.css" />
-    <link rel="stylesheet" href="../../static/js/plugins/bootstrap-switch/css/bootstrap3/bootstrap-switch.css" />
+
+	<link rel="stylesheet" href="../../static/js/plugins/bootstrap/css/bootstrap.css" />
+	<link rel="stylesheet" href="../../static/assets/font-awesome/css/font-awesome.css" />
+	<link rel="stylesheet" href="../../static/js/plugins/bootstrap-table/bootstrap-table.css" />
+	<link rel="stylesheet" href="../../static/js/plugins/bootstrapvalidator/css/bootstrapValidator.css" />
+	<link rel="stylesheet" href="../../static/js/plugins/bootstrap-toggle/css/bootstrap-toggle.css" />
+	<link rel="stylesheet" href="../../static/js/plugins/bootstrap-switch/css/bootstrap3/bootstrap-switch.css" />
 </head>
 <body>
 	
-	<div id="vm-div">
+	<div id="vue-app">
 		<div id="table-div" style="margin: 0px 10px;">
 			<table id="data-list"></table>
 		</div>
 		<div id="tab-toolbar" class="btn-group" role="group" >
-			<select class="form-control">
-				<option>未审核</option>
-				<option>未通过</option>
-				<option>审核通过</option>
+			<select @change="reload" v-model="clbStatus" class="form-control">
+				<option value="0" selected="selected">未审核</option>
+				<option value="1">未通过</option>
+				<option value="2">已通过</option>
 			</select>
 		</div>
 	</div>
-	
-	
+
+
 	<script src="../../static/js/jquery-3.3.1.js"></script>
-	<!--<script src="../../static/js/vue.js"></script>-->
+	<script src="../../static/js/vue.js"></script>
+	<script src="../../static/js/plugins/bootstrap/js/bootstrap.js"></script>
 	<script src="../../static/js/plugins/bootstrap-table/bootstrap-table.js"></script>
 	<script src="../../static/js/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.js"></script>
 	<script src="../../static/js/plugins/bootstrapvalidator/js/bootstrapValidator.js"></script>

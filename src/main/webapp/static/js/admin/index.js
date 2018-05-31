@@ -95,7 +95,7 @@ var sidebar_app = new Vue({
 			alert('修改信息成功')
 		},
 		go: function(p,tilte){
-            $('#page-content').attr('src',p);
+            $('#page-content').attr('src',p+'?_t='+new Date().getTime());
             //fillPage(p)
 			this.title = tilte;
 		}
