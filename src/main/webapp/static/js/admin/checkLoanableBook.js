@@ -99,7 +99,7 @@ var operationFormatter = function(value,row,index){
     if (vue_app.clbStatus == 0) {
         return '<div id="tab-toolbar" class="btn-group" role="group" >' +
             '<button onclick="doApprove('+row.clbId+')" type="button" class="btn btn-defualt btn-xs" title="通过"><i class="fa fa-check-square-o" aria-hidden="true"></i> 通过</button>' +
-            '<button onclick="doDeny('+row.clbId+')" type="button" class="btn btn-danger btn-xs" title="失败"><i class="fa fa-times" aria-hidden="true"></i> 失败</button>' +
+            '<button onclick="doOpenModal('+row.clbId+')" type="button" class="btn btn-danger btn-xs" title="失败"><i class="fa fa-times" aria-hidden="true"></i> 失败</button>' +
             '</div>';
     }
 }
@@ -108,21 +108,52 @@ var doReload = function () {
     $("#data-list").bootstrapTable('refresh');
 }
 
-var doDeny=function (id) {//通过审核
-    console.log(id)
+var doDeny=function () {//通过审核
+    $.ajax({
+        url: '/clb/deny',
+        data: {
+            clbId: vue_app.deny_clbId,
+            failureCause: vue_app.failureCause
+        },
+        success: function (data) {
+            if (data.code!=0){
+                alert(data.msg);
+            }
+            doReload();
+        }
+    })
+}
+
+var doOpenModal = function (id) {//打开模态框
+    vue_app.deny_clbId= id;
+    $('#input-modal').modal('show');
 }
 
 var doApprove=function (id) {//审核不通过
-    console.log(id)
+    $.ajax({
+        url: '/clb/approve',
+        data: {
+            clbId: id
+        },
+        success: function (data) {
+            if (data.code!=0){
+                alert(data.msg);
+            }
+            doReload();
+        }
+    })
 }
 
 var vue_app=new Vue({
     el: '#vue-app',
     data: {
-        clbStatus: 0
+        clbStatus: 0,
+        failureCause: '',
+        deny_clbId: {},
     },
 	methods: {
-		reload: doReload
+		reload: doReload,
+        deny: doDeny
 	},
 	created: function () {
         init_table();

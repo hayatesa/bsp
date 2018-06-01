@@ -32,9 +32,10 @@ public class CheckBookController {
 	/**
 	 * 审核不通过
 	 * @param clbId 待审核的图书id
+	 * @param failureCause 失败原因
 	 */
 	@RequestMapping("deny")
-	public Result deny(@RequestParam("clbId") Integer clbId) {
+	public Result deny(@RequestParam("clbId") Integer clbId, @RequestParam("failureCause") String failureCause) {
 		return Result.success();
 	}
 	

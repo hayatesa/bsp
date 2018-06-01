@@ -36,7 +36,7 @@ public class CheckLoanableBook extends BaseEntity {
     // 共享者的联系电话
     private String phone;
 
-    // 图书审核状态:0提交申请未审核转态，1申请失败返回原因
+    // 图书审核状态:0提交申请未审核转态，1申请失败返回原因，2审核通过
     private Byte clbStatus;
 
     // 审核人员填写，审核失败的原因
