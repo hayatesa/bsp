@@ -12,6 +12,7 @@
 	<link rel="stylesheet" href="../../static/js/plugins/bootstrapvalidator/css/bootstrapValidator.css" />
 	<link rel="stylesheet" href="../../static/js/plugins/bootstrap-toggle/css/bootstrap-toggle.css" />
 	<link rel="stylesheet" href="../../static/js/plugins/bootstrap-switch/css/bootstrap3/bootstrap-switch.css" />
+    <link rel="stylesheet" href="../../static/css/style_admin.css">
 </head>
 <body>
 	
@@ -36,7 +37,7 @@
 						<h4 class="modal-title" id="myModalLabel">审核失败原因</h4>
 					</div>
 					<div class="modal-body">
-						<textarea v-model="failureCause"class="form-control" rows="3"></textarea>
+						<textarea v-model="failureCause"class="form-control" rows="5" placeholder="限250个字符"></textarea>
                         <span class="text-danger">{{inputMsg}}</span>
 					</div>
 					<div class="modal-footer">
@@ -57,6 +58,8 @@
 	<script src="../../static/js/plugins/bootstrapvalidator/js/bootstrapValidator.js"></script>
 	<script src="../../static/js/plugins/bootstrap-toggle/js/bootstrap-toggle.js"></script>
 	<script src="../../static/js/plugins/bootstrap-switch/js/bootstrap-switch.js"></script>
+    <!-- layer -->
+    <script src="../../static/js/plugins/layer/layer.js"></script>
 	<script src="../../static/js/commons/common.js"></script>
 	<script src="../../static/js/admin/checkLoanableBook.js"></script>
 </body>

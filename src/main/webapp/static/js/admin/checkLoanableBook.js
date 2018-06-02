@@ -120,6 +120,10 @@ var doDeny=function () {//审核不通过
         vue_app.inputMsg='请填写失败原因';
         return;
     }
+    if (vue_app.inputMsg.length>250) {
+        vue_app.inputMsg='长度必须小于250个字符';
+        return;
+    }
     $.ajax({
         url: '/clb/deny',
         data: {
@@ -140,21 +144,25 @@ var doDeny=function () {//审核不通过
 
 var doOpenModal = function (id) {//打开模态框
     vue_app.deny_clbId= id;
+    vue_app.inputMsg='';
+    vue_app.failureCause='';
     $('#input-modal').modal('show');
 }
 
 var doApprove=function (id) {//审核通过
-    $.ajax({
-        url: '/clb/approve',
-        data: {
-            clbId: id
-        },
-        success: function (data) {
-            if (data.code!=0){
-                alert(data.msg);
+    confirm("确认操作", function () {
+        $.ajax({
+            url: '/clb/approve',
+            data: {
+                clbId: id
+            },
+            success: function (data) {
+                if (data.code!=0){
+                    alert(data.msg);
+                }
+                doReload();
             }
-            doReload();
-        }
+        })
     })
 }
 
