@@ -8,10 +8,12 @@ import org.springframework.stereotype.Service;
 
 import com.bsp.dao.CheckLoanableBookMapper;
 import com.bsp.dao.LoanableBookMapper;
+import com.bsp.dao.MappingMapper;
 import com.bsp.dao.NewsMapper;
 import com.bsp.dto.CheckLoanableBookQueryObject;
 import com.bsp.entity.CheckLoanableBook;
 import com.bsp.entity.LoanableBook;
+import com.bsp.entity.Mapping;
 import com.bsp.entity.News;
 import com.bsp.exceptions.SystemErrorException;
 import com.bsp.service.ICheckLoanableBookService;
@@ -29,6 +31,13 @@ public class CheckLoanableBookService implements ICheckLoanableBookService {
 	@Autowired
 	private NewsMapper newsMapper;
 	
+	@Autowired
+	private MappingMapper mappingMapper; //系统设置信息
+	
+	public void setMappingMapper(MappingMapper mappingMapper) {
+		this.mappingMapper = mappingMapper;
+	}
+
 	public void setNewsMapper(NewsMapper newsMapper) {
 		this.newsMapper = newsMapper;
 	}
@@ -64,6 +73,7 @@ public class CheckLoanableBookService implements ICheckLoanableBookService {
 			checkLoanableBook.setClbStatus(new Byte("2"));// 审核通过状态改为2
 			checkLoanableBookMapper.updateByPrimaryKeySelective(checkLoanableBook);//拼装LoanableBook
 			loanableBookMapper.insertSelective(loanableBook);
+			sendMsg(true, checkLoanableBook.getUser().getUuid(), checkLoanableBook);//结果反馈
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new SystemErrorException("系统异常，操作失败");
@@ -71,9 +81,17 @@ public class CheckLoanableBookService implements ICheckLoanableBookService {
 	}
 
 	@Override
-	public void deny(Integer clbId) {
-		CheckLoanableBook checkLoanableBook = checkLoanableBookMapper.selectByPrimaryKey(clbId);
-		checkLoanableBook.setClbStatus(new Byte("1"));// 审核失败状态改为1
+	public void deny(Integer clbId, String failureMsg) {
+		try {
+			CheckLoanableBook checkLoanableBook = checkLoanableBookMapper.selectByPrimaryKey(clbId);
+			checkLoanableBook.setClbStatus(new Byte("1"));// 审核失败状态改为1
+			checkLoanableBook.setFailureCause(failureMsg);// 失败原因
+			checkLoanableBookMapper.updateByPrimaryKeySelective(checkLoanableBook);//拼装LoanableBook
+			sendMsg(false, checkLoanableBook.getUser().getUuid(), checkLoanableBook);//结果反馈
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new SystemErrorException("系统异常，操作失败");
+		}
 	}
 	
 	/**
@@ -107,8 +125,25 @@ public class CheckLoanableBookService implements ICheckLoanableBookService {
 	 */
 	private void sendMsg(boolean isApproved, String uuid, CheckLoanableBook clb) {
 		News msg = new News();
-		msg.setnContent("");
-		newsMapper.insertSelective(msg);
+		String template;// 消息模板
+		String content;// 消息内容
+		if (isApproved) { // 审核通过
+			msg.setnSubject("审核通过");
+			Mapping msgShareSuccess = mappingMapper.selectByPrimaryKey("msg_share_success");// 获取消息模板配置
+			template = msgShareSuccess.getmValue();//获取消息模板
+			content = template.replace("%bookname", clb.getClbName()); // 设置占位符（书名）
+			msg.setnContent(content);
+		} else { // 审核不通过
+			msg.setnSubject("审核失败");
+			Mapping msgShareFailure = mappingMapper.selectByPrimaryKey("msg_share_failure");// 获取消息模板配置
+			template = msgShareFailure.getmValue();//获取消息模板
+			content = template.replace("%bookname", clb.getClbName()); // 设置占位符（书名）
+			content = content.replace("%failureMsg", clb.getFailureCause());// 设置占位符（失败原因）
+			msg.setnContent(content);
+		}
+		msg.setNewsTime(new Date());
+		msg.setUser(clb.getUser());
+		newsMapper.insertSelective(msg); // 添加审核反馈消息
 	}
 
 }

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bsp.dto.CheckLoanableBookQueryObject;
+import com.bsp.exceptions.SystemErrorException;
 import com.bsp.service.ICheckLoanableBookService;
 import com.bsp.utils.Page;
 import com.bsp.utils.Result;
@@ -36,6 +37,12 @@ public class CheckBookController {
 	 */
 	@RequestMapping("deny")
 	public Result deny(@RequestParam("clbId") Integer clbId, @RequestParam("failureCause") String failureCause) {
+		try {
+			checkLoanableBookService.deny(clbId, failureCause);
+		} catch (SystemErrorException e) {
+			e.printStackTrace();
+			return Result.error(e.getMessage());
+		}
 		return Result.success();
 	}
 	
@@ -45,6 +52,12 @@ public class CheckBookController {
 	 */
 	@RequestMapping("approve")
 	public Result approve(@RequestParam("clbId") Integer clbId) {
+		try {
+			checkLoanableBookService.approve(clbId);
+		} catch (SystemErrorException e) {
+			e.printStackTrace();
+			return Result.error(e.getMessage());
+		}
 		return Result.success();
 	}
 	

@@ -59,6 +59,7 @@ var init_table = function() {
 }
 
 var detailFormatter = function(index,row){
+    var failureCause = vue_app.clbStatus == 1 ? '</br>审核不通过原因：'+row.failureCause:'';
 	return '<ul class="media-list">' +
         '  <li class="media">' +
         '    <div class="media-left">' +
@@ -78,6 +79,7 @@ var detailFormatter = function(index,row){
         '      </br>联系电话：' +row.phone+
         '      </br>可借时长：' +row.clbDuration+'天'+
         '      </br>评价：' +row.clbComment+
+        failureCause+
         '    </div>' +
         '  </li>' +
         '</ul>';
@@ -102,13 +104,22 @@ var operationFormatter = function(value,row,index){
             '<button onclick="doOpenModal('+row.clbId+')" type="button" class="btn btn-danger btn-xs" title="失败"><i class="fa fa-times" aria-hidden="true"></i> 失败</button>' +
             '</div>';
     }
+    if (vue_app.clbStatus == 1) {
+        return '<div id="tab-toolbar" class="btn-group" role="group" >' +
+            '<button onclick="doApprove('+row.clbId+')" type="button" class="btn btn-defualt btn-xs" title="通过"><i class="fa fa-check-square-o" aria-hidden="true"></i> 通过</button>' +
+            '</div>';
+    }
 }
 
 var doReload = function () {
     $("#data-list").bootstrapTable('refresh');
 }
 
-var doDeny=function () {//通过审核
+var doDeny=function () {//审核不通过
+    if (!vue_app.inputMsg.trim()) {
+        vue_app.inputMsg='请填写失败原因';
+        return;
+    }
     $.ajax({
         url: '/clb/deny',
         data: {
@@ -119,6 +130,9 @@ var doDeny=function () {//通过审核
             if (data.code!=0){
                 alert(data.msg);
             }
+            $('#input-modal').modal('hide');
+            vue_app.inputMsg='';
+            vue_app.deny_clbId={};
             doReload();
         }
     })
@@ -129,7 +143,7 @@ var doOpenModal = function (id) {//打开模态框
     $('#input-modal').modal('show');
 }
 
-var doApprove=function (id) {//审核不通过
+var doApprove=function (id) {//审核通过
     $.ajax({
         url: '/clb/approve',
         data: {
@@ -147,9 +161,10 @@ var doApprove=function (id) {//审核不通过
 var vue_app=new Vue({
     el: '#vue-app',
     data: {
-        clbStatus: 0,
-        failureCause: '',
-        deny_clbId: {},
+        clbStatus: 0, // 显示数据,0-未审核，1-审核失败，2-审核通过
+        failureCause: '', // 审核失败原因
+        deny_clbId: {}, // 审核失败记录id
+        inputMsg: '' // 审核失败原因文本域提示
     },
 	methods: {
 		reload: doReload,
