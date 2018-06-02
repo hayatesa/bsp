@@ -23,7 +23,7 @@ import com.bsp.utils.Result;
 @RestController
 @Scope(value="prototype")
 @RequestMapping("clb")
-public class CheckBookController {
+public class CheckBookController extends BaseController {
 	
 	@Autowired
 	private ICheckLoanableBookService checkLoanableBookService;

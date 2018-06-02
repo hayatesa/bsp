@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.bsp.entity.Administrator;
+import com.bsp.shiro.ShiroUtils;
+
 /**
  * 控制页面跳转
  * 
@@ -35,6 +38,10 @@ public class PageController {
 	 */
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public String signIn() {
+		Administrator administrator = ShiroUtils.getToken();
+		if (administrator!=null) {
+			return "redirect:/";
+		}
 		return "/admin/login";
 	}
 	

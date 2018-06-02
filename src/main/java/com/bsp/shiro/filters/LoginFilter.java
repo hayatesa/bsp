@@ -18,7 +18,6 @@ public class LoginFilter  extends AccessControlFilter {
 	protected boolean isAccessAllowed(ServletRequest request,
 			ServletResponse response, Object mappedValue) throws Exception {
 		Administrator token = (Administrator)ShiroUtils.getToken();
-		//System.err.println(((HttpServletRequest)request).getRequestURI());
 		if(null != token || isLoginRequest(request, response)){// && isEnabled()
             return Boolean.TRUE;
         } 
@@ -36,7 +35,7 @@ public class LoginFilter  extends AccessControlFilter {
 	protected boolean onAccessDenied(ServletRequest request, ServletResponse response)
 			throws Exception {
 		//保存Request和Response 到登录后的链接
-		//saveRequestAndRedirectToLogin(request, response);
+		saveRequestAndRedirectToLogin(request, response);
 		return Boolean.FALSE ;
 	}
 	
