@@ -1,5 +1,6 @@
 package com.bsp.controller;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.bsp.dto.CheckLoanableBookQueryObject;
 import com.bsp.exceptions.SystemErrorException;
 import com.bsp.service.ICheckLoanableBookService;
+import com.bsp.utils.CommonUtil;
 import com.bsp.utils.Page;
 import com.bsp.utils.Result;
 
@@ -77,6 +79,9 @@ public class CheckBookController {
 	 */
 	@RequestMapping(value="page", method=RequestMethod.GET)
 	public Page list(CheckLoanableBookQueryObject queryObject) {
+		if (!StringUtils.isBlank(queryObject.getSort())) {//排序字段名需要改成数据库使用的snake风格字符串
+			queryObject.setSort(CommonUtil.HumpToUnderline(queryObject.getSort()));
+		}
 		Page page = checkLoanableBookService.findByQueryObject(queryObject);
 		return page;
 	}

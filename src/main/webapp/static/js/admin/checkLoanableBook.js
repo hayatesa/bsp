@@ -49,7 +49,7 @@ $(function () {
             {field: 'clbName', title: '书名',sortable:true},
             {field: 'isbn', title: 'ISBN',sortable:true},
             {field: 'clbNumber', title: '数量',sortable:true},
-            {field: 'user.mail', title: '所属用户',sortable:true},
+            {field: 'user.mail', title: '所属用户',sortable:false},
             {title: '审核',formatter:operationFormatter},
         ],
     })
