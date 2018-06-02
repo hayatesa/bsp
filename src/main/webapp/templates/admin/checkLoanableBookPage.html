@@ -12,7 +12,6 @@
 	<link rel="stylesheet" href="../../static/js/plugins/bootstrapvalidator/css/bootstrapValidator.css" />
 	<link rel="stylesheet" href="../../static/js/plugins/bootstrap-toggle/css/bootstrap-toggle.css" />
 	<link rel="stylesheet" href="../../static/js/plugins/bootstrap-switch/css/bootstrap3/bootstrap-switch.css" />
-    <link href="../../static/assets/css/style.css" rel="stylesheet">
     <link rel="stylesheet" href="../../static/css/style_admin.css">
 </head>
 <body>
@@ -38,7 +37,7 @@
 						<h4 class="modal-title" id="myModalLabel">审核失败原因</h4>
 					</div>
 					<div class="modal-body">
-						<textarea v-model="failureCause"class="form-control" rows="5" placeholder="限250个字符"></textarea>
+						<textarea style="resize:none" v-model="failureCause" class="form-control" rows="5" placeholder="限250个字符"></textarea>
                         <span class="text-danger">{{inputMsg}}</span>
 					</div>
 					<div class="modal-footer">
