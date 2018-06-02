@@ -8,6 +8,7 @@ import org.apache.shiro.authc.LockedAccountException;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
+import org.apache.shiro.web.util.WebUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -82,8 +83,12 @@ public class LoginController extends BaseController {
 		} catch (Exception e) {
 			return Result.error(BussCode.ERR_UNKNOWN, "系统错误");
 		}
+		Result result = Result.success();
+		if (WebUtils.getSavedRequest(request)!=null) {// 登录前访问的url
+			result.put("url", WebUtils.getSavedRequest(request).getRequestUrl());
+		}
 		logger.info(((Administrator)ShiroUtils.getToken()).getaId() + "登录系统");
-		return Result.success();
+		return result;
 	}
 	
 	/**
