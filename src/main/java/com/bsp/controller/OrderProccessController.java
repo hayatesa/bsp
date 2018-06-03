@@ -5,6 +5,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bsp.dto.OrderQueryObject;
+import com.bsp.utils.Page;
 import com.bsp.utils.Result;
 
 /**
@@ -24,5 +26,13 @@ public class OrderProccessController {
 	@RequestMapping("next_step")
 	public Result nextStep(@RequestParam("lrId") Integer lrId) {
 		return Result.success();
+	}
+	
+	/**
+	 * 获取数据页
+	 */
+	@RequestMapping("page")
+	public Page list(OrderQueryObject queryObject) {
+		return null;
 	}
 }
