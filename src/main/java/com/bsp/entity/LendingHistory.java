@@ -37,6 +37,9 @@ public class LendingHistory extends BaseEntity {
 
     // 借阅人电话号码
     private String loanPhone;
+    
+    // 数量
+    private Integer amount;
 
     // 借阅的图书
     private LoanableBook loanableBook;
@@ -105,8 +108,16 @@ public class LendingHistory extends BaseEntity {
     public void setSendToTime(Date sendToTime) {
         this.sendToTime = sendToTime;
     }
+    
+    public Integer getAmount() {
+		return amount;
+	}
 
-    /**
+	public void setAmount(Integer amount) {
+		this.amount = amount;
+	}
+
+	/**
      * 借阅人取走图书时间
      */
     public Date getTakeAwayTime() {

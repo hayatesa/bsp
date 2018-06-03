@@ -12,6 +12,7 @@
     <result column="take_back_time" property="takeBackTime" jdbcType="TIMESTAMP" />
     <result column="lr_struts" property="lrStruts" jdbcType="TINYINT" />
     <result column="loan_phone" property="loanPhone" jdbcType="VARCHAR" />
+    <result column="amount" property="amount" jdbcType="INTEGER" />
     <association property="loanableBook" column="lb_id" javaType="LoanableBook" select="com.bsp.dao.LoanableBookMapper.selectByPrimaryKey" />
     <association property="user" column="uuid" javaType="User" select="com.bsp.dao.UserMapper.selectByPrimaryKey" />
     <association property="receiveAdmin" column="receive_uuid" javaType="Administrator" select="com.bsp.dao.AdministratorMapper.selectByPrimaryKey" />
@@ -20,7 +21,7 @@
   <sql id="Base_Column_List" >
     lr_id, create_time, agree_time, send_to_time, take_away_time, expected_return_time, 
     actual_return_time, take_back_time, lr_struts, loan_phone, lb_id, uuid, receive_uuid, 
-    back_uuid
+    back_uuid, amount
   </sql>
   
   <select id="selectBylrStrutsLendingRecord" resultMap="BaseResultMap" >
@@ -43,12 +44,12 @@
       send_to_time, take_away_time, expected_return_time, 
       actual_return_time, take_back_time, lr_struts, 
       loan_phone, lb_id, uuid, 
-      receive_uuid, back_uuid)
+      receive_uuid, back_uuid, amount)
     values (#{lrId,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{agreeTime,jdbcType=TIMESTAMP}, 
       #{sendToTime,jdbcType=TIMESTAMP}, #{takeAwayTime,jdbcType=TIMESTAMP}, #{expectedReturnTime,jdbcType=TIMESTAMP}, 
       #{actualReturnTime,jdbcType=TIMESTAMP}, #{takeBackTime,jdbcType=TIMESTAMP}, #{lrStruts,jdbcType=TINYINT}, 
       #{loanPhone,jdbcType=VARCHAR}, #{loanableBook.lbId,jdbcType=INTEGER}, #{user.uuid,jdbcType=VARCHAR}, 
-      #{receiveAdmin.aUuid,jdbcType=VARCHAR}, #{backAdmin.aUuid,jdbcType=VARCHAR})
+      #{receiveAdmin.aUuid,jdbcType=VARCHAR}, #{backAdmin.aUuid,jdbcType=VARCHAR}, #{amount,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.bsp.entity.LendingRecord" >
     insert into lending_record
@@ -82,6 +83,9 @@
       </if>
       <if test="loanPhone != null" >
         loan_phone,
+      </if>
+      <if test="amount != null" >
+        amount,
       </if>
       <if test="loanableBook.lbId != null" >
         lb_id,
@@ -127,6 +131,9 @@
       <if test="loanPhone != null" >
         #{loanPhone,jdbcType=VARCHAR},
       </if>
+      <if test="amount != null" >
+        #{amount,jdbcType=INTEGER},
+      </if>
       <if test="loanableBook.lbId != null" >
         #{loanableBook.lbId,jdbcType=INTEGER},
       </if>
@@ -171,6 +178,9 @@
       <if test="loanPhone != null" >
         loan_phone = #{loanPhone,jdbcType=VARCHAR},
       </if>
+      <if test="amount != null" >
+        amount = #{amount,jdbcType=INTEGER},
+      </if>
       <if test="loanableBook.lbId != null" >
         lb_id = #{loanableBook.lbId,jdbcType=INTEGER},
       </if>
@@ -197,6 +207,7 @@
       take_back_time = #{takeBackTime,jdbcType=TIMESTAMP},
       lr_struts = #{lrStruts,jdbcType=TINYINT},
       loan_phone = #{loanPhone,jdbcType=VARCHAR},
+      amount = #{amount,jdbcType=INTEGER},
       lb_id = #{loanableBook.lbId,jdbcType=INTEGER},
       uuid = #{user.uuid,jdbcType=VARCHAR},
       receive_uuid = #{receiveAdmin.aUuid,jdbcType=VARCHAR},
