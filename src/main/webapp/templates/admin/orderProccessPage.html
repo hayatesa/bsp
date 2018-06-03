@@ -21,28 +21,38 @@
 			<table id="data-list"></table>
 		</div>
 		<div id="tab-toolbar" class="btn-group" role="group" >
-			<select @change="reload" v-model="clbStatus" class="form-control">
-				<option value="0" selected="selected">待审核</option>
-				<option value="1">未通过</option>
-				<option value="2">已通过</option>
+			<select @change="reload" v-model="status" class="form-control">
+				<option value="0" selected="selected">进行中的订单</option>
+				<option value="1">已完成的订单</option>
+				<option value="2">...</option>
 			</select>
 		</div>
 
 		<!--失败原因描述-->
-		<div id="input-modal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
-			<div class="modal-dialog modal-sm" role="document">
+		<div id="input-modal" class="modal fade" tabindex="-1" role="dialog"  data-backdrop="static">
+			<div class="modal-dialog" role="document">
 				<div class="modal-content">
 					<div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-						<h4 class="modal-title" id="myModalLabel">审核失败原因</h4>
+						<h4 class="modal-title" id="myModalLabel">发送消息</h4>
 					</div>
 					<div class="modal-body">
-						<textarea style="resize:none" v-model="failureCause" class="form-control" rows="5" placeholder="限250个字符"></textarea>
+                        <div class="radio">
+                            <label class="checkbox-inline">
+                                <input v-model="sendTo" type="radio" name="account" id="optionsRadios1" value="0" checked>
+                                借入方
+                            </label>
+                            <label class="checkbox-inline">
+                                <input v-model="sendTo" type="radio" name="account" id="optionsRadios2" value="1">
+                                借出方
+                            </label>
+                        </div>
+						<textarea style="resize:none" v-model="msg" class="form-control" rows="10" placeholder="限1000个字符"></textarea>
                         <span class="text-danger">{{inputMsg}}</span>
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-						<button @click="deny"  type="button" class="btn btn-primary">确定</button>
+						<button type="button" class="btn btn-primary">发送</button>
 					</div>
 				</div>
 			</div>

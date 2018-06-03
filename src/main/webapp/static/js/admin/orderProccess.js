@@ -1,6 +1,7 @@
 $(function () {
     var tab = $("#data-list").bootstrapTable({
-        url: '/clb/page',
+        //url: '/proccess/page',
+        url: '/static/data/orderData.json',
         method: 'get',
         contentType: 'application/json',
         dataType: 'json',
@@ -45,14 +46,16 @@ $(function () {
         uniqueId: 'id',
         columns: [
             //{checkbox: true, visible: true},
-            {field: 'lrId', title: 'ID',sortable:true},
+            {field: 'lrId', title: '订单号',sortable:true},
             {field: 'loanableBook.lbName', title: '书名',sortable:false},
+            {field: 'amount', title: '数量',sortable:false},
             {field: 'loanableBook.user.mail', title: '借出方',sortable:false},
             {field: 'user.mail', title: '借入方',sortable:false},
-            {field: 'amount', title: '数量',sortable:false},
-            {field: '开始时间', title: '数量',sortable:false},
-            {field: 'amount', title: '数量',sortable:false},
-            {title: '审核',formatter:operationFormatter},
+            //{field: 'createTime', title: '订单日期',formatter:createTimeFormatter,sortable:true},
+            //{field: 'takeAwayTime', title: '开始日期',formatter:takeAwayTimeFormatter,sortable:true},
+            //{field: 'expectedReturnTime', title: '还书日期',formatter:expectedReturnTimeFormatter,sortable:true},
+            {title: '状态', formatter:statusFormatter},
+            {title: '操作',formatter:operationFormatter},
         ],
     })
 })
@@ -60,28 +63,58 @@ var init_table = function() {
 
 }
 
+var createTimeFormatter= function (index,row) {
+    return millisecondsToDateTime(row.createTime);
+}
+
+var takeAwayTimeFormatter= function (index,row) {
+    return millisecondsToDateTime(row.takeAwayTime);
+}
+
+var expectedReturnTimeFormatter= function (index,row) {
+    return millisecondsToDateTime(row.expectedReturnTime);
+}
+
+var statusFormatter = function(index,row){
+    switch(row.lrStruts)
+    {
+        case 0:
+            return '<span class="label label-success">正常</span> 等待借出方同意';
+            break;
+        case 4:
+            return '<span class="label label-success">正常</span> 等待借出方把图书送达中转站';
+            break;
+        case 6:
+            return '<span class="label label-success">正常</span> 等待借入方取走图书';
+            break;
+        case 7:
+            return '<span class="label label-danger">异常</span> 借入方未按时取走图书，等待借入方取回图书';
+            break;
+        case 8:
+            return '<span class="label label-success">正常</span> 等待借出方送达中转站';
+            break;
+        case 9:
+            return '<span class="label label-danger">异常</span> 借入方未按时归还图书';
+            break;
+        case 10:
+            return '<span class="label label-success">正常</span> 等待借出方取回图书';
+            break;
+        case 11:
+            return '<span class="label label-danger">异常</span> 借出方未按时取回图书';
+            break;
+        default:
+            return '等待借入方取走';
+            break;
+    };
+}
+
 var detailFormatter = function(index,row){
-    var failureCause = vue_app.clbStatus == 1 ? '</br>审核不通过原因：'+row.failureCause:'';
 	return '<ul class="media-list">' +
         '  <li class="media">' +
-        '    <div class="media-left">' +
-        '      <a target="_blank" href="'+row.imagePath+'">' +
-        '        <img width="319" class="thumbnail" src="'+row.imagePath+'" alt="...">' +
-        '      </a>' +
-        '    </div>' +
         '    <div class="media-body">' +
-        '      <h4 class="media-heading">&laquo;'+row.clbName+'&raquo;</h4>' +
-        '      作者：' +row.clbAuthor+
-        '      </br>出版社：' +row.clbPublishing+
-        '      </br>ISBN：' +row.isbn+
-        '      </br>数量：' +row.clbNumber+
-        '      </br>一级分类：' +row.secondaryClassification.primaryClassification.pcName+
-        '      </br>二级分类：' +row.secondaryClassification.scName+
-        '      </br>所属用户：' +row.user.mail+
-        '      </br>联系电话：' +row.phone+
-        '      </br>可借时长：' +row.clbDuration+'天'+
-        '      </br>评价：' +row.clbComment+
-        failureCause+
+        '      <h4 class="media-heading">'+row+'</h4>' +
+        '      XX：' +row+
+        '      </br>XX：' +row+
         '    </div>' +
         '  </li>' +
         '</ul>';
@@ -94,69 +127,72 @@ var getQueryParams = function(params){
 		order: params.order,
 		sort: params.sort,
 		search: params.search,
-        clbStatus: vue_app.clbStatus,
+        status: vue_app.status,
 	};
 	return p;
 }
 
-var operationFormatter = function(value,row,index){
-    if (vue_app.clbStatus == 0) {
-        return '<div id="tab-toolbar" class="btn-group" role="group" >' +
-            '<button onclick="doApprove('+row.clbId+')" type="button" class="btn btn-defualt btn-xs" title="通过"><i class="fa fa-check-square-o" aria-hidden="true"></i> 通过</button>' +
-            '<button onclick="doOpenModal('+row.clbId+')" type="button" class="btn btn-danger btn-xs" title="失败"><i class="fa fa-times" aria-hidden="true"></i> 失败</button>' +
-            '</div>';
+var operationFormatter = function(value,row,index){// 根据订单状态生成操作按钮
+    var html = '<div id="tab-toolbar" class="btn-group" role="group" >';
+    if (row.lrStruts==4 || row.lrStruts==6 || row.lrStruts==7 || row.lrStruts==8 || row.lrStruts==9 || row.lrStruts==10 || row.lrStruts==11 || row.lrStruts==12) {
+        html+='<button onclick="doNextStep('+row.clbId+')" type="button" class="btn btn-defualt btn-xs" title="下一步"><i class="fa fa-arrow-right" aria-hidden="true"></i> 下一步</button>';
     }
-    if (vue_app.clbStatus == 1) {
-        return '<div id="tab-toolbar" class="btn-group" role="group" >' +
-            '<button onclick="doApprove('+row.clbId+')" type="button" class="btn btn-defualt btn-xs" title="通过"><i class="fa fa-check-square-o" aria-hidden="true"></i> 通过</button>' +
-            '</div>';
+    if(row.lrStruts==7 || row.lrStruts==11) {
+        html+='<button onclick="doDonate('+row.clbId+')" type="button" class="btn btn-danger btn-xs" title="捐赠"><i class="fa fa-share-alt" aria-hidden="true"></i> 捐赠</button>';
     }
+    html+='<button onclick="doOpenModal('+row.clbId+')" type="button" class="btn btn-primary btn-xs" title="发送消息"><i class="fa fa-send-o" aria-hidden="true"></i> 消息</button>';
+    html+='</div>';
+    return html;
 }
 
 var doReload = function () {
     $("#data-list").bootstrapTable('refresh');
 }
 
-var doDeny=function () {//审核不通过
-    if (!vue_app.inputMsg.trim()) {
-        vue_app.inputMsg='请填写失败原因';
-        return;
-    }
-    if (vue_app.inputMsg.length>250) {
-        vue_app.inputMsg='长度必须小于250个字符';
-        return;
-    }
-    $.ajax({
-        url: '/clb/deny',
-        data: {
-            clbId: vue_app.deny_clbId,
-            failureCause: vue_app.failureCause
-        },
-        success: function (data) {
-            if (data.code!=0){
-                alert(data.msg);
+var doSendMsg=function () {
+    confirm("确认操作", function () {
+        $.ajax({
+            url: '',
+            data: {
+                lrId: id
+            },
+            success: function (data) {
+                if (data.code!=0){
+                    alert(data.msg);
+                }
+                doReload();
             }
-            $('#input-modal').modal('hide');
-            vue_app.inputMsg='';
-            vue_app.deny_clbId={};
-            doReload();
-        }
+        })
+    })
+}
+
+var doDonate=function () {
+    confirm("确认操作", function () {
+        $.ajax({
+            url: '',
+            data: {
+                lrId: id
+            },
+            success: function (data) {
+                if (data.code!=0){
+                    alert(data.msg);
+                }
+                doReload();
+            }
+        })
     })
 }
 
 var doOpenModal = function (id) {//打开模态框
-    vue_app.deny_clbId= id;
-    vue_app.inputMsg='';
-    vue_app.failureCause='';
     $('#input-modal').modal('show');
 }
 
-var doApprove=function (id) {//审核通过
+var doNextStep=function (id) {//审核通过
     confirm("确认操作", function () {
         $.ajax({
-            url: '/clb/approve',
+            url: '/proccess/next_step',
             data: {
-                clbId: id
+                lrId: id
             },
             success: function (data) {
                 if (data.code!=0){
@@ -171,14 +207,13 @@ var doApprove=function (id) {//审核通过
 var vue_app=new Vue({
     el: '#vue-app',
     data: {
-        clbStatus: 0, // 显示数据,0-未审核，1-审核失败，2-审核通过
-        failureCause: '', // 审核失败原因
-        deny_clbId: {}, // 审核失败记录id
-        inputMsg: '' // 审核失败原因文本域提示
+        status: 0,
+        sendTo: 1,
+        msg: '',
+        inputMsg: ''
     },
 	methods: {
 		reload: doReload,
-        deny: doDeny
 	},
 	created: function () {
         init_table();

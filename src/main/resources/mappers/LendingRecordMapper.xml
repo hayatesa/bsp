@@ -23,7 +23,33 @@
     actual_return_time, take_back_time, lr_struts, loan_phone, lb_id, uuid, receive_uuid, 
     back_uuid, amount
   </sql>
-  
+  <!-- 高级+分页查询的where语句块 -->
+  <sql id="where_of_query">
+	<where>
+		<if test="search!=null">AND (
+			lr_id LIKE CONCAT('%',#{search},'%')
+		)
+		</if>
+		<if test="status!=null">AND lr_struts=#{status}</if>
+	</where>
+  </sql>
+  <select id="getTotalCount" resultType="java.lang.Integer" parameterType="com.bsp.dto.OrderQueryObject" >
+    select COUNT(*) from lending_record 
+    <include refid="where_of_query" />
+  </select>
+  <select id="selectByQueryObject" resultMap="BaseResultMap" parameterType="com.bsp.dto.OrderQueryObject" >
+    select
+	<include refid="Base_Column_List" />
+    from lending_record
+    <include refid="where_of_query" />
+	<if test="sort!=null">
+		ORDER BY ${sort}
+		<if test="order!=null">${order}</if>
+	</if>
+    <if test="startIndex>-1">
+		LIMIT #{startIndex},#{limit}
+	</if>
+  </select>
   <select id="selectBylrStrutsLendingRecord" resultMap="BaseResultMap" >
     select 
     <include refid="Base_Column_List" />
