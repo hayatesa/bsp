@@ -1,7 +1,7 @@
 $(function () {
     var tab = $("#data-list").bootstrapTable({
-        //url: '/proccess/page',
-        url: '/static/data/orderData.json',
+        url: '/proccess/page',
+        //url: '/static/data/orderData.json',
         method: 'get',
         contentType: 'application/json',
         dataType: 'json',
@@ -47,11 +47,11 @@ $(function () {
         columns: [
             //{checkbox: true, visible: true},
             {field: 'lrId', title: '订单号',sortable:true},
+            {field: 'createTime', title: '时间',formatter:createTimeFormatter,sortable:true},
             {field: 'loanableBook.lbName', title: '书名',sortable:false},
             {field: 'amount', title: '数量',sortable:false},
             {field: 'loanableBook.user.mail', title: '借出方',sortable:false},
             {field: 'user.mail', title: '借入方',sortable:false},
-            //{field: 'createTime', title: '订单日期',formatter:createTimeFormatter,sortable:true},
             //{field: 'takeAwayTime', title: '开始日期',formatter:takeAwayTimeFormatter,sortable:true},
             //{field: 'expectedReturnTime', title: '还书日期',formatter:expectedReturnTimeFormatter,sortable:true},
             {title: '状态', formatter:statusFormatter},
@@ -81,17 +81,29 @@ var statusFormatter = function(index,row){
         case 0:
             return '<span class="label label-success">正常</span> 等待借出方同意';
             break;
+        case 1:
+            return '<span class="label label-warning">失效</span> 借入方取消申请';
+            break;
+        case 2:
+            return '<span class="label label-warning">失效</span> 借出方拒绝申请';
+            break;
+        case 3:
+            return '<span class="label label-warning">失效</span> 申请超时';
+            break;
         case 4:
             return '<span class="label label-success">正常</span> 等待借出方把图书送达中转站';
+            break;
+        case 5:
+            return '<span class="label label-warning">失效</span> 借出方未按时把图书送达中转站';
             break;
         case 6:
             return '<span class="label label-success">正常</span> 等待借入方取走图书';
             break;
         case 7:
-            return '<span class="label label-danger">异常</span> 借入方未按时取走图书，等待借入方取回图书';
+            return '<span class="label label-danger">异常</span> 借入方未按时取走图书，等待借出方取回';
             break;
         case 8:
-            return '<span class="label label-success">正常</span> 等待借出方送达中转站';
+            return '<span class="label label-success">正常</span> 等待借入方归还图书';
             break;
         case 9:
             return '<span class="label label-danger">异常</span> 借入方未按时归还图书';
@@ -100,21 +112,50 @@ var statusFormatter = function(index,row){
             return '<span class="label label-success">正常</span> 等待借出方取回图书';
             break;
         case 11:
-            return '<span class="label label-danger">异常</span> 借出方未按时取回图书';
+            return '<span class="label label-info">捐赠</span>';
+            break;
+        case 12:
+            return '<span class="label label-primary">完成</span>';
             break;
         default:
-            return '等待借入方取走';
+            return '<span class="label label-default">未知</span>';
             break;
     };
 }
 
 var detailFormatter = function(index,row){
+    console.log(row)
+    var agreeTime = row.agreeTime ? millisecondsToDateTime(row.agreeTime) : '无';
+    var sendToTime = row.sendToTime ? millisecondsToDateTime(row.sendToTime) : '无';
+    var takeAwayTime = row.takeAwayTime ? millisecondsToDateTime(row.takeAwayTime) : '无';
+    var expectedReturnTime = row.expectedReturnTime ? millisecondsToDateTime(row.expectedReturnTime) : '无';
+    var actualReturnTime = row.actualReturnTime ? millisecondsToDateTime(row.actualReturnTime) : '无';
+    var receiveAdmin=row.receiveAdmin ? row.receiveAdmin.aId : '无';
+    var backAdmin=row.backAdmin ? row.backAdmin.aId : '无';
 	return '<ul class="media-list">' +
         '  <li class="media">' +
+        '    <div class="media-left">' +
+        '      <a target="_blank" href="'+row.loanableBook.imagePath+'">' +
+        '        <img width="319" class="thumbnail" src="'+row.loanableBook.imagePath+'" alt="...">' +
+        '      </a>' +
+        '    </div>' +
         '    <div class="media-body">' +
-        '      <h4 class="media-heading">'+row+'</h4>' +
-        '      XX：' +row+
-        '      </br>XX：' +row+
+        '      <h4 class="media-heading">订单号：'+row.lrId+'</h4>' +
+        '      订单时间：' +millisecondsToDateTime(row.createTime)+
+        '      </br>状态：' +statusFormatter(index,row)+
+        '      </br>借出方：' +row.loanableBook.user.mail+
+        '      ，手机号：' +row.loanableBook.phone+
+        '      </br>借入方：' +row.user.mail+
+        '      ，手机号：' +row.loanPhone+
+        '      </br>书名：&laquo;' +row.loanableBook.lbName +'&raquo;'+
+        '      </br>数量：' +row.amount+
+        '      </br>借出方同意时间：' +agreeTime+
+        '      </br>借出方送达中转站时间：' +sendToTime+
+        '      </br>借入方取书时间：' +takeAwayTime+
+        '      </br>应还时间：' +expectedReturnTime+
+        '      </br>实际还书时间：' +actualReturnTime+
+        '      </br>图书接收者（借出方->中转站）：' +receiveAdmin+
+        '      </br>图书接收者（借入方->中转站）：' +receiveAdmin+
         '    </div>' +
         '  </li>' +
         '</ul>';
@@ -134,13 +175,35 @@ var getQueryParams = function(params){
 
 var operationFormatter = function(value,row,index){// 根据订单状态生成操作按钮
     var html = '<div id="tab-toolbar" class="btn-group" role="group" >';
-    if (row.lrStruts==4 || row.lrStruts==6 || row.lrStruts==7 || row.lrStruts==8 || row.lrStruts==9 || row.lrStruts==10 || row.lrStruts==11 || row.lrStruts==12) {
-        html+='<button onclick="doNextStep('+row.clbId+')" type="button" class="btn btn-defualt btn-xs" title="下一步"><i class="fa fa-arrow-right" aria-hidden="true"></i> 下一步</button>';
+    html+='<button onclick="doOpenModal('+row.clbId+')" type="button" class="btn btn-primary btn-xs" title="发送消息"><i class="fa fa-send-o" aria-hidden="true"></i> 消息</button>';
+    var btnTxt = '下一步'
+    switch(row.lrStruts)
+    {
+        case 4:
+            btnTxt='接收';
+            break;
+        case 6:
+            btnTxt='取书';
+            break;
+        case 7:
+            btnTxt='取回';
+            break;
+        case 8:
+            btnTxt='还书';
+            break;
+        case 9:
+            btnTxt='还书';
+            break;
+        case 10:
+            btnTxt='取回';
+            break;
+    };
+    if (row.lrStruts==4 || row.lrStruts==6 || row.lrStruts==7 || row.lrStruts==8 || row.lrStruts==9 || row.lrStruts==10) {
+        html+='<button onclick="doNextStep('+row.clbId+')" type="button" class="btn btn-defualt btn-xs" title="下一步"><i class="fa fa-arrow-right" aria-hidden="true"></i> '+btnTxt+'</button>';
     }
-    if(row.lrStruts==7 || row.lrStruts==11) {
+    if(row.lrStruts==7 || row.lrStruts==10) {
         html+='<button onclick="doDonate('+row.clbId+')" type="button" class="btn btn-danger btn-xs" title="捐赠"><i class="fa fa-share-alt" aria-hidden="true"></i> 捐赠</button>';
     }
-    html+='<button onclick="doOpenModal('+row.clbId+')" type="button" class="btn btn-primary btn-xs" title="发送消息"><i class="fa fa-send-o" aria-hidden="true"></i> 消息</button>';
     html+='</div>';
     return html;
 }
@@ -167,7 +230,7 @@ var doSendMsg=function () {
 }
 
 var doDonate=function () {
-    confirm("确认操作", function () {
+    confirm("确认捐赠？", function () {
         $.ajax({
             url: '',
             data: {
@@ -188,7 +251,7 @@ var doOpenModal = function (id) {//打开模态框
 }
 
 var doNextStep=function (id) {//审核通过
-    confirm("确认操作", function () {
+    confirm("确认操作？", function () {
         $.ajax({
             url: '/proccess/next_step',
             data: {
@@ -208,8 +271,11 @@ var vue_app=new Vue({
     el: '#vue-app',
     data: {
         status: 0,
-        sendTo: 1,
-        msg: '',
+        sendTo: 0,
+        msg: {
+            title: '',
+            content: ''
+        },
         inputMsg: ''
     },
 	methods: {

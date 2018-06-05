@@ -1,13 +1,15 @@
 package com.bsp.controller;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.bsp.dao.LendingRecordMapper;
 import com.bsp.dto.OrderQueryObject;
+import com.bsp.service.ILendingRecordService;
+import com.bsp.utils.CommonUtil;
 import com.bsp.utils.Page;
 import com.bsp.utils.Result;
 
@@ -19,13 +21,13 @@ import com.bsp.utils.Result;
 @RestController
 @Scope(value="prototype")
 @RequestMapping("proccess")
-public class OrderProccessController {
+public class OrderProccessController extends BaseController {
 	
 	@Autowired
-	private LendingRecordMapper lendingRecordMapper;
+	private ILendingRecordService lendingRecordService;
 	
-	public void setLendingRecordMapper(LendingRecordMapper lendingRecordMapper) {
-		this.lendingRecordMapper = lendingRecordMapper;
+	public void setLendingRecordService(ILendingRecordService lendingRecordService) {
+		this.lendingRecordService = lendingRecordService;
 	}
 
 	/**
@@ -42,6 +44,10 @@ public class OrderProccessController {
 	 */
 	@RequestMapping("page")
 	public Page list(OrderQueryObject queryObject) {
-		return null;
+		if (!StringUtils.isBlank(queryObject.getSort())) {
+			queryObject.setSort(CommonUtil.HumpToUnderline(queryObject.getSort()));
+		}
+		Page page = lendingRecordService.findByQueryObject(queryObject);
+		return page;
 	}
 }

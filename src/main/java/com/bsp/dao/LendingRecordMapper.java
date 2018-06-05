@@ -23,5 +23,5 @@ public interface LendingRecordMapper extends GenericMapper<LendingRecord, Intege
 	 * 分页高级查询
 	 * @param queryObject 查询对象
 	 */
-	List<LendingRecord> selectByOrderQueryObject(OrderQueryObject queryObject);
+	List<LendingRecord> selectByQueryObject(OrderQueryObject queryObject);
 }

@@ -22,9 +22,8 @@
 		</div>
 		<div id="tab-toolbar" class="btn-group" role="group" >
 			<select @change="reload" v-model="status" class="form-control">
-				<option value="0" selected="selected">进行中的订单</option>
-				<option value="1">已完成的订单</option>
-				<option value="2">...</option>
+				<option value="0" selected="selected">进行中</option>
+				<option value="1">已结束</option>
 			</select>
 		</div>
 
@@ -39,20 +38,25 @@
 					<div class="modal-body">
                         <div class="radio">
                             <label class="checkbox-inline">
-                                <input v-model="sendTo" type="radio" name="account" id="optionsRadios1" value="0" checked>
+                                <input v-model="sendTo" type="radio" name="account" value="0" checked>
                                 借入方
                             </label>
                             <label class="checkbox-inline">
-                                <input v-model="sendTo" type="radio" name="account" id="optionsRadios2" value="1">
+                                <input v-model="sendTo" type="radio" name="account" value="1">
                                 借出方
                             </label>
                         </div>
-						<textarea style="resize:none" v-model="msg" class="form-control" rows="10" placeholder="限1000个字符"></textarea>
+						<div class="form-group">
+							<input v-model="msg.title" class="form-control"placeholder="主题，限20个字符"></input>
+						</div>
+						<div class="form-group">
+							<textarea style="resize:none" v-model="msg.content" class="form-control" rows="10" placeholder="正文，支持富文本（html），限1000个字符"></textarea>
+						</div>
                         <span class="text-danger">{{inputMsg}}</span>
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-						<button type="button" class="btn btn-primary">发送</button>
+						<button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times" aria-hidden="true"></i> 取消</button>
+						<button type="button" class="btn btn-primary"><i class="fa fa-send-o" aria-hidden="true"></i> 发送</button>
 					</div>
 				</div>
 			</div>
