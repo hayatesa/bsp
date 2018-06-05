@@ -91,10 +91,10 @@ var statusFormatter = function(index,row){
             return '<span class="label label-warning">失效</span> 申请超时';
             break;
         case 4:
-            return '<span class="label label-success">正常</span> 等待借出方把图书送达中转站';
+            return '<span class="label label-success">正常</span> 等待借出方将图书送至中转站';
             break;
         case 5:
-            return '<span class="label label-warning">失效</span> 借出方未按时把图书送达中转站';
+            return '<span class="label label-warning">失效</span> 借出方未按时将图书送至中转站';
             break;
         case 6:
             return '<span class="label label-success">正常</span> 等待借入方取走图书';
@@ -148,6 +148,8 @@ var detailFormatter = function(index,row){
         '      </br>借入方：' +row.user.mail+
         '      ，手机号：' +row.loanPhone+
         '      </br>书名：&laquo;' +row.loanableBook.lbName +'&raquo;'+
+        '      </br>ISBN：' +row.loanableBook.isbn+
+        '      </br>出版社：' +row.loanableBook.lbPublishing+
         '      </br>数量：' +row.amount+
         '      </br>借出方同意时间：' +agreeTime+
         '      </br>借出方送达中转站时间：' +sendToTime+
@@ -189,10 +191,10 @@ var operationFormatter = function(value,row,index){// 根据订单状态生成�
             btnTxt='取回';
             break;
         case 8:
-            btnTxt='还书';
+            btnTxt='归还';
             break;
         case 9:
-            btnTxt='还书';
+            btnTxt='归还';
             break;
         case 10:
             btnTxt='取回';
@@ -270,7 +272,7 @@ var doNextStep=function (id) {//审核通过
 var vue_app=new Vue({
     el: '#vue-app',
     data: {
-        status: 0,
+        status: 0, // 订单状态，0-进行中 1-异常 2-已结束 3-全部
         sendTo: 0,
         msg: {
             title: '',
