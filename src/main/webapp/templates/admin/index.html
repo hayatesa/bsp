@@ -126,16 +126,10 @@
                       </a>
                   </li>
                   <li class="sub-menu">
-                      <a href="javascript:;" >
+                      <a  @click="go('/p/userPage','图书管理')" href="javascript:;" >
                           <i class="fa fa-book"></i>
-                          <span>异常订单</span>
+                          <span>图书管理</span>
                       </a>
-                      <ul class="sub">
-                          <li><a @click="go('/p/userPage','异常订单-逾期未送达运营方')" href="javascript:;">借出方逾期未送达运营方</a></li>
-                          <li><a @click="go('/p/userPage','异常订单-逾期未取走')" href="javascript:;">借入方逾期未取书</a></li>
-                          <li><a @click="go('/p/userPage','异常订单-逾期未还')" href="javascript:;">借入方逾期未还</a></li>
-                          <li><a @click="go('/p/userPage','异常订单-逾期未取回')" href="javascript:;">借出方逾期未取回</a></li>
-                      </ul>
                   </li>
                   <li class="sub-menu">
                       <a @click="go('/p/userPage','历史订单')" href="javascript:;">
