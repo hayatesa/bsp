@@ -8,9 +8,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bsp.dto.OrderQueryObject;
+import com.bsp.entity.LendingRecord;
+import com.bsp.exceptions.SendEmailException;
 import com.bsp.exceptions.SystemErrorException;
+import com.bsp.exceptions.UserDefinedException;
 import com.bsp.service.IDonateService;
+import com.bsp.service.IEmailService;
 import com.bsp.service.ILendingRecordService;
+import com.bsp.service.IMessageService;
 import com.bsp.utils.CommonUtil;
 import com.bsp.utils.Page;
 import com.bsp.utils.Result;
@@ -31,6 +36,19 @@ public class OrderProccessController extends BaseController {
 	@Autowired
 	private IDonateService donateService;
 	
+	@Autowired
+	private IMessageService messageService;
+	@Autowired
+	private IEmailService emailService;
+	
+	public void setMessageService(IMessageService messageService) {
+		this.messageService = messageService;
+	}
+
+	public void setEmailService(IEmailService emailService) {
+		this.emailService = emailService;
+	}
+
 	public void setDonateService(IDonateService donateService) {
 		this.donateService = donateService;
 	}
@@ -71,6 +89,49 @@ public class OrderProccessController extends BaseController {
 		} catch (SystemErrorException e) {
 			e.printStackTrace();
 			return Result.error(e.getMessage());
+		}
+		return Result.success();
+	}
+	
+	/**
+	 * 发送消息
+	 * @param sendTo 接收方，发送消息对象，0-借入方 1-借出方
+	 * @param subject 主题
+	 * @param content 正文
+	 */
+	@RequestMapping("sendMsg")
+	public Result sendMsg(Integer lrId, Integer sendTo, String subject, String content) {
+		LendingRecord lr = null;
+		String email = null;
+		try {
+			lr = lendingRecordService.findByPrimaryKey(lrId);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return Result.error(e.getMessage());
+		}
+		if (lr==null) {
+			return Result.error("订单不存在");
+		}
+		if (sendTo==0) {
+			email = lr.getUser().getMail();
+		} else {
+			email=lr.getLoanableBook().getUser().getMail();
+		}
+		try {
+			emailService.sendEmail(email, subject, content);
+			messageService.sendMessage(email, subject, content);
+		} catch (SendEmailException e) {
+			e.printStackTrace();
+			return Result.error(e.getMessage());
+		} catch (UserDefinedException e) {
+			e.printStackTrace();
+			return Result.error(e.getMessage());
+		} catch (SystemErrorException e) {
+			e.printStackTrace();
+			return Result.error(e.getMessage());
+		} catch (Exception e) {
+			e.printStackTrace();
+			return Result.error("发生未知错误");
 		}
 		return Result.success();
 	}

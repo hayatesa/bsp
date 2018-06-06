@@ -1,6 +1,7 @@
 package com.bsp.service;
 
 import com.bsp.dto.OrderQueryObject;
+import com.bsp.entity.LendingRecord;
 import com.bsp.utils.Page;
 
 public interface ILendingRecordService {
@@ -21,4 +22,9 @@ public interface ILendingRecordService {
 	 */
 	void sendMsg(Integer lrId, Integer sendTo, String subject, String content);
 	
+	/**
+	 * 根据主键获取一张订单
+	 * @param lrId 订单Id
+	 */
+	LendingRecord findByPrimaryKey(Integer lrId);
 }

@@ -41,4 +41,16 @@ public class LendingRecordService implements ILendingRecordService {
 		
 	}
 
+	@Override
+	public LendingRecord findByPrimaryKey(Integer lrId) {
+		LendingRecord lendingRecord = null;
+		try {
+			lendingRecord = lendingRecordMapper.selectByPrimaryKey(lrId);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new SystemErrorException("系统异常，获取订单信息失败");
+		}
+		return lendingRecord;
+	}
+
 }

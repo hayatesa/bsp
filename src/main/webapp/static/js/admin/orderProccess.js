@@ -214,17 +214,18 @@ var doReload = function () {
 }
 
 var doSendMsg=function () {
-    confirm("确认操作", function () {
+    confirm("确认发送？", function () {
+        $('#input-modal').modal('hide');
         $.ajax({
-            url: '',
-            data: {
-                lrId: id
-            },
+            url: '/proccess/sendMsg',
+            data: vue_app.msg,
             success: function (data) {
                 if (data.code!=0){
                     alert(data.msg);
+                } else {
+                    alert("消息发送成功");
                 }
-                doReload();
+                vue_app.msg.lrId='';
             }
         })
     })
@@ -248,6 +249,7 @@ var doDonate=function (id) {
 }
 
 var doOpenModal = function (id) {//打开模态框
+    vue_app.msg.lrId=id;
     $('#input-modal').modal('show');
 }
 
@@ -272,15 +274,17 @@ var vue_app=new Vue({
     el: '#vue-app',
     data: {
         status: 0, // 订单状态，0-进行中 1-异常 2-已结束 3-全部
-        sendTo: 0, // 发送消息对象。0-借入方 1-借出方
         msg: {
-            title: '',
-            content: ''
+            sendTo: 0, // 发送消息对象，0-借入方 1-借出方
+            lrId: '', // 订单Id
+            subject: '', // 主题
+            content: '' // 正文
         },
         inputMsg: ''
     },
 	methods: {
 		reload: doReload,
+        sendMsg: doSendMsg
 	},
 	created: function () {
         init_table();
