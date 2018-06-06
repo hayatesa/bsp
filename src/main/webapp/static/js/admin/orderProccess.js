@@ -79,6 +79,53 @@ var statusFormatter = function(index,row){
     switch(row.lrStruts)
     {
         case 0:
+            return '<span class="label label-success">正常</span>';
+            break;
+        case 1:
+            return '<span class="label label-warning">失效</span>';
+            break;
+        case 2:
+            return '<span class="label label-warning">失效</span>';
+            break;
+        case 3:
+            return '<span class="label label-warning">失效</span>';
+            break;
+        case 4:
+            return '<span class="label label-success">正常</span>';
+            break;
+        case 5:
+            return '<span class="label label-warning">失效</span>';
+            break;
+        case 6:
+            return '<span class="label label-success">正常</span>';
+            break;
+        case 7:
+            return '<span class="label label-danger">异常</span>';
+            break;
+        case 8:
+            return '<span class="label label-success">正常</span>';
+            break;
+        case 9:
+            return '<span class="label label-danger">异常</span>';
+            break;
+        case 10:
+            return '<span class="label label-success">正常</span>';
+            break;
+        case 11:
+            return '<span class="label label-info">捐赠</span>';
+            break;
+        case 12:
+            return '<span class="label label-primary">完成</span>';
+            break;
+        default:
+            return '<span class="label label-default">未知</span>';
+            break;
+    };
+}
+var statusFormatterDetail = function(index,row){
+    switch(row.lrStruts)
+    {
+        case 0:
             return '<span class="label label-success">正常</span> 等待借出方同意';
             break;
         case 1:
@@ -141,7 +188,7 @@ var detailFormatter = function(index,row){
         '    <div class="media-body">' +
         '      <h4 class="media-heading">订单号：'+row.lrId+'</h4>' +
         '      订单时间：' +millisecondsToDateTime(row.createTime)+
-        '      </br>状态：' +statusFormatter(index,row)+
+        '      </br>状态：' +statusFormatterDetail(index,row)+
         '      </br>借出方：' +row.loanableBook.user.mail+
         '      ，手机号：' +row.loanableBook.phone+
         '      </br>借入方：' +row.user.mail+
