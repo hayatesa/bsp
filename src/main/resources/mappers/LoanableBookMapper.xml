@@ -49,12 +49,12 @@
     left join secondary_classification sc on loanable_book.sc_id = sc.sc_id
     left join primary_classification pc on sc.pc_id = pc.pc_id
     <include refid="where_of_query" />
+	<if test="sort!=null">
+		ORDER BY ${sort}
+		<if test="order!=null">${order}</if>
+	</if>
     <if test="startIndex>-1">
 		LIMIT #{startIndex},#{limit}
-	</if>
-	<if test="sort!=null">
-		ORDER BY #{sort}
-		<if test="order!=null">#{order}</if>
 	</if>
   </select>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
