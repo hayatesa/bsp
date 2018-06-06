@@ -183,11 +183,11 @@
 		-->  
 		<!--要根据哪张表生成，要在这里配置 -->
 		<!--用百分号表示生成所有表,可以直接省去一个一个写 <table tableName="%" /> -->
-	    <table  domainObjectName="Administrator" tableName="administrator" delimitIdentifiers="false" enableCountByExample="false"
+	    <!-- <table  domainObjectName="Administrator" tableName="administrator" delimitIdentifiers="false" enableCountByExample="false"
                enableDeleteByExample="false" enableSelectByExample="false"
                enableUpdateByExample="false">  
   			<property name="useActualColumnNames" value="false"/> 
-	    </table>
+	    </table> -->
 		<!-- <table  domainObjectName="CheckDemandBook" tableName="check_demand_book" delimitIdentifiers="false" enableCountByExample="false"
                enableDeleteByExample="false" enableSelectByExample="false"
                enableUpdateByExample="false"> 
@@ -203,12 +203,13 @@
                enableDeleteByExample="false" enableSelectByExample="false"
                enableUpdateByExample="false">  
   			<property name="useActualColumnNames" value="false"/> 
-	    </table>
+	    </table>-->
 	    <table  domainObjectName="DonatedBook" tableName="donated_book" delimitIdentifiers="false" enableCountByExample="false"
                enableDeleteByExample="false" enableSelectByExample="false"
                enableUpdateByExample="false">  
   			<property name="useActualColumnNames" value="false"/> 
 	    </table>
+	    <!--
 		<table  domainObjectName="LendingHistory" tableName="lending_history" delimitIdentifiers="false" enableCountByExample="false"
                enableDeleteByExample="false" enableSelectByExample="false"
                enableUpdateByExample="false">  

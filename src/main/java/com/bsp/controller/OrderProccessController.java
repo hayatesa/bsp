@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bsp.dto.OrderQueryObject;
+import com.bsp.exceptions.SystemErrorException;
+import com.bsp.service.IDonateService;
 import com.bsp.service.ILendingRecordService;
 import com.bsp.utils.CommonUtil;
 import com.bsp.utils.Page;
@@ -26,6 +28,13 @@ public class OrderProccessController extends BaseController {
 	@Autowired
 	private ILendingRecordService lendingRecordService;
 	
+	@Autowired
+	private IDonateService donateService;
+	
+	public void setDonateService(IDonateService donateService) {
+		this.donateService = donateService;
+	}
+
 	public void setLendingRecordService(ILendingRecordService lendingRecordService) {
 		this.lendingRecordService = lendingRecordService;
 	}
@@ -49,5 +58,20 @@ public class OrderProccessController extends BaseController {
 		}
 		Page page = lendingRecordService.findByQueryObject(queryObject);
 		return page;
+	}
+	
+	/**
+	 * 来自订单的捐赠，图书在中转站的状态有效
+	 * @param lrId 订单Id
+	 */
+	@RequestMapping("donate")
+	public Result donate(Integer lrId) {
+		try {
+			donateService.donateFormLendingRecord(lrId);
+		} catch (SystemErrorException e) {
+			e.printStackTrace();
+			return Result.error(e.getMessage());
+		}
+		return Result.success();
 	}
 }

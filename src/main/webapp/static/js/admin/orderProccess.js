@@ -124,7 +124,6 @@ var statusFormatter = function(index,row){
 }
 
 var detailFormatter = function(index,row){
-    console.log(row)
     var agreeTime = row.agreeTime ? millisecondsToDateTime(row.agreeTime) : '无';
     var sendToTime = row.sendToTime ? millisecondsToDateTime(row.sendToTime) : '无';
     var takeAwayTime = row.takeAwayTime ? millisecondsToDateTime(row.takeAwayTime) : '无';
@@ -177,7 +176,7 @@ var getQueryParams = function(params){
 
 var operationFormatter = function(value,row,index){// 根据订单状态生成操作按钮
     var html = '<div id="tab-toolbar" class="btn-group" role="group" >';
-    html+='<button onclick="doOpenModal('+row.clbId+')" type="button" class="btn btn-primary btn-xs" title="发送消息"><i class="fa fa-send-o" aria-hidden="true"></i> 消息</button>';
+    html+='<button onclick="doOpenModal('+row.lrId+')" type="button" class="btn btn-primary btn-xs" title="发送消息"><i class="fa fa-send-o" aria-hidden="true"></i> 消息</button>';
     var btnTxt = '下一步'
     switch(row.lrStruts)
     {
@@ -201,10 +200,10 @@ var operationFormatter = function(value,row,index){// 根据订单状态生成�
             break;
     };
     if (row.lrStruts==4 || row.lrStruts==6 || row.lrStruts==7 || row.lrStruts==8 || row.lrStruts==9 || row.lrStruts==10) {
-        html+='<button onclick="doNextStep('+row.clbId+')" type="button" class="btn btn-defualt btn-xs" title="下一步"><i class="fa fa-arrow-right" aria-hidden="true"></i> '+btnTxt+'</button>';
+        html+='<button onclick="doNextStep('+row.lrId+')" type="button" class="btn btn-defualt btn-xs" title="下一步"><i class="fa fa-arrow-right" aria-hidden="true"></i> '+btnTxt+'</button>';
     }
     if(row.lrStruts==7 || row.lrStruts==10) {
-        html+='<button onclick="doDonate('+row.clbId+')" type="button" class="btn btn-danger btn-xs" title="捐赠"><i class="fa fa-share-alt" aria-hidden="true"></i> 捐赠</button>';
+        html+='<button onclick="doDonate('+row.lrId+')" type="button" class="btn btn-danger btn-xs" title="捐赠"><i class="fa fa-share-alt" aria-hidden="true"></i> 捐赠</button>';
     }
     html+='</div>';
     return html;
@@ -231,10 +230,10 @@ var doSendMsg=function () {
     })
 }
 
-var doDonate=function () {
+var doDonate=function (id) {
     confirm("确认捐赠？", function () {
         $.ajax({
-            url: '',
+            url: '/proccess/donate',
             data: {
                 lrId: id
             },
@@ -273,7 +272,7 @@ var vue_app=new Vue({
     el: '#vue-app',
     data: {
         status: 0, // 订单状态，0-进行中 1-异常 2-已结束 3-全部
-        sendTo: 0,
+        sendTo: 0, // 发送消息对象。0-借入方 1-借出方
         msg: {
             title: '',
             content: ''

@@ -129,10 +129,10 @@
       <if test="user.uuid != null" >
         uuid,
       </if>
-      <if test="receiveAdmin.aUuid != null" >
+      <if test="receiveAdmin!= null" >
         receive_uuid,
       </if>
-      <if test="backAdmin.aUuid != null" >
+      <if test="backAdmin != null" >
         back_uuid,
       </if>
     </trim>
@@ -176,10 +176,10 @@
       <if test="user.uuid != null" >
         #{user.uuid,jdbcType=VARCHAR},
       </if>
-      <if test="receiveAdmin.aUuid != null" >
+      <if test="receiveAdmin!= null" >
         #{receiveAdmin.aUuid,jdbcType=VARCHAR},
       </if>
-      <if test="backAdmin.aUuid != null" >
+      <if test="backAdmin != null" >
         #{backAdmin.aUuid,jdbcType=VARCHAR},
       </if>
     </trim>
@@ -223,10 +223,10 @@
       <if test="user.uuid != null" >
         uuid = #{user.uuid,jdbcType=VARCHAR},
       </if>
-      <if test="receiveAdmin.aUuid != null" >
+      <if test="receiveAdmin!= null" >
         receive_uuid = #{receiveAdmin.aUuid,jdbcType=VARCHAR},
       </if>
-      <if test="backAdmin.aUuid != null" >
+      <if test="backAdmin != null" >
         back_uuid = #{backAdmin.aUuid,jdbcType=VARCHAR},
       </if>
     </set>
