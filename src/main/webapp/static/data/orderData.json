@@ -210,6 +210,22 @@
 			"user": {"mail":"hayate@live.cn"},
 			"receiveAdmin":{"aId":"admin"},
 			"backAdmin":{"aId":"admin"}
+		},{
+			"lrId":"12",
+			"createTime":1528030700491,
+			"agreeTime":1528030700491,
+			"sendToTime":1528030700491,
+			"takeAwayTime":1528030700491,
+			"expectedReturnTime":1528030700491,
+			"actualReturnTime":1528030700491,
+			"takeBackTime":1528030700491,
+			"lrStruts":12,
+			"loanPhone":"13800138000",
+			"amount":"1",
+			"loanableBook":{"lbName":"代码整洁之道","user":{"mail":"hayate@gmail.com"}},
+			"user": {"mail":"hayate@live.cn"},
+			"receiveAdmin":{"aId":"admin"},
+			"backAdmin":{"aId":"admin"}
 		}
 	]
 }

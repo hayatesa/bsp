@@ -8,7 +8,7 @@ $(function () {
         detailFormatter: detailFormatter,
         cache: false, //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
         striped: true,
-        height: 700,
+        height: 705,
         icons: {
             paginationSwitchDown: 'glyphicon-collapse-down icon-chevron-down',
             paginationSwitchUp: 'glyphicon-collapse-up icon-chevron-up',
@@ -22,8 +22,8 @@ $(function () {
         sortable: true, //是否启用排序
         /*sortOrder: 'asc', //排序方式*/
         queryParams: getQueryParams,
-        pageSize: 10,
-        pageList: [10, 25, 50, 100],
+        pageSize: 14,
+        pageList: [14, 28, 56, 100],
         showRefresh: true, // 是否显示刷新按钮
         showToggle: true,
         showFullscreen: false,

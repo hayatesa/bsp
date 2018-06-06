@@ -1,4 +1,46 @@
 $(function () {
+    $('#msg-input').bootstrapValidator({
+        message: '无效输入',
+        //excluded:[":hidden",":disabled",":not(visible)"] ,//bootstrapValidator的默认配置
+        excluded: ':disabled',//关键配置，表示只对于禁用域不进行验证，其他的表单元素都要验证
+        feedbackIcons: {
+            valid: 'glyphicon glyphicon-ok',//显示验证成功或者失败时的一个小图标
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+        },
+        fields: {
+            subject: {
+                message: '主题不能为空',//默认提示信息
+                validators: {
+                    notEmpty: {
+                        message: '主题不能为空'
+                    },
+                    stringLength: {
+                        min: 1,
+                        max: 20,
+                        message: '超过20个字符'
+                    }
+                }
+            },
+            content: {
+                message: '正文不能为空',//默认提示信息
+                validators: {
+                    notEmpty: {
+                        message: '正文不能为空'
+                    },
+                    stringLength: {
+                        min: 1,
+                        max: 1000,
+                        message: '超过100个字符'
+                    }
+                }
+            }
+        }
+    });
+    $("#btn-send").click(function () {//非submit按钮点击后进行验证，如果是submit则无需此句直接验证
+        $("#msg-input").bootstrapValidator('validate');//提交验证
+    });
+
     var tab = $("#data-list").bootstrapTable({
         url: '/proccess/page',
         //url: '/static/data/orderData.json',
@@ -9,7 +51,7 @@ $(function () {
         detailFormatter: detailFormatter,
         cache: false, //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
         striped: true,
-        height: 700,
+        height: 705,
         icons: {
             paginationSwitchDown: 'glyphicon-collapse-down icon-chevron-down',
             paginationSwitchUp: 'glyphicon-collapse-up icon-chevron-up',
@@ -23,8 +65,8 @@ $(function () {
         sortable: true, //是否启用排序
         /*sortOrder: 'asc', //排序方式*/
         queryParams: getQueryParams,
-        pageSize: 10,
-        pageList: [10, 25, 50, 100],
+        pageSize: 14,
+        pageList: [14, 28, 56, 100],
         showRefresh: true, // 是否显示刷新按钮
         showToggle: true,
         showFullscreen: false,
@@ -261,6 +303,9 @@ var doReload = function () {
 }
 
 var doSendMsg=function () {
+    if (!$('#msg-input').data('bootstrapValidator').isValid()) {// 判断是否验证通过
+        return;
+    }
     confirm("确认发送？", function () {
         $('#input-modal').modal('hide');
         $.ajax({
@@ -298,6 +343,10 @@ var doDonate=function (id) {
 var doOpenModal = function (id) {//打开模态框
     vue_app.msg.lrId=id;
     $('#input-modal').modal('show');
+    // 清除上次验证提示
+    $('#msg-input').data('bootstrapValidator')
+        .updateStatus('subject', 'NOT_VALIDATED', null)
+        .updateStatus('content', 'NOT_VALIDATED', null);
 }
 
 var doNextStep=function (id) {//审核通过

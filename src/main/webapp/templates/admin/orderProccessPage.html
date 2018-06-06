@@ -29,7 +29,7 @@
 			</select>
 		</div>
 
-		<!--失败原因描述-->
+		<!--消息发送-->
 		<div id="input-modal" class="modal fade" tabindex="-1" role="dialog"  data-backdrop="static">
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
@@ -37,8 +37,8 @@
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 						<h4 class="modal-title" id="myModalLabel">发送消息</h4>
 					</div>
-					<div class="modal-body">
-                        <div class="radio">
+					<div id="msg-input" class="modal-body ">
+                        <div class="radio form-group">
                             <label class="checkbox-inline">
                                 <input v-model="msg.sendTo" type="radio" name="account" value="0" checked>
                                 借入方
@@ -49,16 +49,16 @@
                             </label>
                         </div>
 						<div class="form-group">
-							<input v-model="msg.subject" class="form-control"placeholder="主题，限20个字符"></input>
+							<input v-model="msg.subject" name="subject" class="form-control" placeholder="主题，限20个字符"></input>
 						</div>
 						<div class="form-group">
-							<textarea style="resize:none" v-model="msg.content" class="form-control" rows="10" placeholder="正文，支持富文本（html），限1000个字符"></textarea>
+							<textarea style="resize:none" name="content" v-model="msg.content" class="form-control" rows="10" placeholder="正文，支持富文本（html），限1000个字符"></textarea>
 						</div>
                         <span class="text-danger">{{inputMsg}}</span>
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times" aria-hidden="true"></i> 取消</button>
-						<button @click="sendMsg" type="button" class="btn btn-primary"><i class="fa fa-send-o" aria-hidden="true"></i> 发送</button>
+						<button @click="sendMsg" id="btn-send" type="button" class="btn btn-primary"><i class="fa fa-send-o" aria-hidden="true"></i> 发送</button>
 					</div>
 				</div>
 			</div>
@@ -67,15 +67,15 @@
 
 
 	<script src="../../static/js/jquery-3.3.1.js"></script>
-	<script src="../../static/js/vue.js"></script>
 	<script src="../../static/js/plugins/bootstrap/js/bootstrap.js"></script>
 	<script src="../../static/js/plugins/bootstrap-table/bootstrap-table.js"></script>
 	<script src="../../static/js/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.js"></script>
 	<script src="../../static/js/plugins/bootstrapvalidator/js/bootstrapValidator.js"></script>
 	<script src="../../static/js/plugins/bootstrap-toggle/js/bootstrap-toggle.js"></script>
 	<script src="../../static/js/plugins/bootstrap-switch/js/bootstrap-switch.js"></script>
-    <!-- layer -->
-    <script src="../../static/js/plugins/layer/layer.js"></script>
+	<!-- layer -->
+	<script src="../../static/js/plugins/layer/layer.js"></script>
+	<script src="../../static/js/vue.js"></script>
 	<script src="../../static/js/commons/common.js"></script>
 	<script src="../../static/js/admin/orderProccess.js"></script>
 </body>
