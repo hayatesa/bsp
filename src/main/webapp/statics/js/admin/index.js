@@ -45,7 +45,7 @@ var header_app = new Vue({
 			var m = {};
 			$.ajax({
 				type:"get",
-				url: "/static/data/inboxData.json",
+				url: "/statics/data/inboxData.json",
 				success: function(data){
  					if(data.num){
  						app.newMessages = data;
