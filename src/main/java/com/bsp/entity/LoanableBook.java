@@ -44,7 +44,7 @@ public class LoanableBook extends BaseEntity {
     // 共享累计借出总数,初始为0
     private Integer totalLending;
 
-    // 开启借阅状态：0停止共享，1开始共享，默认为1
+    // 开启借阅状态：0停止共享，1开始共享，2下架，4删除，默认为1,
     private Byte lbStatus;
 
     // 删除图书：0没有删除，1表示删除，默认为0
@@ -225,14 +225,14 @@ public class LoanableBook extends BaseEntity {
     }
 
     /**
-     * 开启借阅状态：0停止共享，1开始共享，默认为1
+     * 开启借阅状态：0停止共享，1开始共享，2下架，4删除，默认为1
      */
     public Byte getLbStatus() {
         return lbStatus;
     }
 
     /**
-     * @param lbStatus 开启借阅状态：0停止共享，1开始共享，默认为1
+     * @param lbStatus 开启借阅状态：0停止共享，1开始共享，2下架，4删除，默认为1
      */
     public void setLbStatus(Byte lbStatus) {
         this.lbStatus = lbStatus;
