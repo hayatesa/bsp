@@ -29,7 +29,15 @@
   <!-- 高级+分页查询的where语句块 -->
   <sql id="where_of_query">
 	<where>
-		<if test="search!=null">AND lb_name LIKE CONCAT('%',#{search},'%')</if>
+		<if test="search!=null">AND (
+			loanable_book.lb_id LIKE CONCAT('%',#{search},'%')
+			OR loanable_book.lb_name LIKE CONCAT('%',#{search},'%')
+			OR loanable_book.lb_author LIKE CONCAT('%',#{search},'%')
+			OR loanable_book.lb_publishing LIKE CONCAT('%',#{search},'%')
+			OR loanable_book.isbn LIKE #{search}
+			OR sc.sc_name LIKE CONCAT('%',#{search},'%')
+			OR pc.pc_name LIKE CONCAT('%',#{search},'%')
+		)</if>
 		<if test="status!=null">
 			<if test="status==0">AND lb_status=0 AND loanable_book.is_delete!=1</if><!-- 关闭共享 -->
 			<if test="status==1">AND lb_status=1 AND loanable_book.is_delete!=1</if><!-- 共享中 -->

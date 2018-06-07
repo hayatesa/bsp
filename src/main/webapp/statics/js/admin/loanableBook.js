@@ -49,10 +49,10 @@ $(function () {
             {field: 'lbName', title: '书名',sortable:true},
             {field: 'isbn', title: 'ISBN',sortable:true},
             {field: 'lbNumber', title: '数量',sortable:true},
+            {field: 'totalLending', title: '借出次数',sortable:true},
             {field: 'user.mail', title: '所属用户',sortable:false},
             {field: 'lbStatus', title: '状态',formatter:statusFormatter,sortable:false},
-            {field: 'totalLending', title: '借出数',sortable:false},
-            {title: '审核',formatter:operationFormatter},
+            {title: '操作',formatter:operationFormatter},
         ],
     })
 })
@@ -75,6 +75,8 @@ var detailFormatter = function(index,row){
         '      </br>出版社：' +row.lbPublishing+
         '      </br>ISBN：' +row.isbn+
         '      </br>数量：' +row.lbNumber+
+        '      </br>剩余：' +row.left+
+        '      </br>借出次数：' +row.totalLending+
         '      </br>一级分类：' +row.secondaryClassification.primaryClassification.pcName+
         '      </br>二级分类：' +row.secondaryClassification.scName+
         '      </br>所属用户：' +row.user.mail+

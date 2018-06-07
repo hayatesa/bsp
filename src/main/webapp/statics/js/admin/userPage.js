@@ -1,6 +1,6 @@
 $(function() {
 	var tab = $("#data-list").bootstrapTable({
-		url: '/static/data/tableData.json',
+		url: '/statics/data/tableData.json',
 		method: 'get',
 		contentType: 'application/json',
 		dataType: 'json',
