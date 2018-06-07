@@ -68,7 +68,7 @@ public class ShiroConfig {
 		//shiroFilter.setUnauthorizedUrl("/no_access");
 		// 放权请求
 		Map<String, String> filterMap = new LinkedHashMap<>();
-		filterMap.put("/static/**", "anon");
+		filterMap.put("/statics/**", "anon");
 		filterMap.put("/verifyCode", "anon");
 		filterMap.put("/login", "anon");
 		filterMap.put("/logout", "anon");

@@ -50,7 +50,7 @@ $(function () {
             {field: 'isbn', title: 'ISBN',sortable:true},
             {field: 'lbNumber', title: '数量',sortable:true},
             {field: 'user.mail', title: '所属用户',sortable:false},
-            {field: 'lbStatus', title: '状态',sortable:false},
+            {field: 'lbStatus', title: '状态',formatter:statusFormatter,sortable:false},
             {field: 'totalLending', title: '借出数',sortable:false},
             {title: '审核',formatter:operationFormatter},
         ],
@@ -61,7 +61,7 @@ var init_table = function() {
 }
 
 var detailFormatter = function(index,row){
-    var failureCause = vue_app.clbStatus == 1 ? '</br>审核不通过原因：'+row.failureCause:'';
+    var failureCause = vue_app.lbStatus == 1 ? '</br>审核不通过原因：'+row.failureCause:'';
     return '<ul class="media-list">' +
         '  <li class="media">' +
         '    <div class="media-left">' +
@@ -94,22 +94,43 @@ var getQueryParams = function(params){
         order: params.order,
         sort: params.sort,
         search: params.search,
-        clbStatus: vue_app.clbStatus,
+        status: vue_app.status,
     };
     return p;
 }
 
 var operationFormatter = function(value,row,index){
-    if (vue_app.clbStatus == 0) {
+    if (row.isDelete == 1) {
+        return ;
+    }
+    if (row.lbStatus == 0) {
         return '<div id="tab-toolbar" class="btn-group" role="group" >' +
-            '<button onclick="doApprove('+row.lbId+')" type="button" class="btn btn-defualt btn-xs" title="通过"><i class="fa fa-check-square-o" aria-hidden="true"></i> 通过</button>' +
-            '<button onclick="doOpenModal('+row.lbId+')" type="button" class="btn btn-danger btn-xs" title="失败"><i class="fa fa-times" aria-hidden="true"></i> 失败</button>' +
+            '<button onclick="doUnshelve('+row.lbId+')" type="button" class="btn btn-defualt btn-xs" title="下架"><i class="fa fa-ban" aria-hidden="true"></i> 下架</button>' +
             '</div>';
     }
-    if (vue_app.clbStatus == 1) {
+    if (row.lbStatus == 1) {
         return '<div id="tab-toolbar" class="btn-group" role="group" >' +
-            '<button onclick="doApprove('+row.lbId+')" type="button" class="btn btn-defualt btn-xs" title="通过"><i class="fa fa-check-square-o" aria-hidden="true"></i> 通过</button>' +
+            '<button onclick="doUnshelve('+row.lbId+')" type="button" class="btn btn-defualt btn-xs" title="下架"><i class="fa fa-ban" aria-hidden="true"></i> 下架</button>' +
             '</div>';
+    }
+    if (row.lbStatus == 2) {
+        return '<div id="tab-toolbar" class="btn-group" role="group" >' +
+            '<button onclick="doShelve('+row.lbId+')" type="button" class="btn btn-defualt btn-xs" title="上架"><i class="fa fa-check-square-o" aria-hidden="true"></i> 上架</button>' +
+            '</div>';
+    }
+}
+var statusFormatter = function(value,row,index){
+    if (row.isDelete == 1) {
+        return '<span class="label label-default">已删除</span>';
+    }
+    if (row.lbStatus == 0) {
+        return '<span class="label label-warning">已关闭</span>';
+    }
+    if (row.lbStatus == 1) {
+        return '<span class="label label-primary">共享中</span>';
+    }
+    if (row.lbStatus == 2) {
+        return '<span class="label label-danger">已下架</span>';
     }
 }
 
@@ -117,17 +138,9 @@ var doReload = function () {
     $("#data-list").bootstrapTable('refresh');
 }
 
-var doDeny=function () {//审核不通过
-    if (!vue_app.inputMsg.trim()) {
-        vue_app.inputMsg='请填写失败原因';
-        return;
-    }
-    if (vue_app.inputMsg.length>250) {
-        vue_app.inputMsg='长度必须小于250个字符';
-        return;
-    }
+var doDeny=function () {
     $.ajax({
-        url: '/clb/deny',
+        url: '',
         data: {
             lbId: vue_app.deny_lbId,
             failureCause: vue_app.failureCause
@@ -151,10 +164,10 @@ var doOpenModal = function (id) {//打开模态框
     $('#input-modal').modal('show');
 }
 
-var doApprove=function (id) {//审核通过
+var doUnshelve=function (id) {//审核通过
     confirm("确认操作", function () {
         $.ajax({
-            url: '/clb/approve',
+            url: '',
             data: {
                 lbId: id
             },
@@ -171,7 +184,7 @@ var doApprove=function (id) {//审核通过
 var vue_app=new Vue({
     el: '#vue-app',
     data: {
-        clbStatus: 0, // 显示数据,0-未审核，1-审核失败，2-审核通过
+        status: 1, // 显示数据,0-未审核，1-审核失败，2-审核通过
         failureCause: '', // 审核失败原因
         deny_lbId: {}, // 审核失败记录id
         inputMsg: '' // 审核失败原因文本域提示

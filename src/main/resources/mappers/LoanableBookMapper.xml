@@ -29,6 +29,12 @@
   <sql id="where_of_query">
 	<where>
 		<if test="search!=null">AND lb_name LIKE CONCAT('%',#{search},'%')</if>
+		<if test="status!=null">
+			<if test="status==0">AND lb_status=0 AND loanable_book.is_delete!=1</if><!-- 关闭共享 -->
+			<if test="status==1">AND lb_status=1 AND loanable_book.is_delete!=1</if><!-- 共享中 -->
+			<if test="status==2">AND lb_status=2 AND loanable_book.is_delete!=1</if><!-- 已下架 -->
+			<if test="status==3">AND loanable_book.is_delete=1</if><!-- 已删除 -->
+		</if>
 		<if test="secondaryClassification!=null">AND loanable_book.sc_id=#{secondaryClassification.scId}</if>
 		<if test="secondaryClassification==null">
 			<if test="primaryClassification!=null">AND pc.pc_id=#{primaryClassification.pcId}</if>

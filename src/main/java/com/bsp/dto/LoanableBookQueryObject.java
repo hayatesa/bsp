@@ -5,6 +5,7 @@ import com.bsp.entity.SecondaryClassification;
 
 public class LoanableBookQueryObject extends QueryObject{
 	
+	private Integer status;
 	private PrimaryClassification primaryClassification; // 一级分类,设置二级分类后无效
 	private SecondaryClassification secondaryClassification; // 二级分类
 	
@@ -12,6 +13,14 @@ public class LoanableBookQueryObject extends QueryObject{
 		super();
 	}
 	
+	public Integer getStatus() {
+		return status;
+	}
+
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
+
 	/**
 	 * 根据一级分类查询
 	 * @param limit 页大小
