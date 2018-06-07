@@ -71,16 +71,16 @@ var detailFormatter = function(index,row){
         '    </div>' +
         '    <div class="media-body">' +
         '      <h4 class="media-heading">&laquo;'+row.lbName+'&raquo;</h4>' +
-        '      作者：' +row.clbAuthor+
-        '      </br>出版社：' +row.clbPublishing+
+        '      作者：' +row.lbAuthor+
+        '      </br>出版社：' +row.lbPublishing+
         '      </br>ISBN：' +row.isbn+
         '      </br>数量：' +row.lbNumber+
         '      </br>一级分类：' +row.secondaryClassification.primaryClassification.pcName+
         '      </br>二级分类：' +row.secondaryClassification.scName+
         '      </br>所属用户：' +row.user.mail+
         '      </br>联系电话：' +row.phone+
-        '      </br>可借时长：' +row.clbDuration+'天'+
-        '      </br>评价：' +row.clbComment+
+        '      </br>可借时长：' +row.lbDuratuin+'天'+
+        '      </br>评价：' +row.lbComment+
         failureCause+
         '    </div>' +
         '  </li>' +

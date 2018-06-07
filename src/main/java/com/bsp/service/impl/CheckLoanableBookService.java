@@ -108,6 +108,7 @@ public class CheckLoanableBookService implements ICheckLoanableBookService {
 		loanableBook.setLbNumber(checkLoanableBook.getClbNumber());
 		loanableBook.setImagePath(checkLoanableBook.getImagePath());
 		loanableBook.setLbComment(checkLoanableBook.getClbComment());
+		loanableBook.setLeft(checkLoanableBook.getClbNumber());
 		loanableBook.setPhone(checkLoanableBook.getPhone());
 		loanableBook.setOpenLoanTime(new Date());
 		loanableBook.setTotalLending(0);

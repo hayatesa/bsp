@@ -28,8 +28,11 @@ public class LoanableBook extends BaseEntity {
 
     // 可共享图书数量
     private Integer lbNumber;
+    
+    // 剩余数量
+    private Integer left;
 
-    // 共享图书照片路径
+	// 共享图书照片路径
     private String imagePath;
 
     // 备注
@@ -55,7 +58,16 @@ public class LoanableBook extends BaseEntity {
 
     // 共享图书所属的用户
     private User user;
+    
 
+    public Integer getLeft() {
+		return left;
+	}
+
+	public void setLeft(Integer left) {
+		this.left = left;
+	}
+    
     /**
      * 共享的图书标识，来源CheckLoanableBook表主键
      */
