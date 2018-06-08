@@ -140,9 +140,6 @@ var doReload = function () {
 }
 
 var doOpenModal = function (id) {//打开模态框
-    vue_app.deny_lbId= id;
-    vue_app.inputMsg='';
-    vue_app.failureCause='';
     $('#input-modal').modal('show');
 }
 
@@ -189,10 +186,7 @@ var doUnshelve=function (id) {//审核通过
 var vue_app=new Vue({
     el: '#vue-app',
     data: {
-        status: 1, // 显示数据,0-未审核，1-审核失败，2-审核通过
-        failureCause: '', // 审核失败原因
-        deny_lbId: {}, // 审核失败记录id
-        inputMsg: '' // 审核失败原因文本域提示
+        status: 1, // 显示数据
     },
     methods: {
         reload: doReload
