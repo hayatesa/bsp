@@ -61,7 +61,6 @@ var init_table = function() {
 }
 
 var detailFormatter = function(index,row){
-    var failureCause = vue_app.lbStatus == 1 ? '</br>审核不通过原因：'+row.failureCause:'';
     return '<ul class="media-list">' +
         '  <li class="media">' +
         '    <div class="media-left">' +
@@ -74,8 +73,9 @@ var detailFormatter = function(index,row){
         '      作者：' +row.lbAuthor+
         '      </br>出版社：' +row.lbPublishing+
         '      </br>ISBN：' +row.isbn+
-        '      </br>数量：' +row.lbNumber+
-        '      </br>剩余：' +row.left+
+        '      </br>数量：' +row.lbNumber+'本'+
+        '      </br>已借出：' +(row.lbNumber-row.left)+'本'+
+        '      </br>剩余：' +row.left+'本'+
         '      </br>借出次数：' +row.totalLending+
         '      </br>一级分类：' +row.secondaryClassification.primaryClassification.pcName+
         '      </br>二级分类：' +row.secondaryClassification.scName+
@@ -83,7 +83,6 @@ var detailFormatter = function(index,row){
         '      </br>联系电话：' +row.phone+
         '      </br>可借时长：' +row.lbDuratuin+'天'+
         '      </br>评价：' +row.lbComment+
-        failureCause+
         '    </div>' +
         '  </li>' +
         '</ul>';
@@ -140,25 +139,6 @@ var doReload = function () {
     $("#data-list").bootstrapTable('refresh');
 }
 
-var doDeny=function () {
-    $.ajax({
-        url: '',
-        data: {
-            lbId: vue_app.deny_lbId,
-            failureCause: vue_app.failureCause
-        },
-        success: function (data) {
-            if (data.code!=0){
-                alert(data.msg);
-            }
-            $('#input-modal').modal('hide');
-            vue_app.inputMsg='';
-            vue_app.deny_lbId={};
-            doReload();
-        }
-    })
-}
-
 var doOpenModal = function (id) {//打开模态框
     vue_app.deny_lbId= id;
     vue_app.inputMsg='';
@@ -166,14 +146,37 @@ var doOpenModal = function (id) {//打开模态框
     $('#input-modal').modal('show');
 }
 
-var doUnshelve=function (id) {//审核通过
-    confirm("确认操作", function () {
+var doShelve=function (id) {//审核通过
+    confirm("确认上架?", function () {
         $.ajax({
-            url: '',
+            url: '/loanableBook/shelve',
             data: {
-                lbId: id
+                id: id
             },
             success: function (data) {
+                if (data.code==401){
+                    window.location.href='/login';
+                }
+                if (data.code!=0){
+                    alert(data.msg);
+                }
+                doReload();
+            }
+        })
+    })
+}
+
+var doUnshelve=function (id) {//审核通过
+    confirm("确认下架?", function () {
+        $.ajax({
+            url: '/loanableBook/unshelve',
+            data: {
+                id: id
+            },
+            success: function (data) {
+                if (data.code==401){
+                    window.location.href='/login';
+                }
                 if (data.code!=0){
                     alert(data.msg);
                 }
@@ -192,8 +195,7 @@ var vue_app=new Vue({
         inputMsg: '' // 审核失败原因文本域提示
     },
     methods: {
-        reload: doReload,
-        deny: doDeny
+        reload: doReload
     },
     created: function () {
         init_table();

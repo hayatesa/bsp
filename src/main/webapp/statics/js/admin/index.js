@@ -8,6 +8,9 @@ function loadToken(app) {
         type:"get",
         url: "/token",
         success: function(data){
+            if (data.code==401){
+                window.location.href='/login';
+            }
             if(data.code === 0){
 				app.user=data.token;
             }
@@ -47,7 +50,10 @@ var header_app = new Vue({
 				type:"get",
 				url: "/statics/data/inboxData.json",
 				success: function(data){
- 					if(data.num){
+                    if (data.code==401){
+                        window.location.href='/login';
+                    }
+                    if(data.num){
  						app.newMessages = data;
  					}
 				}

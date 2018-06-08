@@ -27,7 +27,7 @@ import com.bsp.utils.JsonUtils;
 public abstract class BaseController {
 
 	protected static final String LOGIN_URL = "/login";// 登录页面
-	protected final static String UNAUTHORIZED_URL = "/admin/unauthorized";// 没有权限
+	protected final static String UNAUTHORIZED_URL = "/unauthorized";// 没有权限
 
 	protected static final String EMAIL_REGEX = "^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\\.[a-zA-Z0-9_-]+)+$"; // 邮箱正则表达式
 	protected static final String PHONE_REGEX = "^((17[0-9])|(14[0-9])|(13[0-9])|(15[^4,\\D])|(18[0,5-9]))\\d{8}$"; // 手机号正则表达式

@@ -131,6 +131,9 @@ var doDeny=function () {//审核不通过
             failureCause: vue_app.failureCause
         },
         success: function (data) {
+            if (data.code==401){
+                window.location.href='/login';
+            }
             if (data.code!=0){
                 alert(data.msg);
             }
@@ -157,6 +160,9 @@ var doApprove=function (id) {//审核通过
                 clbId: id
             },
             success: function (data) {
+                if (data.code==401){
+                    window.location.href='/login';
+                }
                 if (data.code!=0){
                     alert(data.msg);
                 }

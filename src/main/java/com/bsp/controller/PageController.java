@@ -2,6 +2,7 @@ package com.bsp.controller;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.shiro.authz.annotation.RequiresUser;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,6 +30,7 @@ public class PageController {
 	 * @return
 	 */
 	@RequestMapping("/p/{htmlName}")
+	@RequiresUser
 	public String showPage(HttpServletRequest request, @PathVariable("htmlName") String htmlName) {
 		return "/admin/" + htmlName;
 	}
@@ -46,9 +48,22 @@ public class PageController {
 	}
 	
 	/**
+	 * 无权限页面
+	 */
+	@RequestMapping(value = "/unauthorized", method = RequestMethod.GET)
+	public String unauthorized() {
+		Administrator administrator = ShiroUtils.getToken();
+		if (administrator!=null) {
+			return "redirect:/";
+		}
+		return "/admin/unauthorized";
+	}
+	
+	/**
 	 * 首页
 	 */
 	@RequestMapping({"/index","/"})
+	@RequiresUser
 	public String index() {
 		return "/admin/index";
 	}

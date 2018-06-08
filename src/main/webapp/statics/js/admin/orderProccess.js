@@ -312,6 +312,9 @@ var doSendMsg=function () {
             url: '/proccess/sendMsg',
             data: vue_app.msg,
             success: function (data) {
+                if (data.code==401){
+                    window.location.href='/login';
+                }
                 if (data.code!=0){
                     alert(data.msg);
                 } else {
@@ -331,6 +334,9 @@ var doDonate=function (id) {
                 lrId: id
             },
             success: function (data) {
+                if (data.code==401){
+                    window.location.href='/login';
+                }
                 if (data.code!=0){
                     alert(data.msg);
                 }
@@ -357,6 +363,9 @@ var doNextStep=function (id) {//审核通过
                 lrId: id
             },
             success: function (data) {
+                if (data.code==401){
+                    window.location.href='/login';
+                }
                 if (data.code!=0){
                     alert(data.msg);
                 }
