@@ -72,8 +72,8 @@
                     <!-- inbox dropdown end -->
                     <!-- settings start -->
                     <li class="dropdown">
-                        <a class="dropdown-toggle" @click="settings" title="系统设置" href="javascript:;">
-                            <i class="fa fa-cog"></i>
+                        <a class="dropdown-toggle" @click="helps" title="帮助" href="javascript:;">
+                            <i class="fa fa-question-circle"></i>
                         </a>
                     </li>
                     <li class="dropdown">
@@ -132,15 +132,19 @@
                       </a>
                   </li>
                   <li class="sub-menu">
-                      <a @click="go('/p/userPage','历史订单')" href="javascript:;">
+                      <a href="javascript:;">
                           <i class="fa fa-tasks"></i>
-                          <span>历史订单</span>
+                          <span>分类管理</span>
                       </a>
+                      <ul class="sub">
+                          <li><a @click="go('/p/userPage','分类管理-一级分类')" href="javascript:;">一级分类</a></li>
+                          <li><a @click="go('/p/userPage','分类管理-二级分类')" href="javascript:;">二级分类</a></li>
+                      </ul>
                   </li>
                   <li class="sub-menu">
                       <a @click="go('/p/userPage','捐赠')" href="javascript:;">
-                          <i class="fa fa-th"></i>
-                          <span>捐赠</span>
+                          <i class="fa fa-share-alt"></i>
+                          <span>捐赠管理</span>
                       </a>
                   </li>
                   <li class="sub-menu">
@@ -152,6 +156,12 @@
                           <li><a @click="go('/p/userPage','用户管理-普通用户')" href="javascript:;">普通用户</a></li>
                           <li><a @click="go('/p/userPage','用户管理-管理员')" href="javascript:;">管理员</a></li>
                       </ul>
+                  </li>
+                  <li class="sub-menu">
+                      <a @click="go('/p/settings','系统设置')" href="javascript:;" >
+                          <i class="fa fa-cog"></i>
+                          <span>系统设置</span>
+                      </a>
                   </li>
               </div>
               </ul>

@@ -23,7 +23,6 @@ import com.bsp.entity.Administrator;
 import com.bsp.enums.BussCode;
 import com.bsp.exceptions.SystemErrorException;
 import com.bsp.shiro.ShiroUtils;
-import com.bsp.utils.CommonUtil;
 import com.bsp.utils.Cryptography;
 import com.bsp.utils.Result;
 import com.bsp.vo.AdministratorVO;

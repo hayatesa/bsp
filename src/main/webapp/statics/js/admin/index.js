@@ -74,11 +74,11 @@ var header_app = new Vue({
 			// 消息数量角标，大于99显示99+
 			if(num<=99){
 				return num;
-			}
+			}s
 			return '&middot;&middot;';
 		},
-		settings:function(){
-			sidebar_app.go('/p/settings','系统设置');
+		helps:function(){
+			sidebar_app.go('/p/helps','帮助');
 		}
 	},
 	computed :{
