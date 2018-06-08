@@ -4,6 +4,7 @@ package com.bsp.utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
@@ -234,5 +235,11 @@ public class CommonUtil {
         }
         return sb.toString().toUpperCase(); 
     }
-
+    
+    /**
+     * 判断请求是否为ajax
+     */
+    public static boolean isAjax(ServletRequest request) {
+		return "XMLHttpRequest".equalsIgnoreCase(((HttpServletRequest) request).getHeader("X-Requested-With"));
+	}
 }
