@@ -73,7 +73,7 @@ public class ShiroConfig {
 		filterMap.put("/login", "anon");
 		filterMap.put("/logout", "anon");
 		filterMap.put("/favicon.ico", "anon");
-		filterMap.put("/**", "authc");// 拦截所有请求
+		//filterMap.put("/**", "login");// 拦截所有请求
 		shiroFilter.setFilterChainDefinitionMap(filterMap);
 		return shiroFilter;
 	}

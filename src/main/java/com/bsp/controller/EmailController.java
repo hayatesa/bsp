@@ -1,5 +1,6 @@
 package com.bsp.controller;
 
+import org.apache.shiro.authz.annotation.RequiresUser;
 import org.springframework.context.annotation.Scope;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -19,7 +20,8 @@ public class EmailController {
 	 * @param subject 主题
 	 * @param content 内容
 	 */
-	@RequestMapping
+	@RequestMapping("send")
+	@RequiresUser
 	public Result send(@RequestParam("dest") String dest, @RequestParam("subject") String subject,@RequestParam("content")String content) {
 		try {
 			new MailSendUtils().sendMail(dest, subject, content);// 发送邮件

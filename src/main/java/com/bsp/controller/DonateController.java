@@ -1,5 +1,6 @@
 package com.bsp.controller;
 
+import org.apache.shiro.authz.annotation.RequiresUser;
 import org.springframework.context.annotation.Scope;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,6 +19,7 @@ public class DonateController {
 	 * @param queryObject 分页参数
 	 */
 	@RequestMapping("page")
+	@RequiresUser
 	public Result list(QueryObject queryObject) {
 		return Result.success();
 	}
@@ -26,6 +28,7 @@ public class DonateController {
 	 * 捐赠
 	 */
 	@RequestMapping("donate")
+	@RequiresUser
 	public Result donate(DonatedBook donatedBook) {
 		return Result.success();
 	}

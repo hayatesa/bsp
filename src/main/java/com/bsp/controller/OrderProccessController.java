@@ -1,6 +1,7 @@
 package com.bsp.controller;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.authz.annotation.RequiresUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -62,6 +63,7 @@ public class OrderProccessController extends BaseController {
 	 * @param lrId 订单记录ID，查表lending_record
 	 */
 	@RequestMapping("next_step")
+	@RequiresUser
 	public Result nextStep(@RequestParam("lrId") Integer lrId) {
 		return Result.success();
 	}
@@ -70,6 +72,7 @@ public class OrderProccessController extends BaseController {
 	 * 获取数据页
 	 */
 	@RequestMapping("page")
+	@RequiresUser
 	public Page list(OrderQueryObject queryObject) {
 		if (!StringUtils.isBlank(queryObject.getSort())) {
 			queryObject.setSort(CommonUtil.HumpToUnderline(queryObject.getSort()));
@@ -83,6 +86,7 @@ public class OrderProccessController extends BaseController {
 	 * @param lrId 订单Id
 	 */
 	@RequestMapping("donate")
+	@RequiresUser
 	public Result donate(Integer lrId) {
 		try {
 			donateService.donateFormLendingRecord(lrId);
@@ -100,6 +104,7 @@ public class OrderProccessController extends BaseController {
 	 * @param content 正文
 	 */
 	@RequestMapping("sendMsg")
+	@RequiresUser
 	public Result sendMsg(Integer lrId, Integer sendTo, String subject, String content) {
 		LendingRecord lr = null;
 		String email = null;

@@ -1,5 +1,6 @@
 package com.bsp.controller;
 
+import org.apache.shiro.authz.annotation.RequiresUser;
 import org.springframework.context.annotation.Scope;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -24,6 +25,7 @@ public class MessageController {
 	 * @param content 消息内容
 	 */
 	@RequestMapping("send")
+	@RequiresUser
 	public Result send(@RequestParam("subject") String subject,@RequestParam("uuid") String uuid, @RequestParam("content") String content) {
 		return Result.success();
 	}

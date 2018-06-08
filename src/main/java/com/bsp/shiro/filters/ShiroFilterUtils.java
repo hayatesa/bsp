@@ -37,6 +37,7 @@ public class ShiroFilterUtils {
 	public static void out(ServletResponse response, Map<String, String> resultMap) {
 		HttpServletResponse httpServletResponse = (HttpServletResponse) response;
 		PrintWriter out = null;
+		response.setContentType("application/json; charset=utf-8");
 		try {
 			out = httpServletResponse.getWriter();
 			out.println(JsonUtils.toJsonStr(resultMap));

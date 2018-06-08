@@ -1,6 +1,7 @@
 package com.bsp.controller;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.authz.annotation.RequiresUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,6 +39,7 @@ public class CheckBookController extends BaseController {
 	 * @param failureCause 失败原因
 	 */
 	@RequestMapping("deny")
+	@RequiresUser
 	public Result deny(@RequestParam("clbId") Integer clbId, @RequestParam("failureCause") String failureCause) {
 		try {
 			checkLoanableBookService.deny(clbId, failureCause);
@@ -53,6 +55,7 @@ public class CheckBookController extends BaseController {
 	 * @param clbId 待审核的图书id
 	 */
 	@RequestMapping("approve")
+	@RequiresUser
 	public Result approve(@RequestParam("clbId") Integer clbId) {
 		try {
 			checkLoanableBookService.approve(clbId);
@@ -69,6 +72,7 @@ public class CheckBookController extends BaseController {
 	 * @return
 	 */
 	@RequestMapping("detial")
+	@RequiresUser
 	public Result detial(@RequestParam("clbId") Integer clbId) {
 		return Result.success();
 	}
@@ -78,6 +82,7 @@ public class CheckBookController extends BaseController {
 	 * @param queryObject
 	 */
 	@RequestMapping(value="page", method=RequestMethod.GET)
+	@RequiresUser
 	public Page list(CheckLoanableBookQueryObject queryObject) {
 		if (!StringUtils.isBlank(queryObject.getSort())) {//排序字段名需要改成数据库使用的snake风格字符串
 			queryObject.setSort(CommonUtil.HumpToUnderline(queryObject.getSort()));

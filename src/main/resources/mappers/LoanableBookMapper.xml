@@ -148,7 +148,7 @@
         uuid,
       </if>
       <if test="left != null" >
-        left,
+        `left`,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -254,7 +254,7 @@
         uuid = #{user.uuid,jdbcType=VARCHAR},
       </if>
       <if test="left != null" >
-        #{left,jdbcType=INTEGER},
+        `left` =  #{left,jdbcType=INTEGER},
       </if>
     </set>
     where lb_id = #{lbId,jdbcType=INTEGER}
@@ -275,8 +275,8 @@
       lb_status = #{lbStatus,jdbcType=TINYINT},
       is_delete = #{isDelete,jdbcType=TINYINT},
       sc_id = #{secondaryClassification.scId,jdbcType=INTEGER},
-      uuid = #{user.uuid,jdbcType=VARCHAR}
-      left = #{left,jdbcType=INTEGER},
+      uuid = #{user.uuid,jdbcType=VARCHAR},
+      `left` = #{left,jdbcType=INTEGER}
     where lb_id = #{lbId,jdbcType=INTEGER}
   </update>
 </mapper>
