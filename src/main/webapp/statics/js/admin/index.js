@@ -10,6 +10,7 @@ function loadToken(app) {
         success: function(data){
             if (data.code==401){
                 window.location.href='/login';
+                return;
             }
             if(data.code === 0){
 				app.user=data.token;
@@ -35,6 +36,7 @@ var header_app = new Vue({
 					success: function(data){
 						if(data.code === 0){
 							window.location.href='/login';
+                            return;
 						}
 						else{
 							alert('系统异常，请联系管理员');
@@ -52,6 +54,7 @@ var header_app = new Vue({
 				success: function(data){
                     if (data.code==401){
                         window.location.href='/login';
+                        return;s
                     }
                     if(data.num){
  						app.newMessages = data;
@@ -74,7 +77,7 @@ var header_app = new Vue({
 			// 消息数量角标，大于99显示99+
 			if(num<=99){
 				return num;
-			}s
+			}
 			return '&middot;&middot;';
 		},
 		helps:function(){

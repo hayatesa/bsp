@@ -9,6 +9,41 @@
   <sql id="Base_Column_List" >
     pc_id, pc_name, is_delete
   </sql>
+  <!-- 高级+分页查询的where语句块 -->
+  <sql id="where_of_query">
+	<where>
+		<if test="search!=null">AND (
+			pc_id LIKE CONCAT('%',#{search},'%')
+			OR pc_name LIKE CONCAT('%',#{search},'%')
+		)
+		</if>
+		<if test="status!=null">
+			<if test="status==0"><!-- 未删除 -->
+				AND is_delete = 0
+			</if>
+			<if test="status==1"><!-- 已删除 -->
+				AND is_delete = 1
+			</if>
+		</if>
+	</where>
+  </sql>
+  <select id="getTotalCount" resultType="java.lang.Integer" parameterType="com.bsp.dto.ClassificationQueryObject" >
+    select COUNT(*) from primary_classification 
+    <include refid="where_of_query" />
+  </select>
+  <select id="selectByQueryObject" resultMap="BaseResultMap" parameterType="com.bsp.dto.ClassificationQueryObject" >
+    select
+	<include refid="Base_Column_List" />
+    from primary_classification
+    <include refid="where_of_query" />
+	<if test="sort!=null">
+		ORDER BY ${sort}
+		<if test="order!=null">${order}</if>
+	</if>
+    <if test="startIndex>-1">
+		LIMIT #{startIndex},#{limit}
+	</if>
+  </select>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />

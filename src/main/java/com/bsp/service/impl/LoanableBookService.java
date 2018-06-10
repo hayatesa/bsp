@@ -47,6 +47,9 @@ public class LoanableBookService implements ILoanableBookService {
 			e.printStackTrace();
 			throw new SystemErrorException("查找记录失败");
 		}
+		if (lb==null) {
+			throw new DataUpdateException("记录不存在");
+		}
 		if (lb.getLbStatus()==new Byte("0")||lb.getLbStatus()==new Byte("1")) {//已开启
 			throw new DataUpdateException("图书已经是上架状态");
 		} else if (lb.getIsDelete()==new Byte("1")) {//纪录已删除
@@ -69,6 +72,9 @@ public class LoanableBookService implements ILoanableBookService {
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new SystemErrorException("查找记录失败");
+		}
+		if (lb==null) {
+			throw new DataUpdateException("记录不存在");
 		}
 		if (lb.getLbStatus()==new Byte("2")) {//已下架
 			throw new DataUpdateException("图书已经是下架状态");

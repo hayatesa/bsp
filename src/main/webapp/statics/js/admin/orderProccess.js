@@ -314,6 +314,7 @@ var doSendMsg=function () {
             success: function (data) {
                 if (data.code==401){
                     window.location.href='/login';
+                    return;
                 }
                 if (data.code!=0){
                     alert(data.msg);
@@ -336,6 +337,7 @@ var doDonate=function (id) {
             success: function (data) {
                 if (data.code==401){
                     window.location.href='/login';
+                    return;
                 }
                 if (data.code!=0){
                     alert(data.msg);
@@ -365,6 +367,7 @@ var doNextStep=function (id) {//审核通过
             success: function (data) {
                 if (data.code==401){
                     window.location.href='/login';
+                    return;
                 }
                 if (data.code!=0){
                     alert(data.msg);

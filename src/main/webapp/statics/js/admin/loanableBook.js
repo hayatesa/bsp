@@ -153,6 +153,7 @@ var doShelve=function (id) {//审核通过
             success: function (data) {
                 if (data.code==401){
                     window.location.href='/login';
+                    return;
                 }
                 if (data.code!=0){
                     alert(data.msg);
@@ -173,6 +174,7 @@ var doUnshelve=function (id) {//审核通过
             success: function (data) {
                 if (data.code==401){
                     window.location.href='/login';
+                    return;
                 }
                 if (data.code!=0){
                     alert(data.msg);

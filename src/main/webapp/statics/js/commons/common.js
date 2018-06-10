@@ -43,7 +43,7 @@ window.confirm = function(msg, callback) {
 			if(typeof(callback) === "function") {
 				callback("ok");
 			}
-			layer.closeAll('dialog');
+            parent.layer.closeAll('dialog');
 		});
 }
 //iframe
