@@ -1,5 +1,7 @@
 package com.bsp.service;
 
+import java.util.List;
+
 import com.bsp.dto.QueryObject;
 import com.bsp.entity.PrimaryClassification;
 import com.bsp.utils.Page;
@@ -35,4 +37,9 @@ public interface IPrimaryClassificationService {
 	 * @param id
 	 */
 	void reuse(Integer id);
+	
+	/**
+	 * 查询所有，不包括删除状态的记录
+	 */
+	List<PrimaryClassification> findAll();
 }

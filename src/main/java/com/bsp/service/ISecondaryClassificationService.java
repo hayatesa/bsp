@@ -23,4 +23,16 @@ public interface ISecondaryClassificationService {
 	 * @param id 记录id
 	 */
 	void delete(Integer id);
+	
+	/**
+	 * 更新
+	 * @param pc
+	 */
+	void update(SecondaryClassification pc);
+	
+	/**
+	 * 恢复使用
+	 * @param id
+	 */
+	void reuse(Integer id);
 }

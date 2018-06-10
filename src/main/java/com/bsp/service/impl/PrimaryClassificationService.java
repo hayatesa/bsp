@@ -99,4 +99,16 @@ public class PrimaryClassificationService implements IPrimaryClassificationServi
 		}
 	}
 
+	@Override
+	public List<PrimaryClassification> findAll() {
+		List<PrimaryClassification> list;
+		try {
+			list = primaryClassificationMapper.selectAll();
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new SystemErrorException("系统异常，获取一级分类数据失败");
+		}
+		return list;
+	}
+
 }

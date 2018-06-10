@@ -25,7 +25,7 @@ $(function () {
         }
     });
     var tab = $("#data-list").bootstrapTable({
-        url: '/pc/page',
+        url: '/sc/page',
         method: 'get',
         contentType: 'application/json',
         dataType: 'json',
@@ -70,8 +70,9 @@ $(function () {
         uniqueId: 'id',
         columns: [
             //{checkbox: true, visible: true},
-            {field: 'pcId', title: 'ID',sortable:true},
-            {field: 'pcName', title: '名称',sortable:true},
+            {field: 'scId', title: 'ID',sortable:true},
+            {field: 'scName', title: '名称',sortable:true},
+            {field: 'primaryClassification.pcName', title: '所属一级分类',sortable:false},
             {field: 'isDelete', title: '状态',formatter:statusFormatter,sortable:false},
             {title: '操作',formatter:operationFormatter},
         ],
@@ -93,13 +94,13 @@ var getQueryParams = function(params){
 var operationFormatter = function(value,row,index){
     if (row.isDelete == 0) {
         return '<div id="tab-toolbar" class="btn-group" role="group" >' +
-            '<button onclick="doOpenModal('+row.pcId+',\''+row.pcName+'\')" type="button" class="btn btn-primary btn-xs" title="编辑"><i class="fa fa-edit" aria-hidden="true"></i> 编辑</button>' +
-            '<button onclick="doDelete('+row.pcId+')" type="button" class="btn btn-defualt btn-xs" title="删除"><i class="fa fa-times" aria-hidden="true"></i> 删除</button>' +
+            '<button onclick="doOpenModal('+row.scId+','+row.primaryClassification.pcId+',\''+row.scName+'\')" type="button" class="btn btn-primary btn-xs" title="编辑"><i class="fa fa-edit" aria-hidden="true"></i> 编辑</button>' +
+            '<button onclick="doDelete('+row.scId+')" type="button" class="btn btn-defualt btn-xs" title="删除"><i class="fa fa-times" aria-hidden="true"></i> 删除</button>' +
             '</div>';
     }
     if (row.isDelete == 1) {
         return '<div id="tab-toolbar" class="btn-group" role="group" >' +
-            '<button onclick="doReuse('+row.pcId+')" type="button" class="btn btn-defualt btn-xs" title="恢复"><i class="fa fa-share" aria-hidden="true"></i> 恢复</button>' +
+            '<button onclick="doReuse('+row.scId+')" type="button" class="btn btn-defualt btn-xs" title="恢复"><i class="fa fa-share" aria-hidden="true"></i> 恢复</button>' +
             '</div>';
     }
 
@@ -117,9 +118,10 @@ var doReload = function () {
     $("#data-list").bootstrapTable('refresh');
 }
 
-var doOpenModal = function (pcId,pcName) {//打开模态框
-    vue_app.obj.pcId=pcId?pcId:'';
-    vue_app.obj.pcName=pcName?pcName:'';
+var doOpenModal = function (scId,pcId,scName) {//打开模态框
+    vue_app.obj.scId=scId?scId:'';
+    vue_app.obj.scName=scName?scName:'';
+    vue_app.obj.primaryClassification.pcId=pcId?pcId:0;
     $('#input-modal').modal('show');
     $('#input-form').data('bootstrapValidator')
         .updateStatus('name', 'NOT_VALIDATED', null);
@@ -128,7 +130,7 @@ var doOpenModal = function (pcId,pcName) {//打开模态框
 var doReuse=function (id) {
     confirm("确认恢复?", function () {
         $.ajax({
-            url: '/pc/reuse',
+            url: '/sc/reuse',
             data: {
                 id: id
             },
@@ -147,13 +149,23 @@ var doReuse=function (id) {
 }
 
 var doUpdate=function () {
+    $('#input-form').data('bootstrapValidator').validate();
     if (!$('#input-form').data('bootstrapValidator').isValid()) {// 判断是否验证通过
         return;
     }
+    if (vue_app.obj.primaryClassification.pcId==0) {
+        vue_app.selectMsg='（请选择一级分类）';
+        return;
+    } else {
+        vue_app.selectMsg='';
+    }
     confirm("确认保存?", function () {
         $.ajax({
-            url: '/pc/update',
-            data: vue_app.obj,
+            url: '/sc/update',
+            type: 'post',
+            dataType : "JSON",
+            contentType:"application/json",
+            data: JSON.stringify(vue_app.obj),
             success: function (data) {
                 if (data.code==401){
                     window.location.href='/login';
@@ -169,13 +181,23 @@ var doUpdate=function () {
     })
 }
 var doAdd=function () {
+    $('#input-form').data('bootstrapValidator').validate();
     if (!$('#input-form').data('bootstrapValidator').isValid()) {// 判断是否验证通过
         return;
     }
+    if (vue_app.obj.primaryClassification.pcId==0) {
+        vue_app.selectMsg='（请选择一级分类）';
+        return;
+    } else {
+        vue_app.selectMsg='';
+    }
     confirm("确认保存?", function () {
         $.ajax({
-            url: '/pc/add',
-            data: vue_app.obj,
+            url: '/sc/add',
+            type: 'post',
+            dataType : "JSON",
+            contentType:"application/json",
+            data: JSON.stringify(vue_app.obj),
             success: function (data) {
                 if (data.code==401){
                     window.location.href='/login';
@@ -194,7 +216,7 @@ var doAdd=function () {
 var doDelete=function (id) {//审核通过
     confirm("确认删除?", function () {
         $.ajax({
-            url: '/pc/delete',
+            url: '/sc/delete',
             data: {
                 id: id
             },
@@ -212,15 +234,36 @@ var doDelete=function (id) {//审核通过
     })
 }
 
+var loadPrimaryClassifications=function () {
+    $.ajax({
+        url: '/pc/all',
+        success: function (data) {
+            if (data.code==401){
+                window.location.href='/login';
+                return;
+            } else if (data.code!=0){
+                alert(data.msg);
+            } else {
+                vue_app.primaryClassifications=data.list;
+            }
+
+        }
+    })
+
+}
+
 var vue_app=new Vue({
     el: '#vue-app',
     data: {
         status: 0, // 显示数据
+        selectMsg: '',
         obj: {
-            pcId: '',
-            pcName: '',
-            isDelete: 0
+            scId: '',
+            scName: '',
+            isDelete: 0,
+            primaryClassification:{pcId:''}
         },
+        primaryClassifications: []
     },
     methods: {
         reload: doReload,
@@ -229,5 +272,6 @@ var vue_app=new Vue({
         add: doAdd
     },
     created: function () {
+        loadPrimaryClassifications();
     }
 });
