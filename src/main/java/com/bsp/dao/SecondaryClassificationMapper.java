@@ -3,7 +3,6 @@ package com.bsp.dao;
 import java.util.List;
 
 import com.bsp.dto.ClassificationQueryObject;
-import com.bsp.entity.LoanableBook;
 import com.bsp.entity.SecondaryClassification;
 
 public interface SecondaryClassificationMapper extends GenericMapper<SecondaryClassification, Integer> {
@@ -17,5 +16,11 @@ public interface SecondaryClassificationMapper extends GenericMapper<SecondaryCl
 	 * 分页高级查询
 	 * @param queryObject 查询对象
 	 */
-	List<LoanableBook> selectByQueryObject(ClassificationQueryObject queryObject);
+	List<SecondaryClassification> selectByQueryObject(ClassificationQueryObject queryObject);
+	
+	/**
+	 * 根据一级分类Id查找
+	 * @param pcId
+	 */
+	List<SecondaryClassification> selectByPcId(Integer pcId);
 }

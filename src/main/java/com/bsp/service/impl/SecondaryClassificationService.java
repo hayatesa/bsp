@@ -99,4 +99,16 @@ public class SecondaryClassificationService implements ISecondaryClassificationS
 		}
 	}
 
+	@Override
+	public List<SecondaryClassification> findByPrimaryClassificationId(Integer pcId) {
+		List<SecondaryClassification> list =  null;
+		try {
+			list = secondaryClassificationMapper.selectByPcId(pcId);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new SystemErrorException("系统异常，查询记录失败");
+		}
+		return list;
+	}
+
 }

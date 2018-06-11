@@ -3,7 +3,6 @@ package com.bsp.dao;
 import java.util.List;
 
 import com.bsp.dto.ClassificationQueryObject;
-import com.bsp.entity.LoanableBook;
 import com.bsp.entity.PrimaryClassification;
 
 public interface PrimaryClassificationMapper extends GenericMapper<PrimaryClassification, Integer> {
@@ -18,5 +17,5 @@ public interface PrimaryClassificationMapper extends GenericMapper<PrimaryClassi
 	 * 分页高级查询
 	 * @param queryObject 查询对象
 	 */
-	List<LoanableBook> selectByQueryObject(ClassificationQueryObject queryObject);
+	List<PrimaryClassification> selectByQueryObject(ClassificationQueryObject queryObject);
 }

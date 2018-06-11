@@ -1,5 +1,7 @@
 package com.bsp.service;
 
+import java.util.List;
+
 import com.bsp.dto.QueryObject;
 import com.bsp.entity.SecondaryClassification;
 import com.bsp.utils.Page;
@@ -35,4 +37,10 @@ public interface ISecondaryClassificationService {
 	 * @param id
 	 */
 	void reuse(Integer id);
+	
+	/**
+	 * 根据一级分类Id查找
+	 * @param pcId
+	 */
+	List<SecondaryClassification> findByPrimaryClassificationId(Integer pcId);
 }

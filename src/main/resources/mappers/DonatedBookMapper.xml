@@ -16,6 +16,37 @@
   <sql id="Base_Column_List">
     dob_id, dob_name, isbn, number, sc_id, uuid, source, donor, time, phone
   </sql>
+  <!-- 高级+分页查询的where语句块 -->
+  <sql id="where_of_query">
+	<where>
+		<if test="search!=null">AND (
+			dob_id LIKE CONCAT('%',#{search},'%')
+			OR dob_name LIKE CONCAT('%',#{search},'%')
+			OR isbn LIKE CONCAT('%',#{search},'%')
+			OR source LIKE CONCAT('%',#{search},'%')
+			OR donor LIKE CONCAT('%',#{search},'%')
+			OR phone LIKE CONCAT('%',#{search},'%')
+		)
+		</if>
+	</where>
+  </sql>
+  <select id="getTotalCount" resultType="java.lang.Integer" parameterType="com.bsp.dto.QueryObject" >
+    select COUNT(*) from donated_book 
+    <include refid="where_of_query" />
+  </select>
+  <select id="selectByQueryObject" resultMap="BaseResultMap" parameterType="com.bsp.dto.QueryObject" >
+    select
+	<include refid="Base_Column_List" />
+    from donated_book
+    <include refid="where_of_query" />
+	<if test="sort!=null">
+		ORDER BY ${sort}
+		<if test="order!=null">${order}</if>
+	</if>
+    <if test="startIndex>-1">
+		LIMIT #{startIndex},#{limit}
+	</if>
+  </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
@@ -51,10 +82,10 @@
       <if test="number != null">
         number,
       </if>
-      <if test="secondaryClassification.scId != null">
+      <if test="secondaryClassification != null">
         sc_id,
       </if>
-      <if test="user.uuid != null">
+      <if test="user != null">
         uuid,
       </if>
       <if test="source != null">
@@ -83,10 +114,10 @@
       <if test="number != null">
         #{number,jdbcType=INTEGER},
       </if>
-      <if test="secondaryClassification.scId != null">
+      <if test="secondaryClassification != null">
         #{secondaryClassification.scId,jdbcType=INTEGER},
       </if>
-      <if test="user.uuid != null">
+      <if test="user != null">
         #{user.uuid,jdbcType=VARCHAR},
       </if>
       <if test="source != null">
@@ -115,10 +146,10 @@
       <if test="number != null">
         number = #{number,jdbcType=INTEGER},
       </if>
-      <if test="secondaryClassification.scId != null">
+      <if test="secondaryClassification != null">
         sc_id = #{secondaryClassification.scId,jdbcType=INTEGER},
       </if>
-      <if test="user.uuid != null">
+      <if test="user != null">
         uuid = #{user.uuid,jdbcType=VARCHAR},
       </if>
       <if test="source != null">

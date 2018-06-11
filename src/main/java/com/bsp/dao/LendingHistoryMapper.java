@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.bsp.dto.OrderQueryObject;
 import com.bsp.entity.LendingHistory;
-import com.bsp.entity.LendingRecord;
 
 public interface LendingHistoryMapper extends GenericMapper<LendingHistory, Integer> {
 	
@@ -18,5 +17,5 @@ public interface LendingHistoryMapper extends GenericMapper<LendingHistory, Inte
 	 * 分页高级查询
 	 * @param queryObject 查询对象
 	 */
-	List<LendingRecord> selectByOrderQueryObject(OrderQueryObject queryObject);
+	List<LendingHistory> selectByOrderQueryObject(OrderQueryObject queryObject);
 }

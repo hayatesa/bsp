@@ -1,5 +1,7 @@
 package com.bsp.controller;
 
+import java.util.List;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresUser;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -116,4 +118,18 @@ public class SencondaryClassificationController extends BaseController {
 		return Result.success();
 	}
 	
+	@RequestMapping("findByPcId")
+	@RequiresUser
+	public Result findByPcId(Integer pcId) {
+		List<SecondaryClassification> list = null;
+		try {
+			list = secondaryClassificationService.findByPrimaryClassificationId(pcId);
+		} catch (SystemErrorException e) {
+			e.printStackTrace();
+			return Result.error(e.getMessage());
+		}
+		Result result = Result.success();
+		result.put("list", list);
+		return result;
+	}
 }
