@@ -17,8 +17,82 @@ $(function () {
                     },
                     stringLength: {
                         min: 1,
-                        max: 50,
-                        message: '超过50个字符'
+                        max: 250,
+                        message: '限250个字符'
+                    }
+                }
+            },
+            isbn: {
+                message: '不能为空',//默认提示信息
+                validators: {
+                    notEmpty: {
+                        message: '不能为空'
+                    },
+                    digits: {
+                        message: '只允许填写数字。'
+                    },
+                    stringLength: {
+                        min: 1,
+                        max: 250,
+                        message: '限250个字符'
+                    }
+                }
+            },
+            number: {
+                message: '不能为空',//默认提示信息
+                validators: {
+                    notEmpty: {
+                        message: '不能为空'
+                    },
+                    greaterThan: {
+                        value: 1,
+                        message:'数值必须大于0'
+                    },
+                    lessThan: {
+                        value: 2147483647,
+                        message:'数值必须小于2147483648'
+                    },
+                    digits: {
+                        message: '只允许填写数字。'
+                    }
+                }
+            },
+            source: {
+                message: '不能为空',//默认提示信息
+                validators: {
+                    notEmpty: {
+                        message: '不能为空'
+                    },
+                    stringLength: {
+                        min: 1,
+                        max: 250,
+                        message: '限250个字符'
+                    }
+                }
+            },
+            donor: {
+                message: '不能为空',//默认提示信息
+                validators: {
+                    notEmpty: {
+                        message: '不能为空'
+                    },
+                    stringLength: {
+                        min: 1,
+                        max: 250,
+                        message: '限250个字符'
+                    }
+                }
+            },
+            phone: {
+                message: '不能为空',//默认提示信息
+                validators: {
+                    notEmpty: {
+                        message: '不能为空'
+                    },
+                    stringLength: {
+                        min: 1,
+                        max: 20,
+                        message: '限20个字符'
                     }
                 }
             }
@@ -70,9 +144,9 @@ $(function () {
         uniqueId: 'id',
         columns: [
             //{checkbox: true, visible: true},
-            {field: 'dobId', title: 'ID',sortable:true},
+            //{field: 'dobId', title: 'ID',sortable:true},
             {field: 'dobName', title: '书名',sortable:true},
-            {field: 'number', title: '数量',sortable:true},
+            {field: 'number', title: '数量(册/套)',sortable:true},
             {field: 'time', title: '捐赠时间',formatter:timeFormatter,sortable:true},
             {field: 'isbn', title: 'ISBN',sortable:false},
             {title: '操作',formatter:operationFormatter},
@@ -107,7 +181,7 @@ var detailFormatter = function(index,row){
         '      </br>捐赠来源：' +row.source+
         '      </br>所属一级分类：' +row.secondaryClassification.primaryClassification.pcName+
         '      </br>所属二级分类：' +row.secondaryClassification.scName+
-        '      </br>数量/册：' +row.number+
+        '      </br>数量(册/套)：' +row.number+
         '    </div>' +
         '  </li>' +
         '</ul>';
@@ -168,8 +242,16 @@ var doOpenModal = function (id) {//打开模态框
         loadSecondaryClassifications();// 加载二级分类
     }
     $('#input-modal').modal('show');
+    // 初始化
     $('#input-form').data('bootstrapValidator')
-        .updateStatus('name', 'NOT_VALIDATED', null);
+        .updateStatus('name', 'NOT_VALIDATED', null)
+        .updateStatus('isbn', 'NOT_VALIDATED', null)
+        .updateStatus('number', 'NOT_VALIDATED', null)
+        .updateStatus('source', 'NOT_VALIDATED', null)
+        .updateStatus('donor', 'NOT_VALIDATED', null)
+        .updateStatus('phone', 'NOT_VALIDATED', null);
+    vue_app.pcMsg='';
+    vue_app.scMsg='';
 }
 
 var doUpdate=function () {
@@ -178,7 +260,7 @@ var doUpdate=function () {
         return;
     }
     if (vue_app.pcId==0) {
-        vue_app.selectMsg='（请选择一级分类）';
+        vue_app.pcMsg='（请选择一级分类）';
         return;
     } else {
         vue_app.pcMsg='';
@@ -216,10 +298,16 @@ var doAdd=function () {
         return;
     }
     if (vue_app.pcId==0) {
-        vue_app.selectMsg='（请选择一级分类）';
+        vue_app.pcMsg='（请选择一级分类）';
         return;
     } else {
-        vue_app.selectMsg='';
+        vue_app.pcMsg='';
+    }
+    if (vue_app.obj.secondaryClassification.scId==0) {
+        vue_app.scMsg='（请选择二级分类）';
+        return;
+    } else {
+        vue_app.scMsg='';
     }
     confirm("确认保存?", function () {
         $.ajax({
