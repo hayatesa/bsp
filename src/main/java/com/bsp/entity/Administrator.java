@@ -30,6 +30,10 @@ public class Administrator extends BaseEntity {
     // 是否可用，登录时需要判断，0没有禁用，1被禁用
     private Byte isDelete;
     
+    public void lockOrUnlock() {
+		this.isDelete = isDelete == 1 ? (byte)0 : (byte)1;
+	}
+    
     /**
      * 判断是否为有效用户，是：true，否：false
      */

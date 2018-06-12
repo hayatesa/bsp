@@ -34,7 +34,7 @@ public class AdminRealm  extends AuthorizingRealm  {
 		SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
 		info.addRole("admin");
 		// 是否为超级管理员
-		if (admin.getaLevel()==1) {
+		if (admin.getaLevel()==1||admin.getaLevel()==0) {
 			info.addRole("supper_admin");
 		}
 		return info;
@@ -42,11 +42,10 @@ public class AdminRealm  extends AuthorizingRealm  {
 
 	@Override
 	protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
-		System.err.println("doGetAuthenticationInfo");
 		String username = (String) token.getPrincipal();
 		Administrator admin  = null;
 		try {
-			admin = adminService.selectByAID(username);
+			admin = adminService.findByAID(username);
 		} catch (SystemErrorException e) {
 			e.printStackTrace();
 			throw new SystemErrorException("系统异常，登录失败");

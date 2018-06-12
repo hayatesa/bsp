@@ -8,7 +8,7 @@ public class MD5UtilTest {
 	
 	@Test
 	public void get() {
-		System.out.println(Cryptography.MD5Hash("12345678", "hayate@qq.com"));
+		System.out.println(Cryptography.MD5Hash("12345678", "hayate"));
 	}
 	
 }

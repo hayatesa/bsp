@@ -1,11 +1,11 @@
 $(function() {
 	var tab = $("#data-list").bootstrapTable({
-		url: '/user/page',
+		url: '/admin/page',
         method: 'get',
         contentType: 'application/json',
         dataType: 'json',
-        detailView: true,
-        detailFormatter: detailFormatter,
+        //detailView: true,
+        //detailFormatter: detailFormatter,
         cache: false, //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
         striped: true,
         height: 705,
@@ -36,7 +36,7 @@ $(function() {
         searchOnEnterKey: true,
         searchAlign: 'right',
         sidePagination: "server",
-        //toolbar: '#tab-toolbar',
+        toolbar: '#tab-toolbar',
         toolbarAlign: 'left',
         trimOnSearch: true,
         minimumCountColumns: 1, //最少允许的列数
@@ -44,10 +44,11 @@ $(function() {
         idField: 'id',
         uniqueId: 'id',
 		columns: [
-			{field: 'user.uuid', title: '用户ID',sortable:false},
-			{field: 'user.mail', title: '用户名',sortable:false},
-			{field: 'details.uSex', title: '性别',sortable:false},
-			{field: 'details.uPhone', title: '手机号',sortable:false},
+			{field: 'aUuid', title: '用户ID',sortable:false},
+			{field: 'aId', title: '用户名',sortable:false},
+			{field: 'aName', title: '姓名',sortable:false},
+			{field: 'aPhone', title: '手机号',sortable:false},
+			{field: 'aLevel', title: '类型',formatter:levelFormatter,sortable:false},
 			{title: '冻结',formatter:operationFormatter},
 		],
 		/*onLoadSuccess: toggleFormatter,
@@ -73,7 +74,7 @@ var toggleFormatter = function(){
 var freezeChange = function () {
 	$.ajax({
 		type: "get",
-		url: "/user/lockOrUnlock",
+		url: "/admin/lockOrUnlock",
 		data:{
 			uuid: $(this)[0].id
 		},
@@ -103,6 +104,20 @@ var switchFormatter = function(){
 	}).bind('switchChange.bootstrapSwitch',freezeChange);
 } 
 
+var levelFormatter = function(value,index,row){
+    switch (value) {
+        case 0:
+            return '<span class="label label-primary">永久</span>';
+            break;
+        case 1:
+            return '<span class="label label-info">超级</span>';
+            break;
+        case 2:
+            return '<span class="label label-warning">普通</span>';
+            break;
+    }
+    return '<span class="label label-default">未知</span>';
+}
 var detailFormatter = function(index,row){
 	var nickname = row.details.uNickname?row.details.uNickname:'无';
 	var gender = row.details.uSex?row.details.uSex:'无';
@@ -115,7 +130,7 @@ var detailFormatter = function(index,row){
         '  <li class="media">' +
         '    <div class="media-body">' +
         '      <h4 class="media-heading">'+row.user.mail +'</h4>' +
-        '      ID：' +row.user.uuid+
+        '      ID：' +row.user.aUuid+
         '      <br/>昵称：' +nickname+
         '      <br/>性别：' +gender+
         '      </br>手机：' +phone+
@@ -140,7 +155,15 @@ var getQueryParams = function(params){
 }
 
 var operationFormatter = function(value,row,index){
-	return '<input class="switch" type="checkbox" id="'+ row.user.uuid +'"'+ (row.user.isDelete==1?'checked':'') + '/>';
+	return '<input class="switch" type="checkbox" id="'+ row.aUuid +'"'+ (row.isDelete==1?'checked':'') + '/>';
+}
+
+var doOpenModal = function (id) {//打开模态框
+
+    $('#input-modal').modal('show');
+    // 初始化
+
+
 }
 
 var vue_app=new Vue({
@@ -149,7 +172,8 @@ var vue_app=new Vue({
         status: 0 // 显示数据
     },
     methods: {
-        reload: doReload
+        reload: doReload,
+        openModal: doOpenModal,
     },
     created: function () {
     }
