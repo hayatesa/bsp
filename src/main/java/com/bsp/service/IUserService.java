@@ -1,10 +1,14 @@
 package com.bsp.service;
 
+import com.bsp.dto.QueryObject;
 import com.bsp.entity.User;
 import com.bsp.entity.UserInfor;
+import com.bsp.utils.Page;
 
 public interface IUserService {
-
+	
+	Page findByQueryObject(QueryObject queryObject);
+	
 	void addUser(User user, UserInfor userInfor);
 	
 	/**
@@ -16,13 +20,13 @@ public interface IUserService {
 	
 	/**
 	 * 根据用户获取用户信息
-	 * @param user 用户
+	 * @param uuid 用户id
 	 */
-	UserInfor getUserInforByUser(User user);
+	UserInfor findUserInforByUuid(String uuid);
 	
 	/**
 	 * 冻结或（软）删除用户
 	 */
-	void lockOrDeleteUser(String uuid);
+	void lockOrUnlock(String uuid);
 
 }

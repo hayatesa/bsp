@@ -1,5 +1,6 @@
 package com.bsp.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,12 +9,15 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.bsp.dao.UserInforMapper;
 import com.bsp.dao.UserMapper;
+import com.bsp.dto.QueryObject;
 import com.bsp.entity.User;
 import com.bsp.entity.UserInfor;
 import com.bsp.exceptions.SystemErrorException;
 import com.bsp.exceptions.UserDefinedException;
 import com.bsp.service.IUserService;
+import com.bsp.utils.Page;
 import com.bsp.utils.md5.MD5Utils;
+import com.bsp.vo.UserVO;
 
 @Service
 @Transactional
@@ -22,7 +26,7 @@ public class UserService implements IUserService {
 	private UserMapper userMapper;
 	
 	@Autowired
-	UserInforMapper userInforMapper;
+	private UserInforMapper userInforMapper;
 
 	public void setUserInforMapper(UserInforMapper userInforMapper) {
 		this.userInforMapper = userInforMapper;
@@ -56,10 +60,10 @@ public class UserService implements IUserService {
 	}
 	
 	@Override
-	public UserInfor getUserInforByUser(User user) {
+	public UserInfor findUserInforByUuid(String uuid) {
 		UserInfor userInfor;
 		try {
-			userInfor = userInforMapper.selectByPrimaryKey(user.getUuid());
+			userInfor = userInforMapper.selectByPrimaryKey(uuid);
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new SystemErrorException("系统异常，获取用户信息失败");
@@ -68,15 +72,34 @@ public class UserService implements IUserService {
 	}
 
 	@Override
-	public void lockOrDeleteUser(String uuid) {
+	public void lockOrUnlock(String uuid) {
 		User newUser;
 		try {
 			newUser = userMapper.selectByPrimaryKey(uuid);
-			newUser.lockOrDelete();
+			newUser.lockOrUnlock();
 			userMapper.updateByPrimaryKeySelective(newUser);
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new SystemErrorException("操作失败，系统异常");
 		}
+	}
+
+	@Override
+	public Page findByQueryObject(QueryObject queryObject) {
+		Integer totalCount = null;
+		List<User> users = null;
+		List<UserVO> list = new ArrayList<>();
+		try {
+			totalCount = userMapper.getTotalCount(queryObject);
+			users = userMapper.selectByQueryObject(queryObject);
+			for (User user : users) {
+				UserInfor detail = userInforMapper.selectByPrimaryKey(user.getUuid());
+				list.add(new UserVO(user, detail));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new SystemErrorException("系统异常，查询数据失败");
+		}
+		return new Page(list, totalCount, queryObject.getLimit(), queryObject.getPageNumber());
 	}
 }

@@ -22,8 +22,8 @@ public class User extends BaseEntity {
 		return this.isDelete == 0 ? true : false;
 	}
 
-	public void lockOrDelete() {
-		this.isDelete = 1;
+	public void lockOrUnlock() {
+		this.isDelete = isDelete == 1 ? (byte)0 : (byte)1;
 	}
 
 	/**
