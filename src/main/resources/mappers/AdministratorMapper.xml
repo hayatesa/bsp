@@ -22,6 +22,7 @@
 			a_uuid LIKE CONCAT('%',#{search},'%')
 			OR a_id LIKE CONCAT('%',#{search},'%')
 			OR a_name LIKE CONCAT('%',#{search},'%')
+			OR a_phone LIKE CONCAT('%',#{search},'%')
 		)
 		</if>
 	</where>

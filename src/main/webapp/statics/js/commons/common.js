@@ -18,10 +18,7 @@ T.p = url;
 //全局配置
 $.ajaxSetup({
     dataType: "json",
-    cache: false,
-    error: function (jqXHR, textStatus, errorThrown) {
-        alert('请求出错');
-    }
+    cache: false
 });
 
 //重写alert

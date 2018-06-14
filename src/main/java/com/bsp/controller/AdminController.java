@@ -1,5 +1,6 @@
 package com.bsp.controller;
 
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.apache.shiro.authz.annotation.RequiresUser;
@@ -7,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -39,8 +41,8 @@ public class AdminController extends BaseController {
 	 * @param uuid 管理员id
 	 */
 	@RequestMapping("lockOrUnlock")
+	@RequiresRoles("super_admin")
 	@RequiresUser
-	@RequiresRoles("supper_admin")
 	public Result lockOrUnlock(String uuid) {
 		// 不能操作当前用户，不能操作永久用户（状态为0）
 		if (ShiroUtils.getToken().getaUuid().equals(uuid)) {
@@ -80,18 +82,56 @@ public class AdminController extends BaseController {
 	 * 更新资料，只能修改当前用户资料的部分字段，实现时请完成参数列表
 	 */
 	@RequestMapping("update")
-	public Result update() {
+	@RequiresUser
+	public Result update(@RequestBody Administrator administrator) {
+		try {
+			adminService.update(administrator, administrator.getaPassword()!=null, ShiroUtils.getToken());
+		} catch (DataUpdateException e) {
+			e.printStackTrace();
+			logger.error(e.getMessage());
+			return Result.error(e.getMessage());
+		} catch (SystemErrorException e) {
+			e.printStackTrace();
+			logger.error(e.getMessage());
+			return Result.error(e.getMessage());
+		}
 		return Result.success();
 	}
 	
 	/**
-	 * 修改当前用户密码
+	 * 修改密码，限超级管理员使用
+	 * @param newPassword 新密码
+	 * @param confirmPassword 确认
+	 */
+	@RequestMapping("pwdChange")
+	@RequiresRoles("super_admin")
+	public Result changePasswordWithUuid(String uuid, String newPassword, String confirmPassword) {
+		try {
+			adminService.changePassword(uuid, null, newPassword, confirmPassword);
+		} catch (DataUpdateException e) {
+			e.printStackTrace();
+			logger.error(e.getMessage());
+			return Result.error(e.getMessage());
+		} catch (SystemErrorException e) {
+			e.printStackTrace();
+			logger.error(e.getMessage());
+			return Result.error(e.getMessage());
+		}
+		return Result.success();
+	}
+	
+	/**
+	 * 修改当前登录用户密码
 	 */
 	@RequestMapping(value="password", method=RequestMethod.POST)
+	@RequiresUser
 	public Result changePassword(String currentPassword, String newPassword, String confirmPassword) {
 		Administrator admin = ShiroUtils.getToken();
+		if (null == currentPassword) {
+			return Result.error("原密码不允许为空");
+		}
 		try {
-			adminService.changePassword(admin, currentPassword, newPassword, confirmPassword);
+			adminService.changePassword(admin.getaUuid(), currentPassword, newPassword, confirmPassword);
 		} catch (DataUpdateException e) {
 			e.printStackTrace();
 			logger.error(e.getMessage());
@@ -106,20 +146,60 @@ public class AdminController extends BaseController {
 	}
 	
 	/**
-	 * 获取管理员列表
-	 * @param pageParams 分页参数
+	 * 用户是否已经存在
 	 */
-	@RequestMapping("list")
-	public Result list(QueryObject pageParams) {
-		return Result.success();
+	@RequestMapping("exist")
+	public Result exist(String id) {
+		Result result = Result.success();
+		result.put("exist", adminService.isExist(id));
+		return result;
+	}
+	
+	/**
+	 * 用于添加用户于检查用户是否合法（不存在）
+	 */
+	@RequestMapping("valid")
+	public Result valid(String id) {
+		Result result = Result.success();
+		result.put("valid", !adminService.isExist(id));
+		return result;
 	}
 	
 	/**
 	 * 添加管理员，只有超级管理员能调用，实现时请完成参数列表
 	 */
 	@RequestMapping("add")
-	public Result add() {
+	@RequiresRoles("super_admin")
+	public Result add(@RequestBody Administrator obj) {
+		try {
+			adminService.add(obj);
+		} catch (SystemErrorException e) {
+			e.printStackTrace();
+			return Result.error(e.getMessage());
+		} catch (Exception e) {
+			e.printStackTrace();
+			return Result.error("由于未知错误，添加管理员失败");
+		}
 		return Result.success();
+	}
+	
+	@RequestMapping("findByKey")
+	@RequiresUser
+	public Result findByKey(String uuid) {
+		Administrator admin = null;
+		try {
+			admin = adminService.findByKey(uuid);
+			admin.setaPassword(null);
+		} catch (SystemErrorException e) {
+			e.printStackTrace();
+			return Result.error(e.getMessage());
+		} catch (Exception e) {
+			e.printStackTrace();
+			return Result.error("由于未知错误，查询数据失败");
+		}
+		Result result = Result.success();
+		result.put("obj", admin);
+		return result;
 	}
 	
 }

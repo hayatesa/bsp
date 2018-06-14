@@ -35,7 +35,7 @@ public class AdminRealm  extends AuthorizingRealm  {
 		info.addRole("admin");
 		// 是否为超级管理员
 		if (admin.getaLevel()==1||admin.getaLevel()==0) {
-			info.addRole("supper_admin");
+			info.addRole("super_admin");
 		}
 		return info;
 	}

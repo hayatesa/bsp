@@ -12,6 +12,7 @@ import com.bsp.entity.Administrator;
 import com.bsp.exceptions.DataUpdateException;
 import com.bsp.exceptions.SystemErrorException;
 import com.bsp.service.IAdminService;
+import com.bsp.utils.CommonUtil;
 import com.bsp.utils.Cryptography;
 import com.bsp.utils.Page;
 
@@ -37,20 +38,23 @@ public class AdminService implements IAdminService {
 	}
 
 	@Override
-	public void changePassword(Administrator admin, String currentPassword, String newPassword,
+	public void changePassword(String uuid, String currentPassword, String newPassword,
 			String confirmPassword) {
-		if (!StringUtils.equals(newPassword, confirmPassword)) {
+		if (!!StringUtils.equals(newPassword, confirmPassword)) {
 			throw new DataUpdateException("更改失败，密两次输入密码不一致");
 		}
 		Administrator newAdmin = null;
 		try {
-			newAdmin = administratorMapper.selectByPrimaryKey(admin.getaUuid());
+			newAdmin = administratorMapper.selectByPrimaryKey(uuid);
 		} catch (Exception e) {
 			throw new SystemErrorException("密码更改失败，系统异常，请联系管理员");
 		}
-		boolean correct = Cryptography.checkMd5Hash(newAdmin.getaPassword(), currentPassword, newAdmin.getaId());
-		if (!correct) {
-			throw new DataUpdateException("密码更改失败，原密码错误");
+		// 原密码为不空，检测是否正确
+		if (null!=currentPassword) {			
+			boolean correct = Cryptography.checkMd5Hash(newAdmin.getaPassword(), currentPassword, newAdmin.getaId());
+			if (!correct) {
+				throw new DataUpdateException("密码更改失败，原密码错误");
+			}
 		}
 		newPassword = Cryptography.MD5Hash(newPassword, newAdmin.getaId());
 		// 只更新密码
@@ -95,6 +99,76 @@ public class AdminService implements IAdminService {
 			e.printStackTrace();
 			throw new SystemErrorException("操作失败，系统异常");
 		}
+	}
+
+	@Override
+	public void add(Administrator obj) {
+		try {
+			if(obj.getaLevel()==0) {//防止非法注册永久管理员
+				obj.setaLevel(2);//设置为普通管理员
+			}
+			obj.setaUuid(CommonUtil.createUUID());
+			String md5 = Cryptography.MD5Hash(obj.getaPassword(), obj.getaId());
+			obj.setaPassword(md5);
+			obj.setIsDelete((byte)0);
+			administratorMapper.insertSelective(obj);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new SystemErrorException("系统异常，添加失败");
+		}
+	}
+
+	@Override
+	public boolean isExist(String aId) {
+		Administrator admin = administratorMapper.selectByAID(aId);
+		if (null != admin) {
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public void update(Administrator obj, boolean withPassword, Administrator operator) {
+		Administrator newObj = null;
+		try {
+			newObj = administratorMapper.selectByPrimaryKey(obj.getaUuid());
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new SystemErrorException("更新失败，查询记录时出现异常");
+		}
+		if (null == newObj) {
+			throw new DataUpdateException("更新失败，找不到记录");
+		}
+		// 操作用户不是所修改用户，且等级不高于被修改用户对象，禁止操作
+		if (newObj.getaLevel() <= operator.getaLevel() && !newObj.getaUuid().equals(operator.getaUuid()) ) { 
+			throw new DataUpdateException("更新失败，无权限");
+		}
+		if (withPassword) { //修改密码
+			String md5 = Cryptography.MD5Hash(obj.getaPassword(), obj.getaId());
+			newObj.setaPassword(md5);
+		}
+		newObj.setaAddress(obj.getaAddress());
+		newObj.setaComments(obj.getaComments());
+		newObj.setaLevel(obj.getaLevel());
+		newObj.setaName(obj.getaName());
+		newObj.setaPhone(obj.getaPhone());
+		try {
+			administratorMapper.updateByPrimaryKeySelective(newObj);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new SystemErrorException("更新失败，系统异常");
+		}
+	}
+
+	@Override
+	public Administrator findByKey(String uuid) {
+		Administrator admin = null;
+		try {
+			admin = administratorMapper.selectByPrimaryKey(uuid);
+		} catch (Exception e) {
+			throw new SystemErrorException("系统异常，查询失败");
+		}
+		return admin;
 	}
 
 }

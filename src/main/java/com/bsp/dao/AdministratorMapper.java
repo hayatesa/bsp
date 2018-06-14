@@ -9,4 +9,5 @@ public interface AdministratorMapper extends GenericMapper<Administrator, String
 	 * @param aid 用户名
 	 */
 	Administrator selectByAID(String aid);
+	
 }
