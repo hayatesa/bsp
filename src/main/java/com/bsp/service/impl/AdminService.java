@@ -128,10 +128,10 @@ public class AdminService implements IAdminService {
 	}
 
 	@Override
-	public void update(Administrator obj, boolean withPassword, Administrator operator) {
+	public void update(Administrator target, boolean withPassword, Administrator operator) {
 		Administrator newObj = null;
 		try {
-			newObj = administratorMapper.selectByPrimaryKey(obj.getaUuid());
+			newObj = administratorMapper.selectByPrimaryKey(target.getaUuid());
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new SystemErrorException("更新失败，查询记录时出现异常");
@@ -139,19 +139,18 @@ public class AdminService implements IAdminService {
 		if (null == newObj) {
 			throw new DataUpdateException("更新失败，找不到记录");
 		}
-		// 操作用户不是所修改用户，且等级不高于被修改用户对象，禁止操作
-		if (newObj.getaLevel() <= operator.getaLevel() && !newObj.getaUuid().equals(operator.getaUuid()) ) { 
+		if (!this.isUpdateArrowed(operator, target)) {
 			throw new DataUpdateException("更新失败，无权限");
 		}
+		newObj.setaAddress(target.getaAddress());
+		newObj.setaComments(target.getaComments());
+		newObj.setaLevel(target.getaLevel());
+		newObj.setaName(target.getaName());
+		newObj.setaPhone(target.getaPhone());
 		if (withPassword) { //修改密码
-			String md5 = Cryptography.MD5Hash(obj.getaPassword(), obj.getaId());
+			String md5 = Cryptography.MD5Hash(target.getaPassword(), target.getaId());
 			newObj.setaPassword(md5);
 		}
-		newObj.setaAddress(obj.getaAddress());
-		newObj.setaComments(obj.getaComments());
-		newObj.setaLevel(obj.getaLevel());
-		newObj.setaName(obj.getaName());
-		newObj.setaPhone(obj.getaPhone());
 		try {
 			administratorMapper.updateByPrimaryKeySelective(newObj);
 		} catch (Exception e) {
@@ -169,6 +168,23 @@ public class AdminService implements IAdminService {
 			throw new SystemErrorException("系统异常，查询失败");
 		}
 		return admin;
+	}
+	
+	/**
+	 * 判断是否有权限操作
+	 * @param operator 执行操作的用户对象
+	 * @param target 被操作的用户对象
+	 */
+	private boolean isUpdateArrowed(Administrator operator, Administrator target) {
+		// 操作用户不是所修改用户，且等级不高于被修改用户对象，禁止操作（权限值越小等级越高）
+		if (target.getaLevel() < operator.getaLevel() && !target.getaUuid().equals(operator.getaUuid()) ) { 
+			return false;
+		}
+		// 不能提升本用户权限（权限值越小等级越高）
+		if (target.getaUuid().equals(operator.getaUuid()) && target.getaLevel() < operator.getaLevel()) { 
+			return false;
+		}
+		return true;
 	}
 
 }

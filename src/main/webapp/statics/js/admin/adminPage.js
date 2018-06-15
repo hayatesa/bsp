@@ -377,7 +377,7 @@ var doOpenUpdateModal = function (id) {//打开编辑模态框
         .updateStatus('password', 'NOT_VALIDATED', null)
         .updateStatus('confirm', 'NOT_VALIDATED', null)
         .updateStatus('phone', 'NOT_VALIDATED', null)
-    vue_app.selectMsg='';
+    vue_app.selectMsgUpdate='';
     vue_app.confirmPwd='';
     $('#input-modal-update').modal('show');
 }
