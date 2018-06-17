@@ -34,7 +34,7 @@
 			<if test="status==0"><!-- 进行中的订单 -->
 				AND lr_struts in(0,4,6,7,8,9,10)
 			</if>
-			<if test="status==1"><!-- 已完结束的订单 -->
+			<if test="status==1"><!-- 异常的订单 -->
 				AND lr_struts in(7,9)
 			</if>
 			<if test="status==2"><!-- 已完结束的订单 -->
