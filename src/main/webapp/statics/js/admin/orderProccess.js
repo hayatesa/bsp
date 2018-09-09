@@ -224,7 +224,7 @@ var detailFormatter = function(index,row){
         '  <li class="media">' +
         '    <div class="media-left">' +
         '      <a target="_blank" href="'+row.loanableBook.imagePath+'">' +
-        '        <img width="319" class="thumbnail" src="'+row.loanableBook.imagePath+'" alt="...">' +
+        '        <img width="319" class="thumbnail" src="/cover?imagePath='+row.loanableBook.imagePath+'" alt="...">' +
         '      </a>' +
         '    </div>' +
         '    <div class="media-body">' +

@@ -65,7 +65,7 @@ var detailFormatter = function(index,row){
         '  <li class="media">' +
         '    <div class="media-left">' +
         '      <a target="_blank" href="'+row.imagePath+'">' +
-        '        <img width="319" class="thumbnail" src="'+row.imagePath+'" alt="...">' +
+        '        <img width="319" class="thumbnail" src="/cover?imagePath='+row.imagePath+'" alt="...">' +
         '      </a>' +
         '    </div>' +
         '    <div class="media-body">' +
