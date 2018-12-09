@@ -1,9 +1,9 @@
 package com.bsp.dao;
 
-import java.util.List;
-
 import com.bsp.dto.OrderQueryObject;
 import com.bsp.entity.LendingRecord;
+
+import java.util.List;
 
 public interface LendingRecordMapper extends GenericMapper<LendingRecord, Integer> {
 
@@ -24,4 +24,17 @@ public interface LendingRecordMapper extends GenericMapper<LendingRecord, Intege
 	 * @param queryObject 查询对象
 	 */
 	List<LendingRecord> selectByQueryObject(OrderQueryObject queryObject);
+
+	/**
+	 * @Author: 邬俊标
+	 * @Description: 通过主键查找记录
+	 * @Date: 20:42 2018/10/18
+	 * @Param: lrId
+	 * @Return:
+	 **/
+	LendingRecord selectByPrimaryKey(Integer lrId);
+
+	List<LendingRecord> selectAllByLrStruts();
+
+	Integer getNumByLrStatus(int i);
 }

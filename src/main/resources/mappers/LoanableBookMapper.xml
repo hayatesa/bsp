@@ -50,6 +50,29 @@
 		</if>
 	</where>
   </sql>
+
+  <!-- 获取可借阅图书sc_id转态下的数量  by ：邬俊标-->
+  <select id="getTotalCountByScId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List"/>
+    from loanable_book
+    where sc_id = #{scId,jdbcType=INTEGER}
+  </select>
+
+  <!-- 通过时间年月获取书籍信息  by ：邬俊标-->
+  <select id="getTotalBookByDate" resultMap="BaseResultMap" >
+    select
+    <include refid="Base_Column_List" />
+    from loanable_book
+    where   strcmp(date_format(open_loan_time,'%Y-%m'),#{date}) = 0
+  </select>
+
+  <!-- 获取可借阅图书不同lb_status转态下的数量  by ：邬俊标-->
+  <select id="getNumByLbStatus" resultType="java.lang.Integer" parameterType="java.lang.Integer" >
+    select COUNT(*) from loanable_book
+    where lb_status = #{lbStatus,jdbcType=INTEGER}
+  </select>
+
   <select id="getTotalCount" resultType="java.lang.Integer" parameterType="com.bsp.dto.LoanableBookQueryObject" >
     select COUNT(*)
     from loanable_book 

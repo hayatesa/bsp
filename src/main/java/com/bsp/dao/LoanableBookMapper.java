@@ -1,9 +1,9 @@
 package com.bsp.dao;
 
-import java.util.List;
-
 import com.bsp.dto.LoanableBookQueryObject;
 import com.bsp.entity.LoanableBook;
+
+import java.util.List;
 
 public interface LoanableBookMapper extends GenericMapper<LoanableBook, Integer> {
 	
@@ -18,4 +18,10 @@ public interface LoanableBookMapper extends GenericMapper<LoanableBook, Integer>
 	 * @param queryObject 查询对象
 	 */
 	List<LoanableBook> selectByQueryObject(LoanableBookQueryObject queryObject);
+
+    Integer getNumByLbStatus(int i);
+
+	List<LoanableBook> getTotalBookByDate(String date);
+
+	List<LoanableBook> getTotalCountByScId(Integer scId);
 }

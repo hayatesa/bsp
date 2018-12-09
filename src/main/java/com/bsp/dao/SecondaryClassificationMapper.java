@@ -1,9 +1,9 @@
 package com.bsp.dao;
 
-import java.util.List;
-
 import com.bsp.dto.ClassificationQueryObject;
 import com.bsp.entity.SecondaryClassification;
+
+import java.util.List;
 
 public interface SecondaryClassificationMapper extends GenericMapper<SecondaryClassification, Integer> {
 	/**
@@ -23,4 +23,6 @@ public interface SecondaryClassificationMapper extends GenericMapper<SecondaryCl
 	 * @param pcId
 	 */
 	List<SecondaryClassification> selectByPcId(Integer pcId);
+
+    List<SecondaryClassification> selectCountByPcId(Integer pcId);
 }

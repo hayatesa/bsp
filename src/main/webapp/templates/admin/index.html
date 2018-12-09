@@ -35,40 +35,40 @@
 	              <div class="fa fa-bars tooltips" data-placement="right" data-original-title="隐藏/显示菜单"></div>
 	          </div>
             <!--logo start-->
-            <a href="/" class="logo"><b>图书共享平台</b></a>
+            <a href="/" class="logo"><b>图书共享平台后台管理</b></a>
             <!--logo end-->
             <div class="nav notify-row" id="top_menu">
                 <!--  notification start -->
                 <ul class="nav top-menu" id="header-app" v-cloak>
                     <!-- inbox dropdown start-->
-                    <li id="header_inbox_bar" :title="newMessages.num+'条消息'"  class="dropdown" >
-                        <a data-toggle="dropdown" class="dropdown-toggle" href="javascript:;">
-                            <i class="fa fa-envelope-o"></i>
-                            <span class="badge bg-theme" v-html="numberFormat(newMessages.num)"></span>
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-right extended inbox">
-                            <div class="notify-arrow notify-arrow-green"></div>
-                            <li>
-                                <p class="green" v-if="newMessages.num>0">您有 {{newMessages.num}} 条未读消息</p>
-                                <p class="green" v-else="">暂无未读消息</p>
-                            </li>
-                            <li v-for="message in newMessages.messages" >
-                                <a href="javascript:;">
-                                    <span class="photo"><img alt="avatar" :src="message.headerUrl"></span>
-                                    <span class="time">时间：{{timeFormat(message.timeStamp)}}</span>
-                                    <span class="subject">
-                                    	<span class="from">来自：{{message.from}}</span>
-                                    </span>
-                                    <span class="message">
-                                        	标题：{{titleFormat(message.title)}}
-                                    </span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="javascript:;">查看所有消息</a>
-                            </li>
-                        </ul>
-                    </li>
+                    <!--<li id="header_inbox_bar" :title="newMessages.num+'条消息'"  class="dropdown" >-->
+                        <!--<a data-toggle="dropdown" class="dropdown-toggle" href="javascript:;">-->
+                            <!--<i class="fa fa-envelope-o"></i>-->
+                            <!--<span class="badge bg-theme" v-html="numberFormat(newMessages.num)"></span>-->
+                        <!--</a>-->
+                        <!--<ul class="dropdown-menu dropdown-menu-right extended inbox">-->
+                            <!--<div class="notify-arrow notify-arrow-green"></div>-->
+                            <!--<li>-->
+                                <!--<p class="green" v-if="newMessages.num>0">您有 {{newMessages.num}} 条未读消息</p>-->
+                                <!--<p class="green" v-else="">暂无未读消息</p>-->
+                            <!--</li>-->
+                            <!--<li v-for="message in newMessages.messages" >-->
+                                <!--<a href="javascript:;">-->
+                                    <!--<span class="photo"><img alt="avatar" :src="message.headerUrl"></span>-->
+                                    <!--<span class="time">时间：{{timeFormat(message.timeStamp)}}</span>-->
+                                    <!--<span class="subject">-->
+                                    	<!--<span class="from">来自：{{message.from}}</span>-->
+                                    <!--</span>-->
+                                    <!--<span class="message">-->
+                                        	<!--标题：{{titleFormat(message.title)}}-->
+                                    <!--</span>-->
+                                <!--</a>-->
+                            <!--</li>-->
+                            <!--<li>-->
+                                <!--<a href="javascript:;">查看所有消息</a>-->
+                            <!--</li>-->
+                        <!--</ul>-->
+                    <!--</li>-->
                     <!-- inbox dropdown end -->
                     <!-- settings start -->
                     <li class="dropdown">
@@ -106,7 +106,7 @@
               	  <p class="centered"><a href="profile.html"><img src="../../statics/assets/img/ui-sam.jpg" class="img-circle" width="60"></a></p>
               	  <h5 class="centered" title="账户信息"><a @click="profileEdit" href="javascript:;"><span>{{user.aId}}</span></a></h5>
                   <li class="mt">
-                      <a class="active" @click="go('/p/userPage','主页')" href="javascript:;">
+                      <a class="active" @click="go('/p/indexEcharts','主页')" href="javascript:;">
                           <i class="fa fa-dashboard"></i>
                           <span>主页</span>
                       </a>
@@ -143,7 +143,7 @@
                   </li>
                   <li class="sub-menu">
                       <a @click="go('/p/donateBookPage','捐赠管理')" href="javascript:;">
-                          <i class="fa fa-share-alt"></i>
+                          <i class="fa fa-share-alt-square"></i>
                           <span>捐赠管理</span>
                       </a>
                   </li>
@@ -155,6 +155,18 @@
                       <ul class="sub">
                           <li><a @click="go('/p/userPage','用户管理-用户')" href="javascript:;">用户</a></li>
                           <li><a @click="go('/p/adminPage','用户管理-管理员')" href="javascript:;">管理员</a></li>
+                      </ul>
+                  </li>
+                  <li class="sub-menu">
+                      <a href="javascript:;" >
+                          <i class="fa fa-database"></i>
+                          <span>数据统计</span>
+                      </a>
+                      <ul class="sub">
+                          <li><a @click="go('/p/indexEcharts','数据统计-综合数据统计')" href="javascript:;">综合数据统计</a></li>
+                          <li><a @click="go('/p/classifyBookEcharts','数据统计-分类图书占比')" href="javascript:;">分类图书占比</a></li>
+                          <li><a @click="go('/p/statusEcharts','数据统计-借阅转态数量统计')" href="javascript:;">借阅转态数量统计</a></li>
+                          <li><a @click="go('/p/perMonthSharEcharts','数据统计-月共享书籍数量')" href="javascript:;">月共享书籍数量</a></li>
                       </ul>
                   </li>
                   <li class="sub-menu">
@@ -180,7 +192,7 @@
           		<div id="title-app" v-cloak>
 					<h4><i class="fa fa-angle-right"></i> {{title}}</h4>
 				</div>
-              <iframe src="/p/userPage" id="page-content" width="100%" height="720px" frameborder="0" style="margin:0px;"></iframe>
+              <iframe src="/p/indexEcharts" id="page-content" width="100%" height="720px" frameborder="0" style="margin:0px;"></iframe>
           </section>
       </section>
 

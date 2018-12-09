@@ -1,8 +1,8 @@
 package com.bsp.dao;
 
-import java.util.List;
-
 import com.bsp.entity.CheckLoanableBook;
+
+import java.util.List;
 
 public interface CheckLoanableBookMapper extends GenericMapper<CheckLoanableBook, Integer> {
 	
@@ -17,4 +17,14 @@ public interface CheckLoanableBookMapper extends GenericMapper<CheckLoanableBook
 	 * @param queryObject 查询对象
 	 */
 	List<CheckLoanableBook> selectByQueryObject(CheckLoanableBook queryObject);
+
+	/**
+	 * @Author: 邬俊标
+	 * @Description: 统计审核中的个个转态数量
+	 * @Date: 3:13 2018/10/19
+	 * @Param:
+	 * @Return:
+	 *
+	 * @param i*/
+    Integer getNumByClbStatus(int i);
 }

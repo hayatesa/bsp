@@ -28,6 +28,13 @@
 		</if>
 	</where>
   </sql>
+  <select id="selectCountByPcId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List"/>
+    from secondary_classification
+    where pc_id = #{arg}
+  </select>
+
   <select id="getTotalCount" resultType="java.lang.Integer" parameterType="com.bsp.dto.ClassificationQueryObject" >
     select COUNT(*) from secondary_classification 
     <include refid="where_of_query" />

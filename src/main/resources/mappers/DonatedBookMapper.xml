@@ -30,6 +30,13 @@
 		</if>
 	</where>
   </sql>
+
+  <select id="selectAll" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from donated_book
+  </select>
+
   <select id="getTotalCount" resultType="java.lang.Integer" parameterType="com.bsp.dto.QueryObject" >
     select COUNT(*) from donated_book 
     <include refid="where_of_query" />

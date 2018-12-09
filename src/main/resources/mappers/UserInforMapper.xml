@@ -138,4 +138,8 @@
       u_signature = #{uSignature,jdbcType=VARCHAR}
     where uuid = #{uuid,jdbcType=VARCHAR}
   </update>
+
+  <select id="getSexSum" resultType="int" parameterType="java.lang.String" >
+      SELECT COUNT(*) FROM user_infor where u_sex = #{sex}
+  </select>
 </mapper>

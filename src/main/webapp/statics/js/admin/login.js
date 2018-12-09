@@ -47,8 +47,8 @@ var doLogin = function () {
 var login_app = new  Vue({
     el: '#login-page',
     data: {
-        username: 'admin',
-        password: '123456',
+        username: '',
+        password: '',
         vcode: '',// 验证码
         msg: '', //提示信息
         email: ''

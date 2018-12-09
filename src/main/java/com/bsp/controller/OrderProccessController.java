@@ -1,5 +1,16 @@
 package com.bsp.controller;
 
+import com.bsp.dto.OrderQueryObject;
+import com.bsp.entity.Administrator;
+import com.bsp.entity.LendingRecord;
+import com.bsp.exceptions.SendEmailException;
+import com.bsp.exceptions.SystemErrorException;
+import com.bsp.exceptions.UserDefinedException;
+import com.bsp.service.*;
+import com.bsp.shiro.ShiroUtils;
+import com.bsp.utils.CommonUtil;
+import com.bsp.utils.Page;
+import com.bsp.utils.Result;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresUser;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,19 +18,6 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.bsp.dto.OrderQueryObject;
-import com.bsp.entity.LendingRecord;
-import com.bsp.exceptions.SendEmailException;
-import com.bsp.exceptions.SystemErrorException;
-import com.bsp.exceptions.UserDefinedException;
-import com.bsp.service.IDonateService;
-import com.bsp.service.IEmailService;
-import com.bsp.service.ILendingRecordService;
-import com.bsp.service.IMessageService;
-import com.bsp.utils.CommonUtil;
-import com.bsp.utils.Page;
-import com.bsp.utils.Result;
 
 /**
  * 订单流转
@@ -41,7 +39,10 @@ public class OrderProccessController extends BaseController {
 	private IMessageService messageService;
 	@Autowired
 	private IEmailService emailService;
-	
+
+	@Autowired
+	private IOrderProccessService iOrderProccessService;
+
 	public void setMessageService(IMessageService messageService) {
 		this.messageService = messageService;
 	}
@@ -65,6 +66,15 @@ public class OrderProccessController extends BaseController {
 	@RequestMapping("next_step")
 	@RequiresUser
 	public Result nextStep(@RequestParam("lrId") Integer lrId) {
+		// 获取订单并进行下一步的状态转换
+		System.out.println(lrId);
+		Administrator admin = ShiroUtils.getToken();
+		try {
+			iOrderProccessService.nextStep(lrId, admin);
+		} catch (SystemErrorException e) {
+			e.printStackTrace();
+			return Result.error(e.getMessage());
+		}
 		return Result.success();
 	}
 	
